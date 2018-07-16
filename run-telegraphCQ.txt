@@ -1,0 +1,39 @@
+ shenlu@ENB335-CORE-i9:~/software/TelegraphCQ-2.1/src/test/examples/tcqsanity$ cat tcpdump.log | ./source.old.pl localhost 5432 csvwrapper,network.tcpdump
+ 
+ 
+ su - telegraphcq
+ cd /home/shenlu/applications/TelegraphCQ2
+   
+   #####start TelegraphCQ service
+   #####listening port 5532
+   ./bin/pg_ctl start -D data -l data/logfile -o " -G -Q 64 -d 1 -i -h localhost -p 5532 -t teststream -u telegraphcq"
+   
+   #####connect to TelegraphCQ service
+   #####listening port 5532
+   ./bin/psql -C  -h localhost -p 5532 teststream
+   
+   #####send stream to TelegraphCQ service
+   #####listening port 5533
+   cat tcpdump.log | ./source.old.pl localhost 5533 csvwrapper,network.tcpdump
+	
+	
+	
+	\d+ tablename  ##show table structure
+	
+	
+   
+   SELECT dst, COUNT(*), wtime(*) AS c FROM network.tcpdump AS st [RANGE BY '5 seconds' SLIDE BY '1 second' START AT '2003-06-06 18:50:20']  GROUP BY dst;
+
+   
+   
+    SELECT qrynum, COUNT(*), wtime(*) AS c FROM tcq_queries AS st [RANGE BY '5 seconds' SLIDE BY '1 second' START AT '2003-06-06 18:50:20']  GROUP BY qrynum;
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
