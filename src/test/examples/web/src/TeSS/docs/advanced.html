@@ -1,0 +1,195 @@
+<HTML>
+<HEAD>
+<TITLE>Advanced TESS Wrappers</TITLE>
+</HEAD>
+<BODY BGCOLOR="white">
+<H2>Advanced TESS Wrapper writting</H2>
+<P>This page will deal with custom scriping for TESS wrappers.
+Knowledge of <A HREF="http://java.sun.com">java</A> is assumed.  It builds on the <A
+HREF="example.html">previous example</A> so if you haven't read that
+yet I recommend you do.</P>
+<P>You may have noticed in our previous example that we only get the
+first ten results back, but what if we want to get all the results
+google has for the telegraph query.  To do this you need to write a
+custom java class to follow the links at the bottom of the page.
+Something to note for situations like these is that there is often a
+parameter in the query that specifies the number of results per
+page.  Although the user interface often only allows preset values to
+be specified for that parameter you can often just supply it with a
+really huge number to get back all the results at once.  Sadly, google
+does not let us do this so we need to write a custom script. (Can can
+actually give it a num parameter as in "q=telegraph&num=100" but it
+won't return more than 100 results at a time so we can't get
+everything in one shot)</P>
+<P>All custom scripts need to extend the AbstractURLScan class.  There
+is only one abstract method that you have to override, getNextRow(),
+which returns the next row of results from the scan as an array of
+objects.  You also need to create a .jsc file that tells TeSS to use
+the script you wrote.<BR><BR>
+So without further adieu lets start writing our script... 
+</P>
+<P>To start with create an ordinary class file that extends
+AbstactURLScan:
+<PRE>
+class GoogleScan extends AbstractURLScan {
+</PRE>
+Now we need to write the constructor.  The constructor of an
+AbstractURLScan takes a URLConfig and a SQLProperties.  The URLConfig
+is the file that was parsed to create the script (explained later) and
+the SQLProperties is a list of name value pairs of the arguments to
+the scan.</P>
+<P>We want to grab all the results from google.  By looking at
+the urlbar when we click to the next set of results we notice that
+google uses the start=x argument to figure out which results to give
+back, we can exploit this.
+<CENTER><IMG SRC="google3.jpg"><BR>
+<B>The urlbar after clicking next on the search.  The start argument is circled</B></CENTER>
+<BR>Our script will scan one page and then restart the scan after that
+page is finished but with the start argument incremented by 10. (We
+could improve performace a little by getting more results back per
+page, this is left as an exercise for the reader)</P>
+<P>The first thing we need to do is modify our script to use the start
+argument.  We'll create a new .jsc file called google_script.jsc (the
+_script indicates that this is a file that is just used by a script
+and is not a standalone wrapper, this is in no way nessecary for TeSS
+but it helps keep all your .jsc files strait). So out new
+google_script.jsc looks like:
+<PRE>
+host=www.google.com
+url=/search?
+method=get
+<B>arguments=q,start,</B>
+default1=telegraph
+<B>default2=0</B>
+columns=name,description,url,
+prefix=seconds
+rowprefix=^&lt;p&gt;
+rowterm=Similar pages
+name_prefix=&lt;A HREF=[^&gt;]*&gt;
+name_term=&lt;/A&gt;
+description_prefix=Description:
+description_term=&lt;br&gt;
+url_prefix=font color=green&gt;
+url_term=-
+description_nullifmissing
+termination=&lt;div class=nav&gt;
+end
+(changes in bold)
+</PRE>
+Now we can start to write our classfile.<BR>
+Let's write the constructor first.  What we want to do is take the q
+argument the script was given and use them as the arguments to our
+scan. We will be constructing multiple scans, one for each page, so
+all we really need to do in the constructor is set up the config file
+by scaning google_script.jsc...
+<PRE>
+class GoogleScan extends AbstractURLScan {
+
+  URLConfig murlConfig = null;
+  URLScan curscan = null;
+  int cstart = 0;
+  SQLProperties props = null;
+
+  /** Just set up the URLConfig that this scan will use. */
+  public GoogleScan(URLConfig urlConfig, SQLProperties p) {
+    try {
+      murlConfig = new URLConfig(new File("google_script.jsc"));
+    }catch(Exception e) {e.printStackTrace();}
+    props = p;
+  }
+</PRE>
+Notice that we don't do a super here. You only need to do a super if
+you're planning on using the script file and all properties that the
+_script.jsc file uses.
+</P>
+<P>Now we need to write our getNextRow() method.  What this needs to
+do is return the next result.  When it reaches the end of one page of
+results we want to start a new scan on the next page.  To do this we
+will use an auxiliary private method called getNextScanner.  It will
+create a new URLScan each time it is called with the argument for
+start increased by ten.
+<PRE>
+package telegraph.source.tupleReader.URLScan;
+
+import java.io.*;
+import telegraph.util.*;
+import telegraph.util.exceptions.*;
+
+class GoogleScan extends AbstractURLScan {
+
+  URLConfig murlConfig = null;
+  URLScan curscan = null;
+  int cstart = 0;
+  SQLProperties props = null;
+
+  /** Just set up the URLConfig that this scan will use. */
+  public GoogleScan(URLConfig urlConfig, SQLProperties p) {
+    try {
+      murlConfig = new URLConfig(new File("telegraph/source/tupleReader/URLScan/google_script.jsc"));
+    }catch(Exception e) {e.printStackTrace();}
+    props = p;
+  }
+
+  public Object[] getNextRow() 
+    throws GeneralTelegraphException {
+    
+    Object[] o = null;
+    if(curscan == null)
+      getNextScanner();
+    if(curscan == null)
+      return null;  /* A return value of null indicates the scan is completely finished */
+    
+    if((o = curscan.getNextRow()) != null)
+      return o;
+    else {
+      curscan = null;
+      return getNextRow();
+    }
+  }
+
+  private void getNextScanner() {
+    
+    if(cstart > 990) {
+      curscan = null;
+      return;
+    }
+    props.removeProperty("start");
+    props.addProperty("start",""+cstart); /*Need to make the int a string */
+    cstart+=10;
+    try {
+      curscan = new URLScan(murlConfig, props);
+    }catch(GeneralTelegraphException e){e.printStackTrace();}
+  }
+	
+} 
+</PRE>
+This will keep returning results from google until cstart==1000 which
+is the highest number google will let you start your results from.  We
+now have a script that will do exactly what we want; return all
+results from a google search.</P>
+<P>The last thing left to do is write the .jsc file that uses this
+script.  Fortunatly writing this is much easier than writing a full
+blown wrapper. Here's the full text of the .jsc file:
+<PRE>
+columns=name,description,url,
+script=telegraph.source.tupleReader.URLScan.GoogleScan
+end
+</PRE>
+That's it! Nothing else to write.  All this does is tell TeSS
+to use a script that is in the classfile GoogleScan and that the
+columns it will be returning are name, description, and url.  The rest
+is taken care of by the other google wrapper we wrote so we don't need
+anything else.  TeSS will warn you that you have not specifed some
+tags that are usually required by a wrapper but you can ignore them
+since this wrapper doesn't need them.</P>
+<P>Wrapper/Script writting can be a tricky buissness and you will
+probably find yourself doing some ugly hacks.  TeSS tries to provide
+some functions that let you handle the variable nature of HTML as
+elegantly as possible, however some things simply cannot be handled in
+a general way and you will have to write specific hacks for them. If
+you think that some fuctionality in TeSS could make your life a lot
+easier <A HREF="nickl@db.cs.berkeley.edu">mail me</A> and it might
+become a feature.
+
+</BODY>
+</HTML>

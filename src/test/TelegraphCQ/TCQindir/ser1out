@@ -1,0 +1,128 @@
+============== starting postmaster                    ==============
+running on port 65432 with pid 23027
+============== populating station table               ==============
+============== running regression test queries        ==============
+simpleSelect
+measurements
+ region | stationid |    name    | unknown | highway | mile  | direction | longitude | latitude 
+--------+-----------+------------+---------+---------+-------+-----------+-----------+----------
+      4 |      4131 | SB SR-242. |      28 |       4 | 14.49 | E         |   38.0008 | -122.039
+(1 row)
+
+      4 |      4134 | Port Chicago Hwy |      28 |       4 | 14.49 | W         |   38.0075 | -122.039
+
+success=1, cqcancel=1
+simpleSelect passed...
+
+simpleSelect2
+measurements
+        tcqtime         | stationid | speed 
+------------------------+-----------+-------
+ 2003-04-21 09:20:47-07 |      4130 |    75
+(1 row)
+
+ 2003-04-21 09:20:47-07 |      4138 |    61
+
+success=1, cqcancel=1
+simpleSelect2 passed...
+
+simpleSelect3
+measurements
+        tcqtime         | stationid | speed 
+------------------------+-----------+-------
+ 2003-04-21 09:20:52-07 |      4130 |    72
+(1 row)
+
+ 2003-04-21 09:20:52-07 |      4148 |    78
+
+success=1, cqcancel=1
+simpleSelect3 passed...
+
+simpleSelect
+measurements
+ region | stationid |    name    | unknown | highway | mile  | direction | longitude | latitude 
+--------+-----------+------------+---------+---------+-------+-----------+-----------+----------
+      4 |      4131 | SB SR-242. |      28 |       4 | 14.49 | E         |   38.0008 | -122.039
+(1 row)
+
+      4 |      4134 | Port Chicago Hwy |      28 |       4 | 14.49 | W         |   38.0075 | -122.039
+
+success=1, cqcancel=1
+simpleSelect passed...
+
+simpleSelect3
+measurements
+        tcqtime         | stationid | speed 
+------------------------+-----------+-------
+ 2003-04-21 09:20:57-07 |      4130 |    72
+(1 row)
+
+ 2003-04-21 09:20:57-07 |      4148 |    78
+
+success=1, cqcancel=1
+simpleSelect3 passed...
+
+simpleSelect3
+measurements
+        tcqtime         | stationid | speed 
+------------------------+-----------+-------
+ 2003-04-21 09:21:02-07 |      4130 |    72
+(1 row)
+
+ 2003-04-21 09:21:02-07 |      4148 |    78
+
+success=1, cqcancel=1
+simpleSelect3 passed...
+
+simpleSelect2
+measurements
+        tcqtime         | stationid | speed 
+------------------------+-----------+-------
+ 2003-04-21 09:21:07-07 |      4130 |    72
+(1 row)
+
+ 2003-04-21 09:21:07-07 |      4138 |    64
+
+success=1, cqcancel=1
+simpleSelect2 passed...
+
+simpleSelect
+measurements
+ region | stationid |    name    | unknown | highway | mile  | direction | longitude | latitude 
+--------+-----------+------------+---------+---------+-------+-----------+-----------+----------
+      4 |      4131 | SB SR-242. |      28 |       4 | 14.49 | E         |   38.0008 | -122.039
+(1 row)
+
+      4 |      4134 | Port Chicago Hwy |      28 |       4 | 14.49 | W         |   38.0075 | -122.039
+
+success=1, cqcancel=1
+simpleSelect passed...
+
+simpleSelect
+measurements
+ region | stationid |    name    | unknown | highway | mile  | direction | longitude | latitude 
+--------+-----------+------------+---------+---------+-------+-----------+-----------+----------
+      4 |      4131 | SB SR-242. |      28 |       4 | 14.49 | E         |   38.0008 | -122.039
+(1 row)
+
+      4 |      4134 | Port Chicago Hwy |      28 |       4 | 14.49 | W         |   38.0075 | -122.039
+
+success=1, cqcancel=1
+simpleSelect passed...
+
+simpleSelect
+measurements
+ region | stationid |    name    | unknown | highway | mile  | direction | longitude | latitude 
+--------+-----------+------------+---------+---------+-------+-----------+-----------+----------
+      4 |      4131 | SB SR-242. |      28 |       4 | 14.49 | E         |   38.0008 | -122.039
+(1 row)
+
+      4 |      4134 | Port Chicago Hwy |      28 |       4 | 14.49 | W         |   38.0075 | -122.039
+
+success=1, cqcancel=1
+simpleSelect passed...
+
+============== shutting down postmaster               ==============
+waiting for postmaster to shut down.......done
+postmaster successfully shut down
+did i clean up?

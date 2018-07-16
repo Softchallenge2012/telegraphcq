@@ -1,0 +1,867 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1"
+ http-equiv="content-type">
+  <title>TelegraphCQ v 2.0</title>
+</head>
+<body>
+<h1 style="text-align: left;"><a
+ href="http://telegraph.cs.berkeley.edu/"><img
+ style="border: 2px solid ; width: 192px; height: 95px;"
+ alt="telegraph.cs.berkeley.edu" src="tcq_logo_50pct.png"></a>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; TelegraphCQ
+v2.0</h1>
+<ul>
+  <li>
+    <h2>Introduction</h2>
+  </li>
+This is TelegraphCQ <a href="TelegraphCQ-2.0.tar.gz">version 2.0</a>,
+the latest release
+of TelegraphCQ by Telegraph Team at UC
+Berkeley. This release, as
+all the previous ones, is under the
+OpenBSD license. <br>
+  <br>
+TelegraphCQ is a system for processing long-running continuous queries
+over data streams. It is implemented as a significant modification to
+the PostgreSQL open-source database system. Specifically, TelegraphCQ
+v2.0 is based on the PostgreSQL 7.3.2 code-base. <br>
+  <br>
+  <span style="font-weight: bold;">What's new </span><br>
+  <ul>
+    <li>Better stability: Extensive testing. Lots of bugs have been
+squashed <br>
+    </li>
+    <li>Better performance: System has been load-tested, profiled and
+optimized
+to a large extent. <br>
+    </li>
+    <li>New window semantics: You can now specify a sliding, hopping or
+jumping time window over streams using the window clause: <tt>[RANGE
+BY '<time>' SLIDE BY '<time>' START AT '<time>']</time></time></time></tt>.
+In addition,
+a special aggregate, <tt>wtime(*)</tt>, returns the latest timestamp
+in the current time window. <br>
+    </li>
+    <li><time><time><time>SQL:1999-like <tt>WITH</tt> syntax and
+recursive
+queries.</time></time></time></li>
+    <li><time><time><time>Heartbeats: We've added support for
+heartbeats using
+punctuation tuples. <br>
+      </time></time></time></li>
+    <li><time><time><time>Summarize on drop (Data Triage): Tuples
+dropped on stream overload can
+now be summarized.</time></time></time></li>
+    <li><time><time><time>Flux: Infrastructure for a&nbsp; dataflow
+operator that encapsulates
+adaptive state partioning <br>
+and data flow routing.<br>
+      </time></time></time></li>
+  </ul>
+  <time><time><time><li>
+    <h2>Installation <br>
+    </h2>
+  </li>
+  </time></time></time>
+  <ul>
+    <li>
+      <h2>Pre-requisites</h2>
+    </li>
+    <ul>
+      <li>
+        <h3>Platforms</h3>
+      </li>
+TelegraphCQ version 2.0 has been built and tested extensively on
+Linux <a href="http://fedora.redhat.com">Fedora</a> Core 1. <li>
+        <h3>Additional libraries</h3>
+      </li>
+TelegraphCQ requires that these packages be installed on your system. <tt>${HOME}/tcq-tools</tt><span
+ style="font-family: monospace;"> </span>is a convenient place to
+install them, since that's where TelegraphCQ's <tt>configure-opts </tt>script
+looks
+for these libraries.<br>
+      <ul>
+        <li>
+          <h4><i>mm</i></h4>
+        </li>
+        <a href="http://www.ossp.org/pkg/lib/mm/"><tt>mm</tt></a> is a
+shared memory allocation package developed by OSSP, the Open Source
+Software project. Extract the latest <tt>tar</tt> file and follow the
+installation instructions <br>
+found in <i>path-to-mm/INSTALL</i>,
+which are summarized below:
+        <blockquote>
+          <table>
+            <tbody>
+              <tr bgcolor="#e0e0e0">
+                <td>
+                <pre>$ ./configure --prefix=${HOME}/tcq-tools<br>$ make			<br>$ make test <br>$ make install 		</pre>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </blockquote>
+        <li>
+          <h4>Judy<br>
+          </h4>
+        </li>
+        <a href="http://judy.sourceforge.net/">Judy</a> is a
+high-performance C-library for implementing sparse arrays. We use a <a
+ href="http://telegraph.cs.berkeley.edu/dev/judy-tcq-0.0.1.tar.gz">version</a>
+that has been patched specifically to work with TelegraphCQ. Again,
+extract the <tt>tar.gz </tt>file and follow the installation
+instructions in <tt>path-to-judy/INSTALL</tt>
+document, as summarized below:
+        <blockquote>
+          <table>
+            <tbody>
+              <tr bgcolor="#e0e0e0">
+                <td>
+                <pre>$ ./configure --prefix=${HOME}/tcq-tools<br>$ make <br>$ make check <br>$ make install             </pre>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </blockquote>
+      </ul>
+    </ul>
+    <li>
+      <h2>Building TelegraphCQ</h2>
+    </li>
+Run <tt>configure </tt>to set up the build parameters for your
+system. For those unfamiliar with <tt>configure,</tt> it&#8217;s part
+of the <a
+ href="http://www.gnu.org/software/autoconf/manual/autoconf-2.57/html_node/autoconf.html">GNU
+Build system</a>. <tt>configure-tcq </tt>is a convenient
+script that runs <tt>configure </tt> with many commonly used
+flags. <tt>configure-tcq</tt> looks in <tt>${HOME}/tcq-tools</tt>
+for
+the additional libraries mentioned above. If they have been installed
+elsewhere, modify <tt>configure-tcq</tt> to point it to the
+correct location for these libraries. Before running <tt>configure-tcq</tt>,
+the environment variable <tt>PGRSHOME</tt> should be set to point to
+the TelegraphCQ installation directory.
+completes successfully, run <tt>make</tt> as shown below:
+    <blockquote>
+      <table>
+        <tbody>
+          <tr bgcolor="#e0e0e0">
+            <td>
+            <pre>$ ./configure-tcq <br>$ make <br>$ make install </pre>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </blockquote>
+  </ul>
+  <li>
+    <h2>Getting Started <br>
+    </h2>
+  </li>
+TelegraphCQ is built on the PostgreSQL code-base. Hence, you can start
+the <tt>postmaster</tt>
+either
+in PostgreSQL mode, or in TelegraphCQ mode. To start
+using
+TelegraphCQ, we follow the steps below:<br>
+  <br>
+  <ul>
+    <li><span style="font-weight: bold;"> Create a new database cluster</span>
+      <br>
+    </li>
+    <blockquote>
+      <table>
+        <tbody>
+          <tr bgcolor="#e0e0e0">
+            <td>
+            <pre>$ initdb --no-locale -D ${PGDATA}</pre>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </blockquote>
+    <a
+ href="http://www.postgresql.org/docs/7.4/interactive/app-initdb.html"><tt>initdb</tt></a>
+initializes the data directories, the shared catalogs
+and performs other administrivia like, locale and character set
+encoding. As an alternative to the <tt>-D</tt> option, you can set <tt>PGDATA</tt>
+to point to the data
+directory on
+the file system. By passing it the <tt>--no-locale </tt>flag, <tt>initdb</tt>
+inherits
+the locale from it's environment.<br>
+    <br>
+    <li><span style="font-weight: bold;"> Create a new database</span> <br>
+    </li>
+    <blockquote>
+      <table>
+        <tbody>
+          <tr bgcolor="#e0e0e0">
+            <td>
+            <pre>$ pg_ctl start -D ${PGDATA} -l &lt;logfile-name&gt;<br>$ createdb ${DBNAME} <br>$ pg_ctl stop -D ${PGDATA} -l &lt;logfile-name&gt;<br></pre>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </blockquote>
+    <a
+ href="http://www.postgresql.org/docs/7.4/interactive/app-createdb.html"><tt>createdb</tt></a>
+creates a new PostgreSQL database. <tt><a
+ href="http://www.postgresql.org/docs/7.4/interactive/app-pg-ctl.html">pg_ctl</a>
+start|stop|restart</tt> are commands used to start/stop or restart a
+PostgreSQL server. <i>logfile-name</i> specifies the file to which all
+status messages are logged.<br>
+    <br>
+    <li><span style="font-weight: bold;"> Start PostgreSQL in
+TelegraphCQ mode</span> <br>
+    </li>
+    <blockquote>
+      <table>
+        <tbody>
+          <tr bgcolor="#e0e0e0">
+            <td>
+            <pre>$ pg_ctl start -D ${PGDATA}  -l logfile-name -o " -t database-name -u \<br>user-name -G -i -Q 64  -d 1"</pre>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </blockquote>
+    <tt>pg_ctl </tt>passes all the
+options within the <tt>-o</tt> flag to the <a
+ href="http://www.postgresql.org/docs/7.4/interactive/app-postmaster.html"><tt>postmaster</tt></a>,
+which is the PostgreSQL multi-user database
+server.<br>
+    <i>-t</i> is the database to connect
+to. <br>
+    <i>-d</i> Sets the debug level. The higher this value, the more
+debugging output is written to the log.<br>
+    <i>-i</i> Allows clients to connect using TCP/IP sockets.<br>
+    <i>-G</i> Starts the TelegraphCQ executor in <a href="#a_eddy"><i>eddy</i></a>
+mode.<br>
+    <span style="font-style: italic;">-Q </span> Sets the maximum
+number of result queues that can be created.<br>
+    <br>
+    <li><span style="font-weight: bold;"> Start the client</span><br>
+    </li>
+    <blockquote>
+      <table>
+        <tbody>
+          <tr bgcolor="#e0e0e0">
+            <td>
+            <pre>$ psql -C database-name </pre>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </blockquote>
+    <a
+ href="http://www.postgresql.org/docs/7.4/interactive/app-psql.html"><i>psql</i></a>
+is an interactive client to PostgreSQL. It allows you
+to pose
+queries and see the results. <i><br>
+-C</i> Submits <i>SELECT</i> queries using cursors. Since data
+streams are potentially infinite, we can't wait <br>
+for all the results to
+be produced. Instead, we use a cursor to iterate over the results. We
+can control the size and duration of the results using two additional
+flags.<br>
+    <i>-I n</i> Will fetch results in batches of n rows. The default
+value of <i>n</i> is
+1.<br>
+    <i>-i m</i> Will cancel the query after <i>m</i> rows have been
+fetched. The default
+value of <i>m</i> is infinity.<br>
+    <br>
+    <li><b> Define a stream</b></li>
+Define a data stream using the <a
+ href="http://telegraph.cs.berkeley.edu/telegraphcq/v0.2/doc/sql-createstream.html">CREATE
+STREAM</a> command.
+It's syntax is similar to the<br>
+    <a
+ href="http://www.postgresql.org/docs/7.4/interactive/sql-createtable.html">CREATE
+TABLE</a> command. Let's assume that
+we connected to a database named <i>sample</i> in
+the previous step. You'll get the psql prompt when the client connects
+successfully to the database. <br>
+    <blockquote>
+      <table>
+        <tbody>
+          <tr bgcolor="#e0e0e0">
+            <td>
+            <pre>Welcome to psql 0.2, the PostgreSQL interactive terminal.<br>                                                                                           <br>Type:  \copyright for distribution terms<br>       \h for help with SQL commands<br>       \? for help on internal slash commands<br>       \g or terminate with semicolon to execute query<br>       \q to quit<br>                                                                                           <br>starting in CQ Query mode.  All queries will be submitted using cursors.<br>sample=# CREATE SCHEMA traffic;<br>sample=# CREATE STREAM traffic.measurements (stationid INT, <br> 					     speed REAL,<br>                                             tcqtime TIMESTAMP TIMESTAMPCOLUMN<br>                                            ) TYPE ARCHIVED;<br></pre>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </blockquote>
+    <tt>tcqtime</tt> is the default timestamp column which obeys the <tt>TIMESTAMPCOLUMN</tt>
+constraint. It specifies the creation time
+of a tuple,
+which are assumed to be
+monotonically increasing. Tuples entering TelegraphCQ can either be
+externally time-stamped, or
+time-stamped by the data source.
+If they're time-stamped by a TelegraphCQ data source like the CSV
+Wrapper,
+they will be in monotonically increasing order. <br>
+    <br>
+Data streams in TelegraphCQ can be of two types, <i>archived</i> or <i>unarchived</i>.
+Tuples streamed into archived streams are copied to disk by
+TelegraphCQ, while data streamed to unarchived queries are discarded
+when the query is cancelled. Currently streams, once archived, can't be
+queried in real-time. But, you can restart the server in PostgreSQL
+mode and run queries over the entire archived stream.<br>
+    <br>
+    <li> <span style="font-weight: bold;">Associate a wrapper with
+the
+stream</span> </li>
+    <blockquote>
+      <table>
+        <tbody>
+          <tr bgcolor="#e0e0e0">
+            <td>
+            <pre>sample=# ALTER STREAM traffic.measurements ADD WRAPPER csvwrapper;<br></pre>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </blockquote>
+Wrappers are
+user-defined data acquistion functions in TelegraphCQ. <tt>ALTER STREAM</tt>
+associates the stream with a CSV wrapper.&nbsp; A CSV wrapper, that
+can handle input in the Comma Separated Value file format, comes
+bundled
+with TelegraphCQ. <br>
+    <br>
+    <li><span style="font-weight: bold;">A simple windowed query</span></li>
+    <blockquote>
+      <table>
+        <tbody>
+          <tr bgcolor="#e0e0e0">
+            <td>
+            <pre>sample=# SELECT dst, COUNT(*), wtime(*) AS c FROM network.tcpdump AS st <br>         [RANGE BY '5 seconds' SLIDE BY '1 second' START AT '2003-06-06 18:50:20'] <br>         GROUP BY dst;<br></pre>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </blockquote>
+The window clause <tt>[RANGE BY ... SLIDE BY ... START AT ...]</tt>
+defines a window over potentially infinite input data stream, thereby
+placing a bound on it and enabling us to return results without waiting
+for the entire data stream to be processed.
+The <tt>RANGE</tt> parameter defines the size of the window in number
+of
+seconds, and the <tt>SLIDE</tt> parameter defines the
+interval after which this window will be re-calculated, again in number
+of seconds. The <tt>START AT</tt> parameter defines the time at which
+the first window begins.<br>
+    <br>
+    <li> <b>Send input data to stream</b></li>
+    <blockquote>
+      <table>
+        <tbody>
+          <tr bgcolor="#e0e0e0">
+            <td>
+            <pre>$ cat tcpdump.log | source.pl localhost 5533 csvwrapper,network.tcpdump</pre>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </blockquote>
+    <tt>tcpdump.log</tt> is a CSV file containing a dump of TCP message
+headers, produced by the UNIX command <tt>tcpdump</tt>, a snippet
+of which is given below:
+    <blockquote>
+      <table>
+        <tbody>
+          <tr bgcolor="#e0e0e0">
+            <td>
+            <pre>128.32.37.185,32797,64.174.7.0,80,S,06/06/2003 18:50:20.856709<br>128.32.37.185,32797,64.174.7.1,80,S,06/06/2003 18:50:21.856709<br>128.32.37.185,32797,64.174.7.2,80,S,06/06/2003 18:50:22.856709<br>128.32.37.185,32797,64.174.7.3,80,S,06/06/2003 18:50:23.856709<br>128.32.37.185,32797,64.174.7.4,80,S,06/06/2003 18:50:24.856709<br>128.32.37.185,32797,64.174.7.5,80,S,06/06/2003 18:50:25.856709<br></pre>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </blockquote>
+    <tt>source.pl</tt> is a Perl script connects and feeds data to the
+wrapper <i>clearinghouse</i>, which is a dedicated process that
+listens to
+connection requests from new data sources. By default, it listens on
+port 5533. In addition,
+we also specify the wrapper type and the schema of the stream we're
+providing input to. <tt>wtime</tt>
+is a
+special aggregate over windows which returns the&nbsp; latest timestamp
+of all tuples in that window. A snippet of the query result is given
+below:<br>
+    <blockquote>
+      <table>
+        <tbody>
+          <tr bgcolor="#e0e0e0">
+            <td>
+            <pre> dst | count | c<br>---------------+-------+---------------------<br>64.174.7.0/32 | 1 | 2003-06-06 18:50:25<br>64.174.7.1/32 | 1 | 2003-06-06 18:50:25<br>64.174.7.2/32 | 1 | 2003-06-06 18:50:25<br>64.174.7.3/32 | 1 | 2003-06-06 18:50:25<br>64.174.7.4/32 | 1 | 2003-06-06 18:50:25<br>64.174.7.1/32 | 1 | 2003-06-06 18:50:26<br>64.174.7.2/32 | 1 | 2003-06-06 18:50:26<br></pre>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </blockquote>
+    <br style="font-weight: bold;">
+    <li><span style="font-weight: bold;"> More
+complex queries</span><br>
+Now that we've seen a simple windowed query, let's look at how we'd
+specify joins and recursive queries in TelegraphCQ. <br>
+      <ul>
+        <li><span style="font-weight: bold;"> Joins</span> </li>
+Joins on streams are similar to those on relations, except that, in
+order to bound the join state each stream should have window
+specifications.
+        <blockquote>
+          <table>
+            <tbody>
+              <tr bgcolor="#e0e0e0">
+                <td>
+                <pre>SELECT <br>  R.i, R.j, count(*) <br>FROM <br>  R [RANGE BY 't1 seconds' SLIDE BY 't2 seconds'], <br>  S [RANGE BY 't3 seconds' SLIDE BY 't4 seconds'] <br>WHERE <br>  R.k = S.k <br>GROUP BY <br>  R.i, R.j <br>HAVING <br>  R.j &gt; C; </pre>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </blockquote>
+        <li> <span style="font-weight: bold;">Recursive queries, the
+WITH clause</span> </li>
+You can write recursive queries using the SQL:1999-like WITH syntax.<br>
+        <blockquote>
+          <table>
+            <tbody>
+              <tr bgcolor="#e0e0e0">
+                <td>
+                <pre>WITH <br>  StreamOne AS <br>  (<br>    SELECT R.i, sum(R.j) as sum, wtime(*)<br>    FROM R [RANGE BY 't1 seconds' SLIDE BY 't2 seconds']<br>  )<br>  StreamTwo AS<br>  (<br>    SELECT S.k, sum(S.l) as sum, wtime(*)<br>    FROM S [RANGE BY 't3 seconds' SLIDE BY 't4 seconds']<br>  )<br>  <br>(SELECT * FROM StreamOne S1, StreamTwo S2<br>   WHERE S1.i = S2.k); </pre>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </blockquote>
+        <li><span style="font-weight: bold;">Windowed aggregates</span></li>
+Like joins, aggregates on streams are computed on windows since we need
+to bound the aggregate state.
+        <blockquote>
+          <table>
+            <tbody>
+              <tr bgcolor="#e0e0e0">
+                <td>
+                <pre>SELECT <br>  SUM(R.i), AVG(R.j), COUNT(*), wtime(*) <br>FROM <br>  R [RANGE BY 't1 seconds' SLIDE BY 't2 seconds'];</pre>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </blockquote>
+      </ul>
+    </li>
+    <li style="font-weight: bold;">The Sanity
+Test suites<br>
+    </li>
+The sanity test suite, found in <tt>src/test/examples/tcqsanity/</tt>
+contains a comprehensive set of tests for TelegraphCQ's features. To
+ensure
+deterministic behavior, this test suite runs a diverse set of queries
+against canned data, such that the output can be compared automatically
+against
+expected outputs. <tt>src/test/examples/csv/streamsanity.pl</tt> has a
+set of timing-dependent queries whose outputs have to be visually
+inspected for correctness. <br>
+    <br>
+Both test suites contain good examples of complex, windowed queries on
+continuous data streams.
+  </ul>
+  <li>
+    <h2>TelegraphCQ architectural overview <br>
+    </h2>
+  </li>
+For those familiar with PostgreSQL, both the TelegraphCQ front-end
+(TFE) and the TelegraphCQ back-end (TBE) are PostgreSQL backends. There
+are multiple TFEs (one per client connection) and one TBE.<br>
+  <br>
+As shown in the Architecture diagram below,&nbsp; a separate PostgreSQL
+process (TFE) is forked for each client connection.&nbsp; This
+process runs all queries that <i>do not involve streams</i> using the
+normal
+PostgreSQL executor.&nbsp; When PostgreSQL receives a <i>continuous</i>
+query,
+the TFE parses and plans the query in shared memory. It uses the output
+of the PostgreSQL optimizer to construct a
+continuous query plan.&nbsp; Next, the TFE passes the plan to the
+TelegraphCQ backend executor (TBE) using a shared memory queue.&nbsp; <br>
+  <br>
+The TBE runs the TelegraphCQ <i>eddy</i> which merges all continuous
+query
+plans into one so that query processing may be
+shared amonst queries. The TBE receives the plan, and integrates it
+into the TelegraphCQ eddy.&nbsp; Finally, the Eddy returns results to
+the appropriate TFE
+via shared memory <i>result queues</i>, one per query.<br>
+  <br>
+  <h3><br>
+  </h3>
+  <h3><img src="tcqarch.jpg" title="" alt="TelegraphCQ Architecture"
+ style="width: 720px; height: 540px;"></h3>
+  <ul>
+    <li>
+      <h3>The TelegraphCQ Executor: Sharing Explained</h3>
+    </li>
+  </ul>
+The TelegraphCQ executor is a <a
+ href="http://db.cs.berkeley.edu/papers/sigmod02-cacq.pdf">eddy</a>, a <i>continuously
+adaptive</i> query processing mechanism.&nbsp; An <a name="a_eddy">eddy</a>
+is a routing
+operator that contains a
+number of modules that perform work on behalf of queries, and a number
+of sources that provide input data.&nbsp; The eddy obtains data from
+sources, determines which modules a particular tuple must visit before
+all processing for the tuple is complete.&nbsp; After a tuple has
+visited all required
+modules, it is output to all relevant result queues by the
+eddy.&nbsp;&nbsp; &nbsp;<br>
+  <br>
+The continuous query plan consists of a number of distinct modules:<br>
+  <br>
+  <table border="0" style="width: 100%;" cellpadding="5" cellspacing="1">
+    <tbody>
+      <tr bgcolor="#e0e0e0">
+        <td nowrap="nowrap">Filters</td>
+        <td>These represent single-table qualifications in the query.
+They are always of the form <tt>column OP constant</tt>. These
+filter modules
+will be merged together by the eddy to form a <i>grouped</i> filter
+which can
+evaluate filter predicates for multiple queries simultaneously.</td>
+      </tr>
+      <tr bgcolor="#e0e0e0">
+        <td nowrap="nowrap"><a
+ href="http://www.cs.berkeley.edu/%7Eamol/papers/stems.pdf">SteMs</a></td>
+        <td>The building blocks for continuous query joins. A SteM
+holds
+tuples for a particular base relation or stream, and can be probed
+efficiently to find data tuples which match a probe tuple.</td>
+      </tr>
+      <tr bgcolor="#e0e0e0">
+        <td nowrap="nowrap">Table or stream Scans</td>
+        <td>These scans are used to obtain data from TelegraphCQ
+streams
+or regular PostgreSQL relations.</td>
+      </tr>
+    </tbody>
+  </table>
+  <br>
+  <br>
+  <ul>
+    <li>
+      <h3>Data Acquisition Mechanisms in TelegraphCQ<br>
+      </h3>
+    </li>
+  </ul>
+TelegraphCQ acquires data from external sources into streams.&nbsp;
+These sources must connect to the TelegraphCQ system and identify
+themselves prior to sending data. User-defined data acquisition
+functions called <i>wrappers</i> allow substantial flexibility as to
+how
+that data is processed prior to entry into the TelegraphCQ system and
+insertion into a stream. &nbsp;<br>
+  <br>
+User-defined wrapper functions manage reading data from a networked
+source, processing it, and returning it to the system in the
+appropriate
+format.&nbsp; These functions are declared and managed using the
+PostgreSQL <a
+ href="http://www.postgresql.org/docs/7.4/interactive/xfunc-c.html"><i>user-defined
+function</i></a> infrastructure.&nbsp; A dedicated
+wrapper <i>clearinghouse</i> process accepts connections from new data
+providers,&nbsp; calls the appropriate wrapper functions in response to
+data arrival or other events such as connection termination or after a
+specified period of inactivity, and routes data tuples&nbsp; returned
+by
+the wrappers to the corresponding streams.<br>
+  <ul>
+    <li>
+      <h3>Streams</h3>
+    </li>
+  </ul>
+A stream appears to the user as if it were any other PostgreSQL table.
+An <i>unarchived</i> stream is never backed by disk storage, and uses
+shared-memory queues to communicate between the wrapper clearinghouse
+and the executor.&nbsp; An <i>archived</i>
+stream uses an
+append-only access method to pass tuples to the rest of the system.
+&nbsp;<br>
+  <br>
+Streams must have at most one column named <tt>tcqtime</tt> and of
+type <tt>TIMESTAMP</tt>.&nbsp; In addition this column must have the <tt>TIMESTAMPCOLUMN</tt>
+constraint defined on it.&nbsp; TelegraphCQ uses this column as the
+timestamp for windowed query operations. <br>
+  <ul>
+    <li>
+      <h3>Data Sources<br>
+      </h3>
+    </li>
+  </ul>
+TelegraphCQ supports acquiring data from two different types of
+sources. <i>Push</i> sources initiate a connection to TelegraphCQ,
+send
+some configuration information, and then send data rows to the
+system. <i>Pull</i> sources provide a way for TelegraphCQ to initiate
+requests for data from other data sources. <br>
+  <br>
+  <a href="Data_Acquisition.html">Data Acquisition in TelegraphCQ</a>
+has more on how to write user-defined
+wrapper functions and create sources.<br>
+&nbsp; <br>
+You can also <a href="HtmlGet.html">integrate</a> Web based data
+sources with TelegraphCQ.
+  <ul>
+    <li>
+      <h3>Introspective query processing: self-monitoring capability <br>
+      </h3>
+    </li>
+  </ul>
+TelegraphCQ also has some special <a href="DynCatalog.html">streams</a>
+that report information about
+the
+state of the system. <br>
+  <ul>
+    <li>
+      <h3>Windows and Streams</h3>
+    </li>
+  </ul>
+Unlike normal relations, data streams typically do not end.&nbsp; It is
+therefore useful to be able to define windows, or subsets of the
+streams, which participate in a query result. <br>
+  <br>
+Each stream has a special time attribute that TelegraphCQ uses as the
+tuple&#8217;s timestamp for windowed operations.&nbsp; Windows on a stream
+are
+defined in terms of a time interval relative to the most recently
+arrived tuple. The timestamp for a join tuple is
+defined as the maximum stream timestamp contained in the composite
+tuple. &nbsp;<br>
+  <br>
+The creation of a new tuple that has a stream timestamp greater than
+any seen so far marks the beginning of a new window for query
+operations.<br>
+  <ul>
+    <li>
+      <h3>Running Queries Over Streams</h3>
+    </li>
+  </ul>
+Queries over data streams are run using the SQL <tt>SELECT</tt>
+statement.
+&nbsp;Queries that contain streams do not support the full <tt>SELECT</tt>
+syntax, and also include extra <tt>RANGE BY</tt>, <tt>SLIDE BY</tt>
+and <tt>START AT</tt>
+predicates to specify the window
+size for stream operations. &nbsp;<br>
+  <br>
+The modified <tt>SELECT</tt> statement has the following form:<br>
+  <br>
+  <div style="margin-left: 40px;"><tt>SELECT</tt> <span
+ style="font-style: italic;">&lt;select_list&gt;</span> <br>
+  <tt>FROM</tt> <span style="font-style: italic;">&lt;relation_and_</span><span
+ style="font-style: italic;">stream_list&gt;</span><br>
+  <tt>WHERE</tt> <span style="font-style: italic;">&lt;predicate&gt;</span><br>
+  <tt>GROUP BY</tt> <span style="font-style: italic;">&lt;group_by_expressions&gt;</span><br>
+  <span style="font-style: italic;"></span><tt>ORDER BY</tt> <span
+ style="font-style: italic;">&lt;order_by_expressions&gt;</span>;<br>
+  </div>
+  <br>
+The <i>stream_list</i> may contain one window expression (<tt>[RANGE
+BY
+... SLIDE BY ... START AT...]</tt>) per stream in the
+query. &nbsp;A window expression specifies the correlation name for the
+stream and the size of the sliding window expressed as a PostgreSQL
+interval datatype. <br>
+  <br>
+All other clauses in the <tt>SELECT</tt> statement behave like the
+PostgreSQL
+select statement with the following additional restrictions:<br>
+  <br>
+  <ol>
+    <li>Windows may not be defined over PostgreSQL relations.</li>
+    <li><tt>WHERE</tt> clause qualifications that join two streams may
+only
+involve columns, not column expressions or functions.</li>
+    <li><tt>WHERE</tt> clause qualifications that filter tuples must be
+of the
+form <tt>column OP constant</tt></li>
+    <li>The <tt>WHERE</tt> clause may contain <tt>AND</tt>s, but not <tt>OR</tt>s.</li>
+    <li><tt>GROUP BY</tt> and <tt>ORDER BY</tt> clauses may only
+appear if
+the
+query also contains a window.&nbsp;</li>
+  </ol>
+  <br>
+  <li>
+    <h2>Command reference <br>
+    </h2>
+  </li>
+  <ul>
+    <li><a
+ href="http://telegraph.cs.berkeley.edu/telegraphcq/v0.2/doc/sql-createstream.html">CREATE
+STREAM</a></li>
+    <li><a
+ href="http://telegraph.cs.berkeley.edu/telegraphcq/v0.2/doc/sql-dropstream.html">DROP
+STREAM</a></li>
+    <li><a
+ href="http://telegraph.cs.berkeley.edu/telegraphcq/v0.2/doc/sql-createwrapper.html">CREATE
+WRAPPER</a></li>
+    <li><a
+ href="http://telegraph.cs.berkeley.edu/telegraphcq/v0.2/doc/sql-dropwrapper.html">DROP
+WRAPPER</a></li>
+    <li><a
+ href="http://telegraph.cs.berkeley.edu/telegraphcq/v0.2/doc/sql-alterstream.html">ALTER
+STREAM</a><br>
+    </li>
+    <li><a
+ href="http://telegraph.cs.berkeley.edu/telegraphcq/doc/queries.html">SELECT<br>
+      </a></li>
+  </ul>
+  <ul>
+  </ul>
+  <li>
+    <h2>Run-time configuration </h2>
+  </li>
+TelegraphCQ are a number of parameters that can be tweaked in
+accordance with user needs. The
+more important ones are listed below: <br>
+  <ul>
+    <li><tt>numResultQueues</tt></li>
+Sets the maximum number of result queues that can be instantiated.
+It can be controlled at run-time
+by passing the <tt>-Q N</tt> flag (upto a maximum of 128) to the <tt>postmaster</tt>.<br>
+&nbsp;<br>
+The
+following parameters can be found in <tt>src/include/telegraphcq/telegraphcqinit.h</tt>.<br>
+    <br>
+    <li><tt>TCQMAXQUERIES</tt></li>
+Sets the maximum number of queries in the system. <li><tt>TCQMAXOPERATORS</tt></li>
+Sets the maximum number of operators in the system. <li><tt>TCQMAXSOURCES</tt></li>
+Sets the maximum number of sources in the system. <li><tt>TCQTSATTRNAME</tt>
+    </li>
+Defines the name of the column that obeys <tt>TIMESTAMPCOLUMN</tt>
+constraint.
+  </ul>
+  <li>
+    <h2>Publications </h2>
+  </li>
+For the curious, publications pertaining to the overall architecture of
+TelegraphCQ, the Fjord and Eddy operators, as well as State Modules
+(STeMs) are listed below:
+  <ul>
+    <li><a href="http://www.cs.berkeley.edu/%7Esirish">Sirish
+Chandrasekaran</a>, <a href="http://www.cs.berkeley.edu/%7Esirish">Owen
+Cooper</a>, <a href="http://www.cs.berkeley.edu/%7Eamol">Amol Deshpande</a>,
+      <a href="http://www.cs.berkeley.edu/%7Efranklin">Michael J.
+Franklin</a>, <a href="http://www.cs.berkeley.edu/%7Ejmh">Joseph M.
+Hellerstein</a>, Wei Hong, <a
+ href="http://www.cs.berkeley.edu/%7Esailesh">Sailesh
+Krishnamurthy</a>, <a href="http://www.cs.berkeley.edu/%7Emadden">Samuel
+R. Madden</a>, <a href="http://www.cs.berkeley.edu/%7Ershankar">Vijayshankar
+Raman</a>, <a href="http://www.cs.berkeley.edu/%7Ephred">Fred Reiss</a>,
+and <a href="http://www.cs.berkeley.edu/%7Emashah">Mehul A. Shah</a>. <b>TelegraphCQ:
+Continuous Dataflow Processing for an Uncertain
+World</b>. <i>CIDR 2003</i>.
+[<a href="http://db.cs.berkeley.edu/papers/cidr03-tcq.pdf">PDF</a>]<br>
+    </li>
+    <li> <a href="http://www.cs.berkeley.edu/%7Esailesh">Sailesh
+Krishnamurthy</a>, <a href="http://www.cs.berkeley.edu/%7Esirish">Sirish
+Chandrasekaran</a>, <a href="http://www.cs.berkeley.edu/%7Esirish">Owen
+Cooper</a>, <a href="http://www.cs.berkeley.edu/%7Eamol">Amol Deshpande</a>,
+      <a href="http://www.cs.berkeley.edu/%7Efranklin">Michael J.
+Franklin</a>, <a href="http://www.cs.berkeley.edu/%7Ejmh">Joseph M.
+Hellerstein</a>, Wei Hong, <a
+ href="http://www.cs.berkeley.edu/%7Emadden">Samuel R. Madden</a>, <a
+ href="http://www.cs.berkeley.edu/%7Ershankar">Vijayshankar
+Raman</a>, <a href="http://www.cs.berkeley.edu/%7Ephred">Fred Reiss</a>,
+and <a href="http://www.cs.berkeley.edu/%7Emashah">Mehul A. Shah</a>. <b>TelegraphCQ:
+An Architectural Status Report</b>. <i>IEEE Data Engineering Bulletin,
+Vol 26(1), March 2003</i>.
+[<a
+ href="http://www.cs.berkeley.edu/%7Esailesh/publications/tcqdebulletin.pdf">PDF</a>]
+    </li>
+    <li><a href="http://www.cs.berkeley.edu/%7Ershankar">Vijayshankar
+Raman</a>, <a href="http://www.cs.berkeley.edu/%7Eamol">Amol Deshpande</a>,
+and <a href="http://www.cs.berkeley.edu/%7Ejmh">Joseph M. Hellerstein</a>.
+      <b>Using State Modules for Adaptive Query Processing.</b> ICDE
+2003.
+[<a href="http://db.cs.berkeley.edu/papers/icde03-stems.pdf">PDF</a>] </li>
+    <li><a href="http://www.cs.berkeley.edu/%7Emashah">Mehul A. Shah</a>,
+      <a href="http://www.cs.berkeley.edu/%7Ejmh">Joseph M. Hellerstein</a>,
+      <a href="http://www.cs.berkeley.edu/%7Esirish">Sirish
+Chandrasekaran</a>, and <a
+ href="http://www.cs.berkeley.edu/%7Efranklin">Michael J.
+Franklin</a>. <b>Flux: An Adaptive Partitioning Operator for
+Continuous Query
+Systems</b>. ICDE 2003. [<a
+ href="http://db.cs.berkeley.edu/papers/icde03-fluxlb.pdf">PDF</a>] </li>
+    <li><a href="http://www.cs.berkeley.edu/%7Emadden">Samuel R. Madden</a>,
+      <a href="http://www.cs.berkeley.edu/%7Emashah">Mehul A. Shah</a>,
+      <a href="http://www.cs.berkeley.edu/%7Ejmh">Joseph M. Hellerstein</a>
+and <a href="http://www.cs.berkeley.edu/%7Ershankar">Vijayshankar Raman</a>.
+      <b>Continuously Adaptive Continuous Queries over Streams</b>. ACM
+SIGMOD Conference, Madison, WI, June 2002.
+[<a href="http://db.cs.berkeley.edu/papers/sigmod02-cacq.pdf">PDF</a>] </li>
+    <li><a href="http://www.cs.berkeley.edu/%7Emadden">Samuel R. Madden</a>
+and <a href="http://www.cs.berkeley.edu/%7Efranklin">Michael J.
+Franklin</a>. <b>Fjording the Stream: An Architecture for Queries over
+Streaming Sensor Data </b> <i>ICDE Conference, </i>February, 2002,
+San Jose. [<a href="http://db.cs.berkeley.edu/papers/icde02-fjords.pdf">PDF</a>]</li>
+    <li><a href="http://www.cs.berkeley.edu/%7Ejmh">Joseph M.
+Hellerstein</a>
+and <a href="http://www.cs.berkeley.edu/%7Eronathan">Ron Avnur</a>. <b>Eddies:
+Continuously Adaptive Query
+Processing</b>. In <i>SIGMOD 2000</i>. [<a
+ href="http://db.cs.berkeley.edu/papers/sigmod00-eddy.pdf">PDF</a>]</li>
+  </ul>
+  <dt> <br>
+  </dt>
+  <li>
+    <h2>Additional references </h2>
+  </li>
+  <ul>
+    <li><a href="http://www.postgresql.org/">postgresql.org</a> is an
+invaluable site with a wealth of information, both on using PostgreSQL
+and developing on it.</li>
+  </ul>
+  <li>
+    <h2>Examples of TelegraphCQ applications<br>
+    </h2>
+  </li>
+Examples of projects that have used TelegraphCQ are given below. Please
+bear in mind that
+these projects used earlier versions of TelegraphCQ.
+  <ul>
+    <li><span style="font-weight: bold;">Using Data Stream Management
+Systems for Traffic Analysis A Case Study</span>,
+Thomas Plagemann, Vera Goebel, Andrea Bergamini, Giacomo Tolu,
+Guillaume Urvoy-Keller, Ernst W. Biersack. In
+the 5th Passive and Active Measurement workshop, Antibes Juan-les-Pins,
+France, April 2004.[<a href="www.pam2004.org/papers/113.pdf">PDF</a>]</li>
+    <li><span style="font-weight: bold;">A
+Flexible Architecture for Statistical Learning and Data Mining from
+System Log Streams</span>, Wei Xu, Peter Bodik, David Patterson. In
+the workshop on Temporal Data Mining: Algorithms, Theory and
+Applications
+at The Fourth IEEE International Conference on Data Mining (ICDM'04),
+Brighton, UK, November 2004.[<a
+ href="www.cs.berkeley.edu/%7Ebodikp/publications/tdm04.pdf">PDF</a>]</li>
+  </ul>
+  <li>
+    <h2>Appendixes</h2>
+  </li>
+  <ul>
+    <li><a href="wrapperwriter.html">Appendix A: The Wrapper Writer's
+Guide</a></li>
+    <li><a href="Windows.html">Appendix B: TelegraphCQ Window Semantics</a></li>
+    <li><a href="Triage.html">Appendix C: Load Shedding</a> </li>
+    <li><a href="Punctuation.html">Appendix D: Heartbeats</a> </li>
+  </ul>
+</ul>
+</body>
+</html>

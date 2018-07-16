@@ -1,0 +1,10 @@
+#!/bin/bash
+
+PGDATA=/home/mashah/research/pgdb-check/data
+PGRSHOME=/home/mashah/research/install-check
+PGRSSRC=/home/mashah/reserach/postgres
+PATH=$PGRSHOME/bin:$PATH
+
+pushd src/test/examples/tcqsanity/
+make check
+popd

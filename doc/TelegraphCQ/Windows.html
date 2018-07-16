@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1"
+ http-equiv="content-type">
+  <title>TCQ Window Semantics</title>
+  <link rel="stylesheet" type="text/css" href="tcqstyle.css">
+</head>
+<body>
+<h1>TCQ Window Semantics</h1>
+By Fred Reiss
+<h2>Syntax</h2>
+After each stream in a query there may appear a window clause in the
+form:<br>
+<span class="code">[ RANGE BY '&lt;time&gt;' SLIDE BY '&lt;time&gt;'
+START AT '&lt;time&gt;' ]</span><br>
+Together, these three parameters specify a sliding, hopping, or jumping
+time window over the stream.<br>
+The <span class="code">START AT</span>
+parameter is optional; if you don't specify a <span class="code">START
+AT</span> value, the first window will start at the largest multiple of the
+SLIDE BY (in seconds since Jan. 1 1970) before the time that the query was submitted.  
+For example, if you specify a RANGE BY and SLIDE BY of 60 seconds and no START
+AT, and you submit your query at 12:34:56, the first window will start at
+12:34:00.<br>
+
+Inside the query, a special aggregate, <span class="code">wtime(*)</span>,
+allows you to retrieve
+the rightmost endpoint of the current time window.<br>
+<h2>Semantics</h2>
+Our current aggregate window semantics are as follows: <br>
+<ul>
+  <li>&nbsp;There is a global "current time", defined as the
+lowest
+maximum timestamp the join
+processor has consumed across all the streams we are
+joining.&nbsp; Note that current time can only advance when a tuple
+enters the query
+processor; we do not currently advance based purely on the system
+clock.&nbsp;&nbsp;
+&nbsp;</li>
+  <li>For each base stream, the window whose latest time is closest to
+the
+current time without going beyond
+it is considered the "current window" for that stream. For example:</li>
+  <ul>
+    <li>If <span class="code">START AT</span> is 0 seconds and <span
+ class="code">RANGE BY</span> and <span class="code">SLIDE BY</span>
+are both 1 second...</li>
+    <li>...and window 1 goes from 0 seconds to 1 second, while window 2
+goes from 1 to 2 seconds</li>
+    <li>...and the current time is 1.5 seconds</li>
+    <li>...then the current window is <span style="font-weight: bold;">window
+1</span>.</li>
+  </ul>
+</ul>
+<ul>
+  <li>A base tuple is considered "live" if it is inside the
+current window for its stream.</li>
+  <li>An join tuple is considered "live" only if all of
+its component base tuples are live.</li>
+  <li>As the current time advances, the current windows of one
+or more streams will
+change. Each of these changes constitutes a "slide event". If two
+windows slide
+at exactly the same time, it is considered to be one slide event.</li>
+  <li>Every time that a slide event occurs, the aggregation
+operator outputs the value for the aggregate as applied to all
+join tuples
+that are currently live. </li>
+  <li>After outputting the aggregate value, the operator
+updates the set of live tuples to
+correspond to the new set of current windows.<br>
+  </li>
+</ul>
+<h2>Implementation</h2>
+Currently, sliding windows for aggregates are implemented by the Fjord
+Aggregate operator, located in
+<span class="code">src/backend/executor/nodeFAgg.c</span>. This
+operator maintains a buffer
+of "live" join tuples and reevaluates the
+aggregation tree every time a window slides. Documentation for
+the algorithm
+and data structures the operator uses can be found at the top of
+<span class="code">nodeFAgg.c</span>.<br>
+An interesting aspect of the implementation is the computation of
+"birth" and "death" times (the times when tuples become "live" and
+"dead," respectively) for join tuples. We compute the birth and death
+times as follows:<br>
+<ol>
+  <li>For each base tuple in the join tuple, do the following:</li>
+  <ol>
+    <li>Compute the first and last time windows that the tuple appears
+in (also check to see whether the tuple appears in no windows at all)</li>
+  </ol>
+  <ol>
+    <li>The birth time of the base tuple is at the end of the first
+window containing the tuple</li>
+    <li>The death time of the base tuple is at the end of the window <span
+ style="font-style: italic;">immediately after</span> the last window
+that contains the tuple</li>
+  </ol>
+  <li>The birth time of the join tuple is the maximum of the birth
+times of its base tuples</li>
+  <li>The death time of the join tuple is the <span
+ style="font-style: italic;">minimum<span style="font-weight: bold;"> </span></span>of
+those of the base tuples.</li>
+</ol>
+<h2>Windows and Shared Aggregates<br>
+</h2>
+<h2>Known Issues</h2>
+The current implementation of sliding windows has several known issues:<br>
+<ul>
+  <li>Windowed join queries without aggregates will produce incorrect
+answers, because our STeM operators still use
+windows that slide on a per-tuple basis.</li>
+  <li>Due to the problems with joins, windows with a <span class="code">RANGE
+BY</span> less than
+the <span class="code">SLIDE BY</span> can result in missing aggregate
+results.</li>
+  <li>If the <span class="code">SLIDE BY</span> parameters of the
+different windows are not
+multiples of each other, you may see some
+strange-looking results. Correct, but strange. We may place
+constraints on <span class="code">SLIDE BY</span> values in the future
+to rectify this.<br>
+  </li>
+</ul>
+</body>
+</html>

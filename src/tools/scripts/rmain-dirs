@@ -1,0 +1,6 @@
+#!/bin/bash
+
+echo "Restoring main: mv *-main *"
+mv install-main install
+mv pgdb-main pgdb
+mv postgres-main postgres

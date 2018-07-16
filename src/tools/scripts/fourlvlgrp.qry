@@ -1,0 +1,9 @@
+select seqnum, att1, my_agg(att5)
+from (select seqnum, att1, att2, my_agg(att5) as att5
+      from (select seqnum, att1, att2, att3, my_agg(att5) as att5
+		    from (select seqnum, att1, att2, att3, att4, my_agg(data) as att5
+				  from four_lvl_grp_stream
+				  group by seqnum, att1, att2, att3, att4) as first
+            group by seqnum, att1, att2, att3) as second
+      group by seqnum, att1, att2) as third
+group by seqnum, att1;

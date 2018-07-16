@@ -1,0 +1,429 @@
+T20020612112805 [Wei,Sailesh]
+
+Postgres prototoype
+-------------------
+
+1. Setup internal CVS tree, account for Wei
+2. Filter Eddy Plan node
+
+   typedef struct Eddy
+   {
+     Plan plan;  
+     List sources; // Set of plan nodes which are sources (iterator i/f)
+     List modules; // Set of plan nodes which are operators (processNext i/f)
+     Pool tp;      // Tuple pool - in-memory temporary table ??
+   } Eddy
+
+3. Generate Eddy Plan
+
+   3.1 Generate scan node w/o quals
+   3.2 Generate Filter nodes for each predicate (qualifier)
+   3.3 Strategy: Alternative function to build an eddy plan instead of optimizer
+
+       - Hack: Call planner() with the original Query - this will
+       produce a Scan node with qualifications. Then we pull apart the
+       qualifications and create Result nodes for each of them.
+
+4. Exec Eddy, ExecInitEddy, ExecNextEddy, ExecEndEddy
+
+5. New Filter Plan node
+
+   typedef struct Filter 
+   {
+      Plan plan;
+      Node *filterqual;
+   }
+
+6. Filter operator - processNext() 
+
+   One way: This always operates on estate->es_per_tuple_exprcontext->ecxt_scantuple
+
+   For joins this gets more complicated
+
+7. makeFilter which uses makeNode() and then fills in 
+
+T20020624145418 [Wei,Sailesh]
+
+- Still only continue to deal with Classic Eddies
+
+1. Tuple Representation
+
+   - Bitmap for operators: (ready+done) 12+12 = 24 bits
+   - Bitmap for sources: 8 bits
+
+   - Extra word of bitmaps only in in-memory tuple-repr for now:
+     - HeapTupleData
+
+   - Postpone on-disk representation of bitmaps
+     - Propagate the bitmap word to the data in HeapTupleHeaderData
+     - Remember to modify all the functions in heaptuple.c
+
+2. Tuple Pool
+
+   - Linear/Random access
+   - For now simply have linear access
+     - Just use tuplestore
+  
+3. Routing Policy
+
+4. Joins -> Symmetric Hash joins with in-memory
+     
+T20020703025817 [Sailesh]
+
+Preliminary eddy performance results
+
+Query:
+
+select * from baz where (baz.a < 90) and (baz.a > 20);
+
+baz: 1,000,000 million records, 3 columns, values uniformly distributed in [0,100]
+
+          Without eddies               With eddies
+          --------------               -----------
+
+Cold BP    real 0m17.425s              real    0m19.226s
+           user 0m3.810s               user    0m3.660s 
+           sys  0m0.290s               sys 0m0.280s     
+
+Warm BP    real 0m16.489s              real    0m19.152s
+           user 0m3.860s               user    0m3.830s 
+           sys  0m0.270s               sys 0m0.220s     
+
+
+T20020703030335 [Sailesh]
+
+CVS Instructions
+   
+You can access the code from CVS assuming you have a triplerock userid
+"user" which is a member of the "telegraf" group
+
+export CVS_RSH=ssh
+export
+CVSROOT=:ext:user@triplerock.cs.berkeley.edu:/usr/local/devel/epg
+cvs co postgres
+
+I start postgres this way: 
+
+  For use without eddies: pg_ctl start -l logfile 
+  For use with    eddies: pg_ctl start -l logfile -o "-o -g"
+
+T20020703031959 [Sailesh]
+
+More timing (no pretty printing plans for eddy and different query
+with widely varying selectivity)
+
+(Time reported includes time for client to write results into a file,
+but I measured that to be small, never greater than 0.5 sec)
+
+Query:
+
+select * from baz where (baz.a < 90) and (baz.a < 20);
+
+
+baz: 1,000,000 million records, 3 columns, values uniformly distributed in [0,100]
+
+          Without eddies               With eddies
+          --------------               -----------
+
+Cold BP   real    0m7.153s             real    0m10.565s
+          user    0m1.130s             user    0m1.160s 
+          sys 0m0.070s                 sys 0m0.120s     
+                                       
+Warm BP   real    0m7.076s             real    0m10.696s
+          user    0m1.090s             user    0m1.080s 
+          sys 0m0.030s                 sys 0m0.030s     
+
+With varying selectivities we see that there is an increased cost to
+adaptivity. With random routing though we get almost nothing in return
+for adaptivity. Maybe we will see a different scheme with lottery
+scheduling.
+
+----------------------------------------------------------------------
+T20030113175113 [Sam,Owen,Fred,Sirish,Mehul,Amol]
+
+#   Item                                      Owner  Due   Done
+---------------------------------------------------------------------
+1   Wrapper Infrastructure                    OC,MS  1/27  1/23
+2   Sample Wrapper                            OC,MS  1/27  1/23
+3   SteMs
+    - Aging                                   FR     1/27  2/6
+    - Per-query stemclause/probehashkey       AD     1/27  2/6
+4   Windowed aggregates
+    - Drop out-of-order tuples                SK,WH  1/20
+5   Documentation                             SK,OC  1/20  
+      - Getting Started                       OC           2/6
+      - formal docs                           SK     2/13   
+6   Non-destructive catalog
+    - tcqtime attribute instead of        
+      TIMESTAMP constraint                    SK     1/27  1/14
+7  Stream Access Method                       SC     1/20  1/23
+8  StreamScan                                 OC     1/20  1/23
+9  Client                        
+   - psql -C <i> -e <e>                       FR     1/20  1/14
+   - metadata                                 OC     2/13   
+10 selectcq -> select
+   - All streams --> BE
+   - All tables  --> FE
+   - Combo       --> BE                        FR     1/20  1/14
+11 Sample App                                  SM,SK  1/20
+                                                      2/22
+12 Cosmetics:
+   - File prologs - copyright issues
+   - Cleaning up commented code
+   - Purging all useless debug statements
+   - Using "indent" to fit postgres coding
+     conventions                              SK     1/27   2/6
+13 Testing                                    ?????  ????
+----------------------------------------------------------------------
+
+T20030123164136 
+  [Amol,Kyle,Sirish,Wei,Owen,Fred,Mike,Sam,Mehul,Sailesh,Joe]
+
+Baton-passing
+-------------
+
+Next stuff with people
+
+- Address workarounds in alpha [All]
+- FFF things [Owen]
+- Performance Bottlenecks [Sailesh]
+  - Adaptive Adaptivity
+  - Changes to design
+- Intermediate result stems and Disk-based stems [Amol]
+- Storage System [Sirish]
+  - Streams + Archive
+- Integration to TinyDB [Wei,Sam,Sailesh,Kyle,...]
+- Subqueries [Fred]
+- Persistent stems [Fred]
+- Language: shared windows [Joe,Sirish,Sailesh,Christos]
+- Flux for static plans [Mehul]
+- Beta meeting
+
+Next stuff looking for people
+
+- Windows and differential execution
+- Eddies & Flux
+- HP Business Cockpit
+- Other apps .. net meeting
+- "Multi-casting" ouput
+- XML !! YFilter
+- Quality of Silliness
+- Stream benchmark
+
+
+T20030220163457 [Sam,Bryan,Owen,Fred,Sirish,Sailesh,Amol]
+
+- Ask Husain to postpone triplerock upgrade (OC)
+- Outstanding issues 
+  - Sample application: TBD (SM,SK) 
+  - Documentation: TBD      (OC,SK)
+  - Shutting down TCQ cleanly
+    - Sending a control queue message to the backend on a signal
+      to the postmaster (OC)
+    - Telling the wrapper clearinghouse to flush all archival 
+      streams, close all n/w connections yadda yadda (SC)
+    - Kill the TelegraphCQ process (return from ExecEddy) (SK)
+  - What happens to the WCH when there are no active queries ?
+    - Spinning, polling .. wasted work.  
+      (Open a bug .. probably postpone to post-alpha)
+  - Startup issues .. random stuff 
+- Chase and fix bugs 
+  - We, the people, resolve to open 100000 bugs a day 
+  - Start doing triage next week
+- Testing
+  - Owen and Sailesh will catch up with Eric 
+
+T20030501160224 [Joe,Edwin,Mehul,Amol,Owen,Sailesh]
+
+- Query Language [Sailesh & Sirish]
+  - Expressive power
+	- Subqueries
+	- Historical (Sirish)
+	- ?? What else
+	- New QL proposal ?
+	  - Windows are lame right now
+
+- Adaptivity & Costs & Benchmarks (Sailesh)
+- Net monitoring facilities (extending Click ?)
+- Eddy routing policies ? [Amol for single language and static qp]
+  - What about shared CQ ?
+- FFF and privacy 
+- Storage stuff (Sirish)
+- Spilling etc.	  
+
+Demo notes
+----------
+0) design/choreography of demo
+	networking - FR
+	collateral - SC, Profs
+1) "Boring" query
+	stream * table join
+SK, SM	incidents geo coded
+SK ?	stream Join stream
+	join predicates equality over udf
+SC	Test backup data
+EM,SM	San diego Area Data
+	Visualizer
+	EM 	Base (stream join table)
+	EM 	tiling (san diego mapsl, CA maps)
+	SK,EM,SC	stream join stream (expiry ?) / historical
+2) TCPDumjp
+	wireless tcpdump stream
+	streamin gaggs query
+	CQPlotter dyn bar chart
+	Richer Queries
+	GJ 	Geocode IP - persistent cache
+		Index joins (synch)
+	OC	asynch
+	GJ/SK	geocode vis (version of 1)
+3) DynCat
+	  	Queries/operator
+	FR	Queues
+	AD/SK	CQPlotter
+			what exactly is it ?
+		Visualization  choreograph
+		Synthetic queries ?
+
+T20031010133823 [Mehul,Sirish,Garrett,Chung,Shawn,Shariq,Alexandra,Owen,Fred,Sailesh]
+
+- LBL query 
+
+   D1 <-- select DATE from app_event where NL.EVNT = "Processor.load" and VAL > 50
+   select * from app_event where NL.EVNT="network.*" and (DATE > (D1-5) and DATE < (D1+5))
+
+  - One view is to treat it as a self-join
+    - Self-joins are problematic for well-known reasons re IHT
+    - Similar to Sirish's historical queries
+  - Amol's suggestion (workaround for the beta):
+    - Treat this as a windowed aggregate query with a special user-defined agg
+    - Mehul: this is just what Carlo Zaniolo claims with his ATLAS stuff !
+  - Action item: Sailesh will communicate workaround to Netlogger folks
+
+- Eurecom problem
+  - Intrusion detection .. they try to track attackers through source ids 
+    but they don't have the source ids up front
+  - Sirish: What they want in some sense is partition 
+  - Mehul: We initially tried to write a UDA but it looks like that it
+    doesn't work as we don't quite know what they want to do _after_
+  - Sailesh: today the Eurecom guys posted that they just pipe the result 
+    of the CQ back to TCQ ! 
+  - Views are possibly the right solution
+  - Action item: Nothing .. the Eurecom guys have a cool hack they're using.
+    They are piping the results of their query back to TCQ ! 
+
+- Singapore guy wants anon cvs access
+  - Consensus - most people are okay with giving anonymous cvs
+  - We still would like to restrict it to specific modules and branches .. some
+    of us have our working papers in CVS
+  - Action item: Sailesh will talk to Alex Brown about arranging it. 		
+
+T20031010133823 [Mehul,Sirish,Owen,Amol,Sailesh]
+
+We discussed operator ordering - it turns out that there are certain
+constraints that can be enforced on the order in which operators are
+scheduled for a given tuple. Some of these are correctness constraints
+- for instance, a condition involving R and S must only be evaluated
+on RS/RTS/etc. join tuples. In the current implementation we captured
+this as a special case using the "post-join operator" (pjo) data
+structure. The pjo structure is checked when a join tuple is formed
+(in the FSteM) and the ready bits are appropriately changed. 
+
+From a performance perspective, it is useful to build tuples in stems
+_after_ they've gone through any GSFs that might eliminate 'em
+entirely from all active queries (there is the issue of a new query
+coming along that misses some tuples, but we'll leave that aside as a
+separate issue that needs to be solved anyway .. for instance what if
+the new query's window is larger than the current max ?).
+
+In general, for a windowed aggregate query with predicates on
+individual streams, there are the following 5 distinct stages for
+tuples from each relation:
+
+        GSFs
+        Builds into stems
+		Probes into other stems
+		Post-join predicates (say to evaluate window constraints)
+		Aggregates
+
+Currently aggregates are implemented in the tcqfe process. It is
+desired to move this to the tcqbe - that will also permit us to
+attempt shared processing of aggregates. Some of our users want
+views. So we might want to pipe the results of a query back to the
+Eddy. When we have aggregates on aggregates, there can be multiple
+stages of aggregates. In addition, Owen is planning to have recursive
+queries where the result of an aggregate might have to be reused. 
+
+The proposal is to implement a state machine representation of the
+operators in the system and carefully add on ready bits at every
+stage. We might see extra advantages in the form of reduced checking
+of output conditions (completionMask) - currently we check after every
+operator. Also, it might be possible to reduce the number of steering
+vector bits (ready/done) required at any point in time.
+
+Handling aggregates
+-------------------
+
+Aggregates present a knotty problem. Currently we perform aggregate
+processing after we've projected an IHT outside of the eddy. If we are
+to perform the agg work inside the eddy we have to figure out how to
+represent the resultant tuple(s). This is because our IHTs have
+hitherto only referred to base tuples and don't have any way to refer
+to any newly constructed tuples.
+
+There are two alternatives:
+
+  1. Pipe the aggregates back to the Eddy - we can do this when there
+  are aggregates after aggregates
+
+  2. Write the aggregated tuple to a new temp stream.
+
+
+Data Structures
+---------------
+
+Today we have the following data structures for the CQEddy:
+
+	bits8		operators[TCQMAXSOURCES][BASIZE(TCQMAXOPERATORS)];
+	bits8		sourceStems[TCQMAXSOURCES][BASIZE(TCQMAXOPERATORS)];
+	bits8		completionMask[TCQMAXQUERIES][BASIZE(TCQMAXOPERATORS)];
+	List	   *pjolist;
+
+Each element of the pjolist is a pointer to PostJoinOperator:
+
+typedef struct PostJoinOperator
+{
+	/*
+	 * sources: BitArray of source signature for operators ready:
+	 * BitArray of operators to visit for this source signature
+	 */
+	bits8		sources[BASIZE(TCQMAXSOURCES)];
+	bits8		ready[BASIZE(TCQMAXOPERATORS)];
+}	PostJoinOperator;
+
+Proposed Data Structures
+------------------------
+
+We are routing tuples through a state machine of operator "groups"
+each of which are called "Meta Operators" (metaops). 
+
+Metaop
+------
+
+  ready bitmap: 
+
+    Each metaop has a bitmap ("ready") whose set bits indicate the
+    real operators that participate in it. 
+
+    Note: A given operator may exist in more than one metaop. For
+    instance, an FSteM may appear in the "build" stage of an R-tuple
+    as well as in the "probe" stage of an S-tuple.
+
+  transitions:
+
+    Each metaop has two kinds of transitions it can make to a
+    tuple. One is a transition it makes when a tuple has gone through
+    all the operators in the metaop (say when an R tuple goes through
+    all its GSFs) and the other when a tuple has probed a stem and a
+    new join tuple is produced. In both cases we route a tuple between
+    metaops based on its signature (list of sources).  We can use a
+    JudyL array for transitions (works for <32 sources).

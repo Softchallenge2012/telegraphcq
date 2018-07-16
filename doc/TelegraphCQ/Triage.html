@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1"
+ http-equiv="content-type">
+  <title>Load Shedding in TelegraphCQ</title>
+  <link rel="stylesheet" type="text/css" href="tcqstyle.css">
+</head>
+<body>
+<h1>Load Shedding in TelegraphCQ</h1>
+For situations where real-time query response is a priority,
+TelegraphCQ can shed excess data from incoming data streams. The
+architecture that TelegraphCQ uses to do this is called Data Triage.
+The basic idea behind Data Triage is what we call "summarize what you
+would drop". &nbsp;When the wrapper clearinghouse detects that it does
+not have time to process a tuple, it <span style="font-style: italic;">triages</span>
+the tuple, adding it to a compact <span style="font-style: italic;">summary</span>
+along with the other triaged tuples. Periodically, the wrapper
+clearinghouse sends these summaries to the backend, where the user can
+use a <span style="font-style: italic;">shadow query </span>to
+reconstruct approximately what query answers she is missing.<br>
+<h2>Selecting Summary Type</h2>
+For unarchived streams, you can choose what type of summary to generate
+when triaging tuples by appending an <span class="code">ON OVERLOAD</span>
+clause to the <span class="code">CREATE STREAM</span> statement:<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+</p>
+<pre>                                                          +-- BLOCK
+                                                          +-- DROP<br>CREATE STREAM [stream name] TYPE UNARCHIVED ON OVERLOAD --+<br>                                                          |          +-- COUNTS<br>                                                          |          +-- REGHIST    <br>                                                          +-- KEEP --+-- MYHIST<br>                                                                     +-- WAVELET ( '[wavelet params]' )<br>                                                                     +-- SAMPLE</pre>
+The arguments of the ON OVERLOAD clause have the following meanings:<br>
+<ul>
+  <li><span class="code">BLOCK</span> means to stop reading tuples if the query 
+  engine is not consuming them fast enough.</li>
+  <li><span class="code">DROP</span> means to drop triaged tuples
+without constructing any summaries.</li>
+  <li><span class="code">KEEP COUNTS</span> means to keep counts of the
+triaged tuples</li>
+  <li><span class="code">KEEP REGHIST</span> means to build fixed-grid
+multidimensional histograms of triaged tuples</li>
+  <li><span class="code">KEEP MYHIST</span> means to build MHIST
+multidimensional histograms (the strange name is to avoid collisions
+with the name of the <span class="code">MHIST</span> datatype that
+implements these histograms)</li>
+  <li><span class="code">KEEP WAVELET</span> means to build
+wavelet-based histograms</li>
+  <li><span class="code">KEEP SAMPLE</span> means to keep a reservoir
+sample</li>
+</ul>
+The default behavior is <span class="code">ON OVERLOAD BLOCK.<br>
+</span><br>
+<span style="font-weight: bold;">NOTE: </span>Currently, TelegraphCQ
+does not perform any Data Triage on archived streams. If the data rate
+of an archived stream exceeds the system's capacity to consume data,
+the wrapper clearinghouse will <span style="font-weight: bold;">block</span>.<br>
+<h3>Summarizing "Kept" Tuples</h3>
+To estimate the missing results of queries containing stream-stream
+joins, the wrapper clearinghouse also needs to summarize the tuples
+that are <span style="font-style: italic;">not</span> triaged.
+Summarizing these tuples is<span style="font-style: italic;"> </span>only
+necessary if the user is running a query with stream-stream joins. The
+parameter <span class="code">load_shedding_disable_kept_summaries</span>
+in <span class="code">postgresql.conf</span> allows the user to
+disable these summaries for a slight performance improvement.
+<h2>The Summary Streams</h2>
+For a stream with the name schema.stream, TelegraphCQ will
+automatically create auxiliary summary streams <span class="code">schema.__stream_dropped</span>
+and <span class="code">schema.__stream_kept</span>, representing the
+triaged tuples and the non-triaged tuples, respectively. For all
+summary types except samples, the schema of a summary stream is:<br>
+<span class="code">(summary [summary type], window_num integer,
+prev_tcqtime Timestamp, tcqtime Timestamp)</span><br>
+Where:<br>
+<ul>
+  <li><span class="code">summary</span> holds the summary data structure</li>
+  <li><span class="code">window_num</span> identifies the summary time
+window (summaries are sent at the end of each summary window)</li>
+  <li><span class="code">prev_tcqtime</span> and <span class="code">tcqtime</span>
+represent the time interval from which the tuples in the summary came</li>
+</ul>
+<h3>Sample Summaries</h3>
+The <span class="code">SAMPLE</span> summary type tells the Triage
+subsystem to generate fixed-size samples the tuples it triages. The
+schema of these tuples is the same as the original stream, with the
+addition of a new column <span class="code">__samplemult</span> of
+type <span class="code">real</span> (aka <span class="code">float4</span>).
+The <span class="code">__samplemult</span> column contains the
+number of triaged tuples that are represented by each tuple in the sample.<br>
+<span style="font-style: italic;">NOTE: Currently, the original stream
+needs to contain the __samplemult field. This will change!</span>
+<br>
+</body>
+</html>

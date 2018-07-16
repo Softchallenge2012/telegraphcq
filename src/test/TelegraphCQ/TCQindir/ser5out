@@ -1,0 +1,59 @@
+============== starting postmaster                    ==============
+running on port 65432 with pid 24994
+============== populating station table               ==============
+============== running regression test queries        ==============
+simpleSelect4
+measurements
+ stationid | speed 
+-----------+-------
+      4138 |    65
+(1 row)
+
+      4147 |     6
+
+success=1, cqcancel=1
+simpleSelect4 passed...
+
+simpleSelect4
+measurements
+ stationid | speed 
+-----------+-------
+      4138 |    65
+(1 row)
+
+      4147 |     6
+
+success=1, cqcancel=1
+simpleSelect4 passed...
+
+simpleSelect4
+measurements
+ stationid | speed 
+-----------+-------
+      4138 |    65
+(1 row)
+
+success=1, cqcancel=1
+simpleSelect4 passed...
+
+simpleSelect3
+measurements
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+success=0, cqcancel=0
+simpleSelect3 passed...
+
+simpleSelect3
+measurements
+simpleSelect3 passed...
+
+
+
+ passed...
+
+
+
+ passed...
+
+============== shutting down postmaster               ==============

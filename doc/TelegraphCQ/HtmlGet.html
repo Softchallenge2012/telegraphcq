@@ -1,0 +1,490 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta name="Title"
+ content="HtmlGet and WebQueryServer: an interactive interface to the Telegraph Screen Scraper">
+  <meta name="Keywords" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=macintosh">
+  <meta name="ProgId" content="Word.Document">
+  <meta name="Generator" content="Microsoft Word 10">
+  <meta name="Originator" content="Microsoft Word 10">
+  <link rel="File-List" href="HtmlGet_files/filelist.xml">
+  <title>HtmlGet and WebQueryServer: an interactive interface to the
+Telegraph Screen Scraper</title>
+  <style>
+<!--
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:Times;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0:level1
+	{text-indent:-.25in;
+	tab-stops:list .5in;}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+  </style>
+</head>
+<body bgcolor="white" lang="EN-US" style="">
+<div class="Section1">
+<h2><a href="http://telegraph.cs.berkeley.edu"><img
+ src="tcq_logo_50pct.png" alt="Telegraph Project Logo"
+ style="border: 0px solid ; width: 192px; height: 95px;"></a></h2>
+<h2>HtmlGet and WebQueryServer</h2>
+<p class="MsoNormal">HtmlGet is an interactive interface to the
+Telegraph Screen Scraper (TeSS). HtmlGet allows the user to execute a
+series of Html GET or POST requests to arrive at a page, and then to
+extract data out of the page using a TeSS screen scraper definition
+file. Once extracted, this data can be output to a CSV file.</p>
+<h3>Starting up HtmlGet </h3>
+<p class="MsoNormal">There are two ways to start up the screen scraper
+application. The first is as an interactive command shell. To start the
+scraper application in this mode, use the runhget shell script.</p>
+<p class="MsoNormal">&nbsp;</p>
+<p class="MsoNormal">The screen scraper can also be started as a
+network server. In this mode, commands are read from the network. After
+the execution of each command or command file, the scraped
+results, if any, are written to the network connection in CSV format.
+To run the scraper as a network server, use the runwqs shell script.</p>
+<h3>Configuring readline</h3>
+<p class="MsoNormal">The interactive command shell can be configured to
+use the GNU readline library so that users can scroll back and forth
+through command history. In order to use this feature, the code from
+the java-readline project on sourceforge must be installed on your
+system. See <a href="http://java-readline.sourceforge.net/">http://java-readline.sourceforge.net/</a>
+for installation information.<br>
+</p>
+<h3>Command Files</h3>
+<p class="MsoNormal">All of the commands specified in the following
+section can be included in command files to be executed later. Further,
+such command files can contain variable references which will
+be substituted at the time the commands in the file are actually run. A
+variable reference looks as follows: $ARG:#$. </p>
+<h3>TeSS</h3>
+<p class="MsoNormal">The documentation for the Telegraph Screen Scraper
+can be found at <a href="http://telegraph.cs.berkeley.edu/tess">http://telegraph.cs.berkeley.edu/tess</a></p>
+<h3>Example</h3>
+<p class="MsoNormal">The files in the bin/WebFiles directory located
+under the TelegraphCQ installation directory show how the HtmlGet and
+TeSS can be used to obtain stock quotes from a web page. The file
+quotes.hget contains a series of HTMLGet commands. The file quotes.jsc
+contains the TeSS directives necessary to extract data from the
+returned web page.</p>
+<p class="MsoNormal">&nbsp;</p>
+<p class="MsoNormal">This example has been integrated with TelegraphCQ
+and is ready for use after the 'make tcqdemosetup' command
+has been run to set up the demonstration streams. </p>
+<p class="MsoNormal">&nbsp;</p>
+<p class="MsoNormal">To obtain a stock quote, try the query:</p>
+<p class="MsoNormal">&nbsp;</p>
+<p class="MsoNormal">Select * from web.quotes w where
+w.symbol='ORCL';</p>
+<p class="MsoNormal"> </p>
+<h3>HTMLGet/WebQueryServer Command Summary</h3>
+<p class="MsoNormal">&nbsp;</p>
+<table border="1" cellspacing="0" cellpadding="1"
+ style="border: medium none ; border-collapse: collapse;">
+  <tbody>
+    <tr>
+      <td width="91" valign="top"
+ style="border: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 90.9pt;">
+      <p class="MsoNormal">COMMAND </p>
+      </td>
+      <td width="99" valign="top"
+ style="border-style: solid solid solid none; border-width: 0.5pt 0.5pt 0.5pt medium; border-top: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 99pt;">
+      <p class="MsoNormal">ARGS</p>
+      </td>
+      <td width="374" valign="top"
+ style="border-style: solid solid solid none; border-width: 0.5pt 0.5pt 0.5pt medium; border-top: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 373.5pt;">
+      <p class="MsoNormal">DESCRIPTION </p>
+      </td>
+    </tr>
+    <tr>
+      <td width="91" valign="top"
+ style="border-style: none solid solid; border-width: medium 0.5pt 0.5pt; border-left: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 90.9pt;">
+      <p class="MsoNormal">GET</p>
+      </td>
+      <td width="99" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 99pt;">
+      <p class="MsoNormal">URL</p>
+      </td>
+      <td width="374" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 373.5pt;">
+      <p class="MsoNormal">Retrieve the contents of the provided URL
+using the GET method of encoding the query portion of the URL. This
+means that query keys and values will be encoded in the URL itself
+that is send to the server.</p>
+      </td>
+    </tr>
+    <tr>
+      <td width="91" valign="top"
+ style="border-style: none solid solid; border-width: medium 0.5pt 0.5pt; border-left: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 90.9pt;">
+      <p class="MsoNormal">POST</p>
+      </td>
+      <td width="99" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 99pt;">
+      <p class="MsoNormal">URL</p>
+      </td>
+      <td width="374" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 373.5pt;">
+      <p class="MsoNormal">Retrieve the contents of the provided URL
+using the POST method of encoding the query portion of the URL. This
+means that query keys and values will be sent to the server
+separately </p>
+      </td>
+    </tr>
+    <tr>
+      <td width="91" valign="top"
+ style="border-style: none solid solid; border-width: medium 0.5pt 0.5pt; border-left: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 90.9pt;">
+      <p class="MsoNormal">FILE</p>
+      </td>
+      <td width="99" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 99pt;">
+      <p class="MsoNormal">Filename,arg[,...]</p>
+      </td>
+      <td width="374" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 373.5pt;">
+      <p class="MsoNormal">This command executes a text file that
+contains other HTMLGet commands. The arguments after the first one
+represent the actual values for the variables which are referenced in
+the file. </p>
+      <p class="MsoNormal">&nbsp;</p>
+      <p class="MsoNormal">For instance, the command file foo,arg1,arg2</p>
+      <p class="MsoNormal">&nbsp;</p>
+      <p class="MsoNormal">Will run the commands in the file foo and
+substitute the value arg1 for each instance of $ARG:1$ and the value
+arg2 for each instance of $ARG:2$</p>
+      </td>
+    </tr>
+    <tr>
+      <td width="91" valign="top"
+ style="border-style: none solid solid; border-width: medium 0.5pt 0.5pt; border-left: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 90.9pt;">
+      <p class="MsoNormal">Runtess</p>
+      </td>
+      <td width="99" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 99pt;">
+      <p class="MsoNormal">UseCurrent, Isnew, jscfile, [args,...]</p>
+      </td>
+      <td width="374" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 373.5pt;">
+      <p class="MsoNormal">Run TeSS. The arguments to this command
+indicate exactly where the page source comes from, and how the
+results are stored. </p>
+      <p class="MsoNormal">&nbsp;</p>
+      <p class="MsoNormal">The arguments are:</p>
+      <p class="MsoNormal">UseCurrent - the value of this argument
+is either the string true or the string false. If the value is true,
+the current HTMLGet page will be used as input to the screenscraper. If
+the argument is FALSE, then the host and url in the JSC file will
+be used to retrieve the source page.</p>
+      <p class="MsoNormal">IsNew - this argument is either true of
+false. If false the results extracted from this run of TeSS will be
+added to the current set of results.</p>
+      <p class="MsoNormal">Jscfile&nbsp; the path to a TeSS .jsc file
+which will be used to extract results from the page.</p>
+      <p class="MsoNormal">Args, ... - TeSS wrappers may have
+arguments associated with them. If the value of UseCurrent is false,
+then the values provided here are passed to TeSS as the
+wrapper's set of input values.</p>
+      <p class="MsoNormal"> </p>
+      </td>
+    </tr>
+    <tr>
+      <td width="91" valign="top"
+ style="border-style: none solid solid; border-width: medium 0.5pt 0.5pt; border-left: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 90.9pt;">
+      <p class="MsoNormal">Crawlandscrape</p>
+      </td>
+      <td width="99" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 99pt;">
+      <p class="MsoNormal">Jscfile, query_contains,
+query_does_not_contain,</p>
+      <p class="MsoNormal">Linktext</p>
+      </td>
+      <td width="374" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 373.5pt;">
+      <p class="MsoNormal">This command is meant to scrape results off
+of a series of identical result pages. The JSC file is used to run
+TeSS on each of the result pages and extract values which are added
+to the current set of scraped results. </p>
+      <p class="MsoNormal">&nbsp;</p>
+      <p class="MsoNormal">The JSCfile is a required argument. Any of
+the other arguments can be omitted by using the string
+&Ograve;null&Oacute; as the value for that argument.</p>
+      <p class="MsoNormal">&nbsp;</p>
+      <p class="MsoNormal">The crawlandscrape command determines which
+links in a page point at more result pages in one of the following
+ways:</p>
+      <p class="MsoNormal"
+ style="margin-left: 0.5in; text-indent: -0.25in;">1)<span
+ style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-stretch: normal; font-size-adjust: none;">&nbsp;&nbsp;</span>the
+displayed link text matches the linktext regular expression</p>
+      <p class="MsoNormal" style="margin-left: 0.25in;">OR</p>
+      <p class="MsoNormal" style="margin-left: 0.25in;">2) the URL in
+the link matches that of the original page AND the query parameters
+match both the query_contains and query_does_not_contain regular
+expressions if they have been specified.</p>
+      </td>
+    </tr>
+    <tr>
+      <td width="91" valign="top"
+ style="border-style: none solid solid; border-width: medium 0.5pt 0.5pt; border-left: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 90.9pt;">
+      <p class="MsoNormal">Showpage</p>
+      </td>
+      <td width="99" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 99pt;">
+      <p class="MsoNormal">&nbsp;</p>
+      </td>
+      <td width="374" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 373.5pt;">
+      <p class="MsoNormal">Take the current page, and render it using
+java's html display capability. Some pages may not display
+correctly or at all.</p>
+      </td>
+    </tr>
+    <tr>
+      <td width="91" valign="top"
+ style="border-style: none solid solid; border-width: medium 0.5pt 0.5pt; border-left: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 90.9pt;">
+      <p class="MsoNormal">Hidepage</p>
+      </td>
+      <td width="99" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 99pt;">
+      <p class="MsoNormal">&nbsp;</p>
+      </td>
+      <td width="374" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 373.5pt;">
+      <p class="MsoNormal">Remove the display of the page</p>
+      </td>
+    </tr>
+    <tr>
+      <td width="91" valign="top"
+ style="border-style: none solid solid; border-width: medium 0.5pt 0.5pt; border-left: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 90.9pt;">
+      <p class="MsoNormal">Dumppage</p>
+      </td>
+      <td width="99" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 99pt;">
+      <p class="MsoNormal">&nbsp;</p>
+      </td>
+      <td width="374" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 373.5pt;">
+      <p class="MsoNormal">Print the text of the current page to the
+standard output</p>
+      </td>
+    </tr>
+    <tr>
+      <td width="91" valign="top"
+ style="border-style: none solid solid; border-width: medium 0.5pt 0.5pt; border-left: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 90.9pt;">
+      <p class="MsoNormal">Currenturl</p>
+      </td>
+      <td width="99" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 99pt;">
+      <p class="MsoNormal">&nbsp;</p>
+      </td>
+      <td width="374" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 373.5pt;">
+      <p class="MsoNormal">Display the url of the current page</p>
+      </td>
+    </tr>
+    <tr>
+      <td width="91" valign="top"
+ style="border-style: none solid solid; border-width: medium 0.5pt 0.5pt; border-left: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 90.9pt;">
+      <p class="MsoNormal">Savehistory</p>
+      </td>
+      <td width="99" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 99pt;">
+      <p class="MsoNormal">Filename</p>
+      </td>
+      <td width="374" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 373.5pt;">
+      <p class="MsoNormal">Write the history of visited urls to a file</p>
+      </td>
+    </tr>
+    <tr>
+      <td width="91" valign="top"
+ style="border-style: none solid solid; border-width: medium 0.5pt 0.5pt; border-left: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 90.9pt;">
+      <p class="MsoNormal">Getselection</p>
+      </td>
+      <td width="99" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 99pt;">
+      <p class="MsoNormal">&nbsp;</p>
+      </td>
+      <td width="374" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 373.5pt;">
+      <p class="MsoNormal">Provided that the current page is rendered
+using showpage, this command will display a HTML document which
+contains only the selected portion of the document.</p>
+      </td>
+    </tr>
+    <tr>
+      <td width="91" valign="top"
+ style="border-style: none solid solid; border-width: medium 0.5pt 0.5pt; border-left: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 90.9pt;">
+      <p class="MsoNormal">Getforms</p>
+      </td>
+      <td width="99" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 99pt;">
+      <p class="MsoNormal">&nbsp;</p>
+      </td>
+      <td width="374" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 373.5pt;">
+      <p class="MsoNormal">Process the current page and extract the
+forms from it.</p>
+      </td>
+    </tr>
+    <tr>
+      <td width="91" valign="top"
+ style="border-style: none solid solid; border-width: medium 0.5pt 0.5pt; border-left: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 90.9pt;">
+      <p class="MsoNormal">Listforms</p>
+      </td>
+      <td width="99" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 99pt;">
+      <p class="MsoNormal">&nbsp;</p>
+      </td>
+      <td width="374" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 373.5pt;">
+      <p class="MsoNormal">List the names of all forms on the current
+page. This command must be called after getforms</p>
+      </td>
+    </tr>
+    <tr>
+      <td width="91" valign="top"
+ style="border-style: none solid solid; border-width: medium 0.5pt 0.5pt; border-left: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 90.9pt;">
+      <p class="MsoNormal">Listformproperties</p>
+      </td>
+      <td width="99" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 99pt;">
+      <p class="MsoNormal">Formname</p>
+      </td>
+      <td width="374" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 373.5pt;">
+      <p class="MsoNormal">List all the properties of the given form
+along with the current default values.</p>
+      </td>
+    </tr>
+    <tr>
+      <td width="91" valign="top"
+ style="border-style: none solid solid; border-width: medium 0.5pt 0.5pt; border-left: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 90.9pt;">
+      <p class="MsoNormal">Submitform</p>
+      </td>
+      <td width="99" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 99pt;">
+      <p class="MsoNormal">Formname, args</p>
+      </td>
+      <td width="374" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 373.5pt;">
+      <p class="MsoNormal">Submit a form. All arguments after the name
+of the form are optional and will override the default values for the
+corresponding form element.</p>
+      </td>
+    </tr>
+    <tr>
+      <td width="91" valign="top"
+ style="border-style: none solid solid; border-width: medium 0.5pt 0.5pt; border-left: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 90.9pt;">
+      <p class="MsoNormal">Resultstodb</p>
+      </td>
+      <td width="99" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 99pt;">
+      <p class="MsoNormal">Table, jdbc-url,user,password</p>
+      </td>
+      <td width="374" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 373.5pt;">
+      <p class="MsoNormal">Take the current results, and place them in
+a database</p>
+      </td>
+    </tr>
+    <tr>
+      <td width="91" valign="top"
+ style="border-style: none solid solid; border-width: medium 0.5pt 0.5pt; border-left: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 90.9pt;">
+      <p class="MsoNormal">Resultstocsv</p>
+      </td>
+      <td width="99" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 99pt;">
+      <p class="MsoNormal">File</p>
+      </td>
+      <td width="374" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 373.5pt;">
+      <p class="MsoNormal">Print the screenscraping results to a file
+or to the screen in comma separated value format.&nbsp;&nbsp; &nbsp;
+&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; <br>
+      </p>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">resulttojava<br>
+      </td>
+      <td style="vertical-align: top;">classname<br>
+      </td>
+      <td style="vertical-align: top;">&nbsp; This command allows a
+callout to a java class.&nbsp; The class must:<br>
+&nbsp;&nbsp; 1. implement the Runnable interface<br>
+&nbsp;&nbsp; 2. have a constructor which takes (java.util.Vector,
+HtmlGet.HtmlGet) as its arguments.<br>
+      <br>
+The&nbsp; class will be passed the current TeSS screenscraping results
+as a vector of Object arrays, and the current instance of the HtmlGet
+class.&nbsp; <br>
+      <br>
+With these two arguments, the java code will be able to access all
+state of the current session, and programaticly alter the session by
+calling the methods of the HTMLGet class.<br>
+      </td>
+    </tr>
+    <tr>
+      <td width="91" valign="top"
+ style="border-style: none solid solid; border-width: medium 0.5pt 0.5pt; border-left: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 90.9pt;">
+      <p class="MsoNormal">Justtags</p>
+      </td>
+      <td width="99" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 99pt;">
+      <p class="MsoNormal">TagRE[,...]</p>
+      </td>
+      <td width="374" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 373.5pt;">
+      <p class="MsoNormal">This command takes a list of regular
+expressions which match HTML start element tags. The current page
+will be filtered such that after this command runs, the page will
+only contain these tags. </p>
+      <p class="MsoNormal">&nbsp;</p>
+      <p class="MsoNormal"> For example: justtags &lt;INPUT </p>
+      <p class="MsoNormal">&nbsp;</p>
+      <p class="MsoNormal">Will filter the document such that it
+contains only HTML input tags.</p>
+      <p class="MsoNormal">&nbsp;</p>
+      <p class="MsoNormal">NOTE: the result of the filtering process
+may not leave a result that is itself a valid HTML page.</p>
+      </td>
+    </tr>
+    <tr>
+      <td width="91" valign="top"
+ style="border-style: none solid solid; border-width: medium 0.5pt 0.5pt; border-left: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 90.9pt;">
+      <p class="MsoNormal">Betweentags&nbsp;&nbsp; &nbsp;&nbsp; <br>
+      </p>
+      </td>
+      <td width="99" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 99pt;">
+      <p class="MsoNormal">StartRE,endRE,[startREendRE]</p>
+      </td>
+      <td width="374" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 373.5pt;">
+      <p class="MsoNormal">Extract the contents of a page between sets
+of tags. The resulting document will also be marked up with comments
+which describe what &Ograve;level&Oacute; in the original document
+the results came from.&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; <br>
+      </p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p class="MsoNormal">&nbsp;</p>
+</div>
+</body>
+</html>

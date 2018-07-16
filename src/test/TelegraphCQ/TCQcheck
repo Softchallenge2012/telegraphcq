@@ -1,0 +1,322 @@
+#!/bin/bash
+# from: pg_regress.sh
+
+##############################################
+# Expected:
+# 1. TCQindir directory for all input.
+# 2. Make sure no extra lines at the end of your
+#    input files.
+# 3. For now, you must manually set the # of
+#    tuples returned for the test files.
+##############################################
+
+
+message(){
+    _dashes='==============' # 14
+    _spaces='                                      ' # 38
+    _msg=`echo "$1$_spaces" | cut -c 1-38`
+    echo "$_dashes $_msg $_dashes"
+}
+
+
+# ----------
+# Initialization.
+# ----------
+
+#if [ $# != 1 ] 
+#then
+#  echo "Usage: <testdb name>"
+#  exit 1
+#fi
+
+port=5533
+data=~/postgres/src/test/TelegraphCQ/data
+PGDATA=$data
+dbname=testTCQ
+hostname=localhost
+bindir=`pg_config --bindir`
+inputdir=~/postgres/src/test/TelegraphCQ/TCQindir
+schedule=~/postgres/src/test/TelegraphCQ/TCQindir/serial_schedule
+streamDir=~/postgres/src/test/examples/tcq-sample
+PSQL="$bindir/psql -C"
+INITDB="$bindir/initdb"
+PG_CTL="$bindir/pg_ctl"
+CREATEDB="$bindir/createdb"
+POSTMASTER="$bindir/postmaster"
+
+outputdir=~/postgres/src/test/TelegraphCQ/outputdir
+LOGDIR=~/postgres/src/test/TelegraphCQ/logs 
+
+    ###
+
+ipcclean >/dev/null
+
+# copy over needed files
+cp "$streamDir/add_time.awk" ~/postgres/src/test/TelegraphCQ
+
+
+
+# ----------
+# Initialize database.
+# ----------
+
+message "initializing database system"
+
+if [ -d $data ]
+  then
+    rm -r $data
+fi
+
+$INITDB -D "$data" --debug >"$LOGDIR/initdb.log" 2>&1
+
+if [ $? -ne 0 ]
+  then
+    echo
+    echo "$me: initdb failed"
+    echo "Examine $LOGDIR/initdb.log for the reason."
+    echo
+    rm add_time.awk
+    (exit 2); exit
+fi
+
+
+
+# ----------
+# Start postmaster.
+# ----------
+
+message "starting postmaster"  
+
+$POSTMASTER -D "$data" -F -d 5 >"$LOGDIR/postmaster.log" 2>&1 &
+postmaster_pid=$!
+
+# Wait till postmaster is able to accept connections.
+i=0
+max=3
+
+until "$bindir/psql" template1 </dev/null 2>/dev/null >/dev/null
+do
+  i=`expr $i + 1`
+  if [ $i -ge $max ]
+  then
+    break
+  fi
+  if kill -0 $postmaster_pid >/dev/null 2>&1
+  then
+    : still starting up
+  else
+    break
+  fi
+  sleep 1
+done
+if kill -0 $postmaster_pid >/dev/null 2>&1
+then
+  echo "running on port $PGPORT with pid $postmaster_pid"
+else
+  echo
+  echo "$me: postmaster did not start"
+  echo "Examine $LOGDIR/postmaster.log for the reason."
+  echo
+  rm add_time.awk
+  (exit 2); exit
+fi
+
+
+
+# ----------
+# Create test database.
+# ----------
+
+message "creating database \"$dbname\""
+$CREATEDB --port "$PGPORT" "$dbname"
+if [ $? -ne 0 ]; then
+    echo "$me: createdb failed"
+    pg_ctl -D "$data" stop
+    ipcclean >/dev/null
+    rm add_time.awk
+    (exit 2); exit
+fi
+
+
+
+# ----------
+# Shut down and restart.
+# ----------
+
+if [ -n "$postmaster_pid" ]; then
+    message "shutting down postmaster"
+    $PG_CTL -D "$data" stop
+    unset postmaster_pid
+fi
+
+# wait for postmaster to shut down
+sleep 3
+
+
+
+# ----------
+# Re-Start postmaster.
+# ----------
+
+message "re-starting postmaster"   
+$POSTMASTER -D "$data" -t "$dbname" -u "$USER" -G >"$LOGDIR/postmaster.log" 2>&1 & 
+postmaster_pid=$!
+
+# Wait till postmaster is able to accept connections. 
+i=0
+max=3
+
+until "$bindir/psql" template1 </dev/null 2>/dev/null
+do
+  i=`expr $i + 1`
+  if [ $i -ge $max ]
+  then
+    break
+  fi
+  if kill -0 $postmaster_pid >/dev/null 2>&1
+  then
+    : still starting up
+  else
+    break
+  fi
+  sleep 1
+done
+if kill -0 $postmaster_pid >/dev/null 2>&1
+then
+  echo "running on port $PGPORT with pid $postmaster_pid"
+else
+  echo
+  echo "$me: postmaster did not start"
+  echo
+  ipcclean >/dev/null
+  rm add_time.awk
+  (exit 2); exit
+fi
+
+################### NOTE: Have NOT yet checked for all: (1) postmaster
+###################                                     (2) wrapch
+###################                                     (3) TCQbackend 
+################### Assuming all three started up correctly.
+
+
+# ----------
+# Populate station table.
+# ----------
+
+message "populating station table"
+
+$PSQL "$dbname" <"$streamDir/stations.sql" >"$LOGDIR/stations.log" 2>&1
+
+while read line
+do 
+  prevLine=$line
+done < "$LOGDIR/stations.log" 
+
+if [ $prevLine != "COPY" ]
+then
+  echo
+  echo "$me: unsuccessful load of stations" 
+  echo
+  $PG_CTL stop
+  ipcclean >/dev/null
+  rm add_time.awk
+  (exit 2); exit
+fi
+
+echo "done populating station table"
+
+# ----------
+# Run regression tests.
+# ----------
+
+message "running regression test queries"
+
+if [ ! -d "$outputdir/results" ]; then
+    mkdir -p "$outputdir/results" || { (exit 2); exit; }
+fi
+
+counter=0
+
+# read through all sql input files (test cases)
+while read line
+do
+  counter=$counter+1
+
+  initFile=`echo $line | awk -F', ' '{print $1}'`
+  sourceFile=`echo $line | awk -F', ' '{print $2}'`
+  numTuples=`echo $line | awk -F', ' '{print $3}'`
+  queryFile=`echo $line | awk -F', ' '{print $4}'`
+
+  echo $queryFile
+  echo $initFile
+
+#  echo "*********Before TCQ KILL *************"
+#  ps
+#  ps | grep sensorsource.pl
+#  ps -ef | grep sensorsource.pl
+#  echo "**************************************"
+
+  sId=`ps | grep sensorsource.pl | awk -F' ' '{print $1}' | awk '{getline; print}'`
+  #echo $sId
+  if [ $sId ]
+  then
+    kill -9 $sId          # kill off sensorsource
+    sleep 3 
+  fi 
+
+  $PSQL "$dbname" <"$streamDir/$initFile.sql" >/dev/null 2>&1  
+
+#  echo "***********AFTER TCQ KILL **********"
+#  ps
+#  ps | grep sensorsource.pl
+#  ps -ef | grep sensorsource.pl
+#  echo "*************************************"
+
+#echo right before runcheck !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+  # call perl script to monitor streams
+  ./RUNcheck "$streamDir/$sourceFile" "$PSQL" "$dbname" "$inputdir/sql/$queryFile.sql" "$outputdir/results/$queryFile.out" "$numTuples" "$queryFile" "$counter"
+
+echo "HERERERERERERERERERERERERERERE"
+
+done < $schedule
+
+
+# ----------
+# Clean up and shut down connections.
+# ----------
+
+#shutdown postmaster
+if [ -n "$postmaster_pid" ]; then
+    message "shutting down postmaster"
+    $PG_CTL -D "$data" stop
+    unset postmaster_pid
+fi
+
+
+# ----------
+# Finish up / clean up files.
+# ----------
+
+ipcclean >/dev/null    # clean up semaphores
+
+# rm all created files
+if [ -f ~/postgres/src/test/TelegraphCQ/add_time.awk ] 
+then
+  rm ~/postgres/src/test/TelegraphCQ/add_time.awk
+fi
+
+if [ -f ~/postgres/src/test/TelegraphCQ/sensor-counts ] 
+then
+  rm ~/postgres/src/test/TelegraphCQ/sensor-counts
+fi
+
+if [ -f ~/postgres/src/test/TelegraphCQ/sensor-counts-log ]
+then
+  rm ~/postgres/src/test/TelegraphCQ/sensor-counts-log
+fi
+
+if [ -f ~/postgres/src/test/TelegraphCQ/update.txt ] 
+then
+  rm ~/postgres/src/test/TelegraphCQ/update.txt
+fi

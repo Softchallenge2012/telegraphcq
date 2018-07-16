@@ -1,0 +1,6 @@
+./configure  --enable-debug --enable-cassert --enable-depend --prefix=$PGRSHOME --with-includes=${HOME}/tcq-tools/include --with-java --with-libraries=${HOME}/tcq-tools/lib 
+rm -f /tmp/Makefile.global
+sed -f ./src/tools/noopt.sed ./src/Makefile.global > /tmp/Makefile.global
+mv /tmp/Makefile.global ./src/Makefile.global
+rm -f /tmp/Makefile.global
+

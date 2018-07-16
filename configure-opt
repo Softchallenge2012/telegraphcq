@@ -1,0 +1,2 @@
+env CFLAGS='-O3 -finline-functions' ./configure  --enable-depend --prefix=$PGRSHOME
+#./configure  --enable-cassert --enable-depend --prefix=$PGRSHOME

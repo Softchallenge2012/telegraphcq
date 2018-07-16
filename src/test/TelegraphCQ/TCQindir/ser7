@@ -1,0 +1,5 @@
+measurements, sensorsource.pl localhost 5533 measurements 0, 50, simpleSelect
+measurements, sensorsource.pl localhost 5533 measurements 0, 50, simpleSelect2
+measurements, sensorsource.pl localhost 5533 measurements 0, 50, simpleSelect3
+measurements, sensorsource.pl localhost 5533 measurements 0, 50, simpleSelect4
+measurements, sensorsource.pl localhost 5533 measurements 0, 1, simpleSelect5

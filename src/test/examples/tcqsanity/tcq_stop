@@ -1,0 +1,17 @@
+#!/bin/sh
+
+case $# in
+    0) PGDIR=$PGDATA;;
+    1) PGDIR=$1;;
+    *) echo 'Usage: $0 [database]';;
+esac
+
+echo "Attempting to stop TelegraphCQ using PGDIR=$PGDIR "
+
+echo 'Check to see if the server is running:'
+pg_ctl status -D $PGDIR
+sleep 10
+echo 'Shutdown the server if necessary'
+pg_ctl stop  -D $PGDIR
+sleep 10
+

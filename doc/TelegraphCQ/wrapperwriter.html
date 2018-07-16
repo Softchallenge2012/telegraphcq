@@ -1,0 +1,470 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta name="Title" content="TelegraphCQ Wrapper Writers Guide">
+  <meta name="Keywords" content="">
+  <meta http-equiv="Content-Type" content="text/html; charset=macintosh">
+  <meta name="ProgId" content="Word.Document">
+  <meta name="Generator" content="Microsoft Word 10">
+  <meta name="Originator" content="Microsoft Word 10">
+  <link rel="File-List" href="wrapperwriter_files/filelist.xml">
+  <title>TelegraphCQ Wrapper Writers Guide</title>
+  <style>
+<!--
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:Times;}
+h1
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:Times;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0:level1
+	{text-indent:-.25in;
+	tab-stops:list .5in;}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+  </style>
+</head>
+<body bgcolor="white" lang="EN-US" style="">
+<div class="Section1">
+<h2><a href="http://telegraph.cs.berkeley.edu"><img
+ src="tcq_logo_50pct.png" alt="telegraph.cs.berkeley.edu"
+ style="border: 0px solid ; width: 192px; height: 95px;"></a></h2>
+<h2>TelegraphCQ Wrapper Writers Guide</h2>
+<h3>Overview</h3>
+<p class="MsoNormal">Wrapper writers should first consider if their
+data can be imported into the system using the CSV wrapper example
+provided with the distribution, as this is by far the easiest (and a
+quite flexible) way to get data into the system.</p>
+<h3>Wrapper types</h3>
+<p class="MsoNormal">PULL wrappers are instantiated as a result of a
+queries arrival in the system, and as such are responsible for
+establishing a connection with the data source as a part of their
+initialization. PULL wrappers may also receive data values or "probe
+tuples" as inputs to the data retrieval process. The optional Rescan
+function takes a probe tuple as its input and
+communicates with the remote data source to initiate the retrieval of
+data items which correspond to that probe tuple. </p>
+<p class="MsoNormal">&nbsp;</p>
+<p class="MsoNormal">A wrapper writer will need to implement the init,
+next, and done functions for a PUSH wrapper. A PULL wrapper will also
+need to implement a rescan function.</p>
+<h3>A few words on memory management</h3>
+<p class="MsoNormal">Each instance of a wrapper has two Postgres memory
+contexts. The first context, or per wrapper context, is always the
+active context when a wrapper function is called. The lifetime of this
+context is the lifetime of the wrapper instance. The second context
+is a per-tuple context. This context will be cleared by the wrapper
+clearinghouse each time it receives a new data tuple from the wrappers
+next function. </p>
+<h3>Arguments and return values</h3>
+<p class="MsoNormal">Each time a wrapper function is called, the
+wrapper clearinghouse will pass it the same instance of the
+wrapperstate structure defined below. During the course of its
+execution, the wrapper may modify its own wrapper-defined state, and
+can also modify certain wrapperstate fields in order to communicate
+data items, errors, or state transitions to the wrapper clearinghouse.
+The wrapper function returns TRUE or FALSE to indicate if the wrapper
+completed successfully, or encountered a fatal error.</p>
+<h4>The wrapperstate argument</h4>
+<p class="MsoNormal">Each wrapper is passed the same instance of a
+wrapperstate function each time it is called. The wrapperstate
+function contains the following data members;</p>
+<p class="MsoNormal">&nbsp;</p>
+<table border="1" cellspacing="0" cellpadding="0"
+ style="border: medium none ; border-collapse: collapse;">
+  <tbody>
+    <tr>
+      <td width="221" valign="top"
+ style="border: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 221.4pt;">
+      <p class="MsoNormal">int fd; </p>
+      </td>
+      <td width="221" valign="top"
+ style="border-style: solid solid solid none; border-width: 0.5pt 0.5pt 0.5pt medium; border-top: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 221.4pt;">
+      <p class="MsoNormal">The socket descriptor for the connection to
+the data source. This socket is always in non-blocking mode.</p>
+      </td>
+    </tr>
+    <tr>
+      <td width="221" valign="top"
+ style="border-style: none solid solid; border-width: medium 0.5pt 0.5pt; border-left: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 221.4pt;">
+      <p class="MsoNormal">TupleDesc tdesc;</p>
+      </td>
+      <td width="221" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 221.4pt;">
+      <p class="MsoNormal">The postgres tuple descriptor for the target
+stream.</p>
+      </td>
+    </tr>
+    <tr>
+      <td width="221" valign="top"
+ style="border-style: none solid solid; border-width: medium 0.5pt 0.5pt; border-left: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 221.4pt;">
+      <p class="MsoNormal">void *udfstate; </p>
+      </td>
+      <td width="221" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 221.4pt;">
+      <p class="MsoNormal">A pointer that can be used to hold wrapper
+specific state. Allocation of the memory for this state should occur
+in the per-wrapper memory context.</p>
+      </td>
+    </tr>
+    <tr>
+      <td width="221" valign="top"
+ style="border-style: none solid solid; border-width: medium 0.5pt 0.5pt; border-left: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 221.4pt;">
+      <p class="MsoNormal">FunctionMode mode; </p>
+      <p class="MsoNormal">bool doneWithProbe;</p>
+      </td>
+      <td width="221" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 221.4pt;">
+      <p class="MsoNormal">This variable should be set by the wrapper
+to indicate the next wrapper function to be called. Valid values are:</p>
+      <p class="MsoNormal">MODE_INIT&nbsp; call the initialization
+function</p>
+      <p class="MsoNormal">MODE_NEXT&nbsp; call the next function</p>
+      <p class="MsoNormal">MODE_DONE&nbsp; call the done function</p>
+      <p class="MsoNormal">MODE_END&nbsp; the wrapper cleanup has
+finished, delete the wrapper</p>
+      <p class="MsoNormal">&nbsp;</p>
+      <p class="MsoNormal">NOTE: the next function should indicate it
+has finished processing all tuples for a probe tuple by setting the
+doneWithProbe variable to true.</p>
+      </td>
+    </tr>
+    <tr>
+      <td width="221" valign="top"
+ style="border-style: none solid solid; border-width: medium 0.5pt 0.5pt; border-left: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 221.4pt;">
+      <p class="MsoNormal">Datum *returnTuple; </p>
+      <p class="MsoNormal">char *returnTupleIsNull; </p>
+      <p class="MsoNormal">int returnTupleLength; </p>
+      <p class="MsoNormal">bool hasTuple;</p>
+      </td>
+      <td width="221" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 221.4pt;">
+      <p class="MsoNormal">These fields are used by the wrapper to
+return a data tuple to the wrapper clearinghouse. </p>
+      <p class="MsoNormal">ReturnTuple is the array which holds the
+actual data elements as Datums</p>
+      <p class="MsoNormal">ReturnTupleIsNull is an array of chars each
+of which is either ' ' or ''n' indicate
+whether a particular column has a value or is null, respectively.</p>
+      <p class="MsoNormal">HasTuple is set to true by the wrapper to
+indicate to the wrapper clearinghouse that a tuple has been returned. </p>
+      </td>
+    </tr>
+    <tr>
+      <td width="221" valign="top"
+ style="border-style: none solid solid; border-width: medium 0.5pt 0.5pt; border-left: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 221.4pt;">
+      <p class="MsoNormal">bool hasBufferedData;</p>
+      </td>
+      <td width="221" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 221.4pt;">
+      <p class="MsoNormal">This Boolean is set by the wrapper to
+indicate that it has read some data from the network socket, but has
+not yet had the opportunity to process it. Setting this flag will
+tell the WCH to call the wrapper functions even if there is no new
+data available from the network.</p>
+      </td>
+    </tr>
+    <tr>
+      <td width="221" valign="top"
+ style="border-style: none solid solid; border-width: medium 0.5pt 0.5pt; border-left: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 221.4pt;">
+      <p class="MsoNormal">bool connectionReady;</p>
+      <p class="MsoNormal">&nbsp;</p>
+      </td>
+      <td width="221" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 221.4pt;">
+      <p class="MsoNormal">The wrapper clearinghouse sets this flag
+prior to calling a wrapper function to let the wrapper know if there
+is data available on the socket.</p>
+      </td>
+    </tr>
+    <tr>
+      <td width="221" valign="top"
+ style="border-style: none solid solid; border-width: medium 0.5pt 0.5pt; border-left: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 221.4pt;">
+      <p class="MsoNormal">void * wrapper_info; </p>
+      </td>
+      <td width="221" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 221.4pt;">
+      <p class="MsoNormal">This structure member should be passed to
+the get_entry() utility function to retrieve wrapper attributes.</p>
+      </td>
+    </tr>
+    <tr>
+      <td width="221" valign="top"
+ style="border-style: none solid solid; border-width: medium 0.5pt 0.5pt; border-left: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 221.4pt;">
+      <p class="MsoNormal">char * error_message;</p>
+      </td>
+      <td width="221" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 221.4pt;">
+      <p class="MsoNormal">Wrappers should set this field to an error
+message and return FALSE to indicate an error to the client.</p>
+      </td>
+    </tr>
+    <tr>
+      <td width="221" valign="top"
+ style="border-style: none solid solid; border-width: medium 0.5pt 0.5pt; border-left: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 221.4pt;">
+      <p class="MsoNormal">AttInMetadata * aim;</p>
+      <p class="MsoNormal">AttOutMetadata * aom;</p>
+      </td>
+      <td width="221" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 221.4pt;">
+      <p class="MsoNormal">These data structures are passed to the
+DatumFromTypeInstance and CstringFromDatum utility functions.</p>
+      </td>
+    </tr>
+    <tr>
+      <td width="221" valign="top"
+ style="border-style: none solid solid; border-width: medium 0.5pt 0.5pt; border-left: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 221.4pt;">
+      <p class="MsoNormal">MemoryContext perTupleContext;</p>
+      </td>
+      <td width="221" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 221.4pt;">
+      <p class="MsoNormal">The memory context in which per tuple data
+should be allocated.</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h3>Input and Output utility functions</h3>
+<p class="MsoNormal">Wrapper functions may call the following utility
+functions to convert data and access wrapper attributes. For functions
+related to binding values, please see the section on the rescan
+function.</p>
+<p class="MsoNormal">&nbsp;</p>
+<table border="1" cellspacing="0" cellpadding="0"
+ style="border: medium none ; border-collapse: collapse;">
+  <tbody>
+    <tr>
+      <td width="221" valign="top"
+ style="border: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 221.4pt;">
+      <p class="MsoNormal">Datum DatumFromTypeInstance(AttInMetadata
+*aim, Int colno, char *typeInstance, MemoryContext ctx);</p>
+      </td>
+      <td width="221" valign="top"
+ style="border-style: solid solid solid none; border-width: 0.5pt 0.5pt 0.5pt medium; border-top: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 221.4pt;">
+      <p class="MsoNormal">Convert a string representing a data value
+into the internal representation of that type. The return value of
+this function may be placed in the returnTuple array of the wrapper
+state structure. If for some reason the typeInstance cannot be
+converted, a null value will be returned.</p>
+      </td>
+    </tr>
+    <tr>
+      <td width="221" valign="top"
+ style="border-style: none solid solid; border-width: medium 0.5pt 0.5pt; border-left: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 221.4pt;">
+      <p class="MsoNormal">char * CStringFromTuple(AttOutMetadata *aom,
+HeapTuple tup, int attno, bool * isNull, MemoryContext ctx);</p>
+      </td>
+      <td width="221" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 221.4pt;">
+      <p class="MsoNormal">Given a heap tuple, return the value of a
+particular column as a C string.</p>
+      </td>
+    </tr>
+    <tr>
+      <td width="221" valign="top"
+ style="border-style: none solid solid; border-width: medium 0.5pt 0.5pt; border-left: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 221.4pt;">
+      <p class="MsoNormal">key_value_entry * getEntry(char * key);</p>
+      </td>
+      <td width="221" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 221.4pt;">
+      <p class="MsoNormal">Look up a wrapper attribute, and return a
+structure containing the value. Struct key_value_entry is declared
+as follows:</p>
+      <p class="MsoNormal">&nbsp;</p>
+      <p class="MsoNormal">Struct key_value_entry </p>
+      <p class="MsoNormal">{</p>
+      <p class="MsoNormal"> char * key;</p>
+      <p class="MsoNormal"> char * value;</p>
+      <p class="MsoNormal">};</p>
+      <p class="MsoNormal">&nbsp;</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p class="MsoNormal">&nbsp;</p>
+<h3>Error reporting</h3>
+<p class="MsoNormal">A wrapper function may set the error_message field
+of the wrapperstate structure and return FALSE to communicate an error
+condition. </p>
+<h3>Wrapper functions and their responsibilities</h3>
+<h4>The initialization function</h4>
+<p class="MsoNormal">An initialization function for a wrapper will
+typically allocate state
+used during execution and place a pointer to that state in the udfstate
+field of the wrapperstate structure. The state information maintained
+by a wrapper typically includes a buffer for data that has been read
+off of the network, but not yet processed. </p>
+<p class="MsoNormal">&nbsp;</p>
+<p class="MsoNormal">Pull type wrappers must also initiate a network
+connection with the data source as a part of the initialization
+function. A utility function called establish_connection() will take
+care of setting up the network connection provided that the HOSTNAME
+and PORT wrapper parameters where specified when the wrapper was
+created. </p>
+<h4>The next function</h4>
+<p class="MsoNormal"> </p>
+<p class="MsoNormal">This is the workhorse of a wrapper. The next
+function must process data from the source, and turn it into a set of
+postgres Datums. The next function may be called under two
+circumstances: 1) the wrapper has data buffered in its internal
+structures, but has not yet processed that data. And/or 2) there is
+data available on the wrappers network socket. The wrapper can check
+the connectionReady structure member to see if there is data ready to
+read. </p>
+<p class="MsoNormal">&nbsp;</p>
+<p class="MsoNormal">If the wrapper has read a complete data item it
+should:</p>
+<p class="MsoNormal">&nbsp;</p>
+<p class="MsoNormal" style="margin-left: 0.5in; text-indent: -0.25in;">1)<span
+ style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-stretch: normal; font-size-adjust: none;">&nbsp;&nbsp;</span>convert
+the data items for each column into a Postgres Datum of the correct
+type, according to the type specified in the TupleDescriptor. Place
+the resulting Datums in the returnTuple array. Also, fill in the
+returnTupleIsNull array with a ' ' charater if the column
+is not null and a 'n' character if the column is NULL;</p>
+<p class="MsoNormal" style="margin-left: 0.5in; text-indent: -0.25in;">2)<span
+ style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-stretch: normal; font-size-adjust: none;">&nbsp;&nbsp;</span>set
+the hasTuple flag to true</p>
+<p class="MsoNormal" style="margin-left: 0.5in; text-indent: -0.25in;">3)<span
+ style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-stretch: normal; font-size-adjust: none;">&nbsp;&nbsp;</span>set
+hasBufferedData to indicate if the wrapper has buffered data or must
+wait for data to arrive </p>
+<p class="MsoNormal" style="margin-left: 0.5in; text-indent: -0.25in;">4)<span
+ style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-stretch: normal; font-size-adjust: none;">&nbsp;&nbsp;</span>return</p>
+<p class="MsoNormal">&nbsp;</p>
+<p class="MsoNormal">Pull wrappers will typically send requests for
+data via their rescan functions. The next function will then need to
+determine when (if ever) the results for that probe have finished being
+returned. This is typically accomplished by sending a special marker
+in the data stream that would not otherwise appear. When the wrapper
+detects one of these done with probe indicators, it should set the
+doneWithProbe field in the structure, and return. The wrapper
+clearinghouse will cause the rescan function to be scheduled next.</p>
+<h4>The done function</h4>
+<p class="MsoNormal">The done function gives the wrapper an
+opportunity
+to clean up any state. </p>
+<h4>The rescan function</h4>
+<p class="MsoNormal">A pull wrapper may have 0 or more binding columns
+associated with it. A binding column is a special column which must
+have a value provided for it before the wrapper may be triggered to
+produce tuples. The rescan function receives these values as "probe
+tuples", or tuples which have values for all
+binding columns and NULLs in all other columns.</p>
+<p class="MsoNormal">&nbsp;</p>
+<p class="MsoNormal">The rescan function is invoked when all of data
+tuples corresponding to the previous probe tuple have been received.
+The job of the rescan function is to examine the new probe tuple, and
+turn it into a request appropriate for sending to the remote source.
+Once such a request is formed, the rescan function must send it to the
+remote source. Once the rescan function has finished its work, the
+wrapper must be returned to the NEXT state, so that the results that
+are returned as a consequence of the newly sent request can be consumed
+and processed by the wrapper. </p>
+<p class="MsoNormal">&nbsp;</p>
+<p class="MsoNormal">The input probe tuples are delivered to the
+wrapper clearinghouse from the TelegraphCQ backend process, and are
+accessible to the rescan function via a number of utility functions
+described in the following table:</p>
+<p class="MsoNormal">&nbsp;</p>
+<table border="1" cellspacing="0" cellpadding="0"
+ style="border: medium none ; border-collapse: collapse;">
+  <tbody>
+    <tr>
+      <td width="223" valign="top"
+ style="border: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 223.45pt;"
+ nowrap="nowrap">
+      <p class="MsoNormal">bool hasNewProbeTuple(wrapperstate *s);</p>
+      </td>
+      <td width="219" valign="top"
+ style="border-style: solid solid solid none; border-width: 0.5pt 0.5pt 0.5pt medium; border-top: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 219.35pt;">
+      <p class="MsoNormal">Is there a probe tuple waiting to be
+processed by this wrapper? </p>
+      </td>
+    </tr>
+    <tr>
+      <td width="223" valign="top"
+ style="border-style: none solid solid; border-width: medium 0.5pt 0.5pt; border-left: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 223.45pt;"
+ nowrap="nowrap">
+      <p class="MsoNormal">int getNumBindings(wrapperstate *s);</p>
+      </td>
+      <td width="219" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 219.35pt;">
+      <p class="MsoNormal">Returns the number of binding values there
+are in this probe tuple. A binding value is the value associated
+with a column that was flagged to be used as input for this wrapper
+when the wrapper was associated with the target stream.</p>
+      </td>
+    </tr>
+    <tr>
+      <td width="223" valign="top"
+ style="border-style: none solid solid; border-width: medium 0.5pt 0.5pt; border-left: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 223.45pt;"
+ nowrap="nowrap">
+      <p class="MsoNormal">bool isBindingColumn(wrapperstate *s, int
+colno);</p>
+      </td>
+      <td width="219" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 219.35pt;">
+      <p class="MsoNormal">Returns true if the indicated stream column
+is a column which holds a binding value, false if the column is one
+for which the wrapper will produce data.</p>
+      </td>
+    </tr>
+    <tr>
+      <td width="223" valign="top"
+ style="border-style: none solid solid; border-width: medium 0.5pt 0.5pt; border-left: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 223.45pt;"
+ nowrap="nowrap">
+      <p class="MsoNormal">char * getBindingValueByNumber(wrapperstate
+*s, int bindingno);</p>
+      </td>
+      <td width="219" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 219.35pt;">
+      <p class="MsoNormal">Get a binding value according to the order
+in which input (binding) columns were specified when the wrapper was
+associated with a stream.</p>
+      </td>
+    </tr>
+    <tr>
+      <td width="223" valign="top"
+ style="border-style: none solid solid; border-width: medium 0.5pt 0.5pt; border-left: 0.5pt solid windowtext; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 223.45pt;"
+ nowrap="nowrap">
+      <p class="MsoNormal">char *
+getBindingValueByStreamCol(wrapperstate *s, int streamcol);</p>
+      </td>
+      <td width="219" valign="top"
+ style="border-style: none solid solid none; border-width: medium 0.5pt 0.5pt medium; border-right: 0.5pt solid windowtext; border-bottom: 0.5pt solid windowtext; padding: 0in 5.4pt; width: 219.35pt;">
+      <p class="MsoNormal">Check a particular stream column, and if it
+is a binding column, return the bound value. Otherwise return NULL.</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p class="MsoNormal">&nbsp;</p>
+<h3>Example Wrapper</h3>
+<p class="MsoNormal">The source code for the csv wrapper can be found
+in src/backend/utils/telegraphcq/csv.c. It contains an example
+implementation of an initialization, next, and done wrapper function. </p>
+<p class="MsoNormal">&nbsp;</p>
+<p class="MsoNormal">An example rescan function that communicates with
+the WebQueryServer can be found in src/test/examples/web.c</p>
+<h3>SEE ALSO</h3>
+<p class="MsoNormal"></p>
+<p class="MsoNormal"><a href="Data_Acquisition.html">Data Acquisition </a><br>
+</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+echo "Swapping into check: mv * *-check"
+mv install install-check
+mv pgdb pgdb-check
+mv postgres postgres-check

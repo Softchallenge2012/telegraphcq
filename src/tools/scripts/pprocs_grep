@@ -1,0 +1,1 @@
+ps -eavx | awk '$0 ~ /postgres|postmaster|wrapch|tcqbackend|tcqwrapper/ {print $1, $8, $9, $10, $11, $12, $13}'

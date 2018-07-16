@@ -1,0 +1,18 @@
+This directory contains a sample wrapper implementaion.  The
+requirements for a wrapper function are explained in the wrapper
+clearinghouse documentation which can be found in the document
+wrapper.doc or wrapper.html in this directory.
+
+The  sample wrapper consumes a stream of long integers.  The wrapper
+returns tuples which consist of two integer values from the stream and
+a wrapper generated timestamp.
+
+Build the wrapper using the make command, then install libwrapper.so in 
+the postgres lib directory. 
+
+Once the library has been built, start up postgres and run the 
+ddl commands contained in teststream.sql against the postgres 
+database.
+
+The Makefile also builds a program called teststreamsource which will
+generate data in the format expected by the sample wrapper.

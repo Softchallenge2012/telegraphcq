@@ -1,0 +1,3 @@
+env CFLAGS='-D_USE_PRNG_MT' ./configure --enable-debug --enable-cassert --enable-depend --prefix=$PGRSHOME
+#./configure --enable-debug --enable-cassert --enable-depend --prefix=$PGRSHOME
+#./configure  --enable-cassert --enable-depend --prefix=$PGRSHOME

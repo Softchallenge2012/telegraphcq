@@ -1,0 +1,23 @@
+# $Header: /project/eecs/db/cvsroot/postgres/src/makefiles/Makefile.solaris,v 1.2 2004/03/24 08:11:35 chungwu Exp $
+
+AROPT = crs
+
+ifeq ($(with_gnu_ld), yes)
+export_dynamic = -Wl,-E
+rpath = -Wl,-rpath,$(libdir)
+else
+rpath = -R$(libdir)
+endif
+shlib_symbolic = -Wl,-Bsymbolic
+
+DLSUFFIX = .so
+ifeq ($(GCC), yes)
+CFLAGS_SL = -fPIC
+else
+CFLAGS_SL = -KPIC
+endif
+
+%.so: %.o
+	$(LD) -G -Bdynamic -o $@ $<
+
+sqlmansect = 5sql

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+echo rm $PGRSHOME/bin/postgres
+rm $PGRSHOME/bin/postgres
+echo ln -s $PGRSSRC/src/backend/postgres $PGRSHOME/bin/postgres
+ln -s $PGRSSRC/src/backend/postgres $PGRSHOME/bin/postgres

@@ -1,0 +1,69 @@
+#! /usr/bin/perl
+
+$child_pid1=fork();
+$child_pid2=fork();
+
+if (($child_pid1==0) && ($child_pid2!=0))
+{
+  # fork off child 1 (psql) process
+    #print("Child 1!!!!!!!!!!!!!!!!!!!!!!!!!!!! with pid: $child_pid1\n");
+  exec("$ARGV[1] -I$ARGV[5] $ARGV[2] <$ARGV[3] >$ARGV[4] 2>&1");
+}
+elsif (($child_pid1!=0) && ($child_pid2==0)) 
+{
+  # fork off child 2 (sensor source) process
+  system("sleep .3");
+  #print("Child 2!!!!!!!!!!!!!!!!!!!!!!!!!!!! with pid: $child_pid2\n");
+  exec("$ARGV[0] >/dev/null 2>&1");  
+}
+elsif (($child_pid1!=0) && ($child_pid2!=0)) 
+{
+  # continuation of parent process
+  $SIG{ALRM} = sub { die "timeout" };
+
+  eval {
+    alarm(120);  # give the process 120 seconds max
+  
+    # waitpid($child_pid2,0); 
+    waitpid($child_pid1,0); 
+    
+    alarm(0);
+
+    print("Child 2 is: $child_pid2");
+    kill 9, $child_pid2;  # kill off child 2
+
+#   $pid = `ps -ef | grep sensorsource.pl | awk -F' ' '{print $1}'`;
+#    print("Killing off pid: $pid\n");
+#    if ($pid) {
+#	kill 9, $pid;
+#	sleep 3;
+#    }
+
+    print("$ARGV[6] passed...\n\n");
+  };
+
+  if ($@) {
+    if ($@ =~ /timeout/) {
+      #print("For now, ???????????????????????? no timeouts!\n");
+
+      # kill off children processes
+      kill 2, $child_pid1;
+      kill 9, $child_pid2;
+ 
+      $pid = `ps | grep psql | awk -F' ' '{print $1}' | awk '{getline; print}'`;
+      if ($pid) {
+        kill 2, $pid;         # kill off psql 
+      }
+
+      sleep 3;
+
+      print("$ARGV[6] failed...\n\n");
+    }
+    else {
+      alarm(0);
+      die;
+    }
+  }
+}
+
+

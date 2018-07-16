@@ -1,0 +1,122 @@
+<HTML>
+<HEAD>
+<TITLE>TESS Directives</TITLE>
+<BODY BGCOLOR="WHITE">
+<TABLE BORDER="1">
+<TR>
+<TD><B><A HREF="#host">host</A></B></TD>
+<TD>The host you want to contact (i.e. www.yahoo.com)<BR>
+This should never contain anything but a host name, do not put
+something like www.google.com/search here, just put www.google.com</TD></TR>
+<TR>
+<TD><B><A HREF="#url">url</A></B></TD>
+<TD> the subdirectory on the host you want (i.e. /search.cgi)</TD></TR>
+<TR>
+<TD><B><A HREF="#method">method</A></B></TD>
+<TD>get/post/questionmark (see documentation)</TD></TR>
+<TR>
+<TD><B><A HREF="#arguments">arguments</A></B></TD>
+<TD>The arguments to the web page.<BR>
+Text and checkbox inputs can be left out but radio button and dropdown
+menus have to be included as they always have a value.  To be
+absolutly safe you can include everything except the submit inputs.</TD></TR>
+<TR>
+<TD><B><A HREF="#columns">columns</A></B></TD><TD>The columns that this scan returns</TD></TR>
+<TR>
+<TD><B><A HREF="#defaultx">defaultx</A></B></TD><TD>The default value of argument x (1 indexed)</TD></TR>
+<TR>
+<TD><B><A HREF="#prefix">prefix</A></B></TD><TD>The text that marks the start of the table</TD></TR>
+<TR>
+<TD><B><A HREF="#termination">termination</A></B></TD><TD>The text that marks the end of the table</TD></TR>
+<TR>
+<TD><B><A HREF="#rowprefix">rowprefix</A></B></TD><TD> The text that marks the beginning of each row</TD></TR>
+<TR>
+<TD><B><A HREF="#rowterm">rowterm</A></B></TD><TD> The text that marks the end of each row</TD></TR>
+<TR>
+<TD><B><A HREF="#columnincludesignature">columnincludesignature</A></B></TD><TD> Include the signature for all columns</TD></TR>
+<TR>
+<TD><B><A HREF="#ColName_prefix">ColName_prefix</A></B></TD><TD> The text that marks the beginning of the column named ColName</TD></TR>
+<TR>
+<TD><B><A HREF="#ColName_term">ColName_term</A></B></TD><TD> The text that marks the end of the column named ColName</TD></TR>
+<TR>
+<TD><B><A HREF="#ColName_transform">ColName_transform</A></B></TD><TD>	A perlesque transform, s/a/b would replace all a's in ColName with b's</TD></TR>
+<TR>
+<TD><B><A HREF="#ColName_includeprefix">ColName_includeprefix</A></B></TD><TD> Include the prefix and term of this column in the result</TD></TR>
+<TR>
+<TD><B><A HREF="#filter">filter</A></B></TD><TD>Ignore any rows found that have the text specified in them</TD></TR>
+<TR>
+<TD><B><A HREF="#bracket">bracket</A></B></TD><TD>If this is found at the beginning of a column it
+must also be at the end</TD></TR></TABLE>
+<BR><HR><BR>
+<TABLE BORDER="1">
+<TR><TD>
+<A NAME="host">
+<B>host</B>
+</TD><TD>
+This is the host that you want your wrapper to contact.  This is not a
+fully specified url.  If you wanted to look at the page
+www.google.com/linux/search.cgi  you would specify www.google.com
+here.</TD><TR><TD>
+<A NAME="url">
+<B>url</B></TD><TD>
+This is the resource that you want to retrieve on the remote host.  If
+you wanted www.google.com/linux/search.cgi you would specify
+/linux/search.cgi here.</TD></TR><TR><TD>
+<A NAME="method">
+<B>method</B></TD><TD>
+<LI>get
+<LI>post
+<LI>questionmark
+This tells tess what method you want to use to send the query data to
+the remote host.  There are currently three options.<BR>
+get performs an html get request by appending &property=value for each
+argument.<BR>
+post will create a post string out of all the arguments and post it to
+the server.<BR>
+questionmark will simply append the argument(s) after a questionmark
+to the url string.  If you know of another way of sending query data
+send it in, we would certainly like to support as many ways of doing
+this as possible.</TD></TR>
+<TR><TD VALIGN="middle">
+<A NAME="arguments">
+<B>arguments</B></TD><TD>
+A comma delimited list of arguments that you want to send in the
+query.  These should be obtained from the html form that sends in the
+query you want to run.  Text inputs need not be specified, however,
+checkboxes, radio buttons, and select menus usually all have to be
+specified.</TD></TR>
+<TR><TD><A NAME="columns"><B>columns</B></TD><TD>
+A comma delimited list of the coulmns that this scan will return.  You
+must specify delimeters for all the columns in this list</TD></TR>
+<TR><TD><A NAME="defaultx"><B>defaultx</B></TD><TD>
+The default value for argument x.  This list is 1 indexed so if your
+list looks like argument=arg1,arg2,arg3 then default1=blah sets arg1's
+default value to blah.</TD></TR>
+<TR><TD><A NAME="prefix"><B>prefix</B></TD><TD>
+A regular expression specifying the text that delimits the start of the
+TeSS table.</TD></TR>
+<TR><TD><A NAME="termination"><B>termination</B></TD><TD>
+A regular expression specifying the text that delimits the end of the
+TeSS table.</TD></TR>
+<TR><TD><A NAME="rowprefix"><B>rowprefix</B></TD><TD>
+A regular expression that specifies the text that starts each row.
+This will only be searched for after the prefix text has be found and
+after the prefix appears in the result text.</TD></TR>
+<TR><TD><A NAME="rowterm"><B>rowterm</B></TD><TD>
+A regular expression that specifies the text that ends each row.
+After the start text is found the end text is searched for and
+everything in between is considered a row and searched through for
+columns.</TD></TR>
+<TR><TD><A
+NAME="columnincludesignature"><B>columnincludesignature</B></TD><TD>
+Tells TeSS that it should include the signature for all columns.<BR>
+For example:<BR>
+If you had colname_prefix=a and colname_term=b and the row looked
+like<PRE>
+this is a really big row</PRE>
+then if columnincludesignature is not specified colname would be
+<PRE> really </PRE> but if it was specified it would be
+<PRE>a really b</PRE></TD></TR> 
+</TABLE>
+</BODY>
+</HTML>

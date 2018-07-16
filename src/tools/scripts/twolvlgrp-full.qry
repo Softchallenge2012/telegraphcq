@@ -1,0 +1,5 @@
+select seqnum, userid, my_agg(dur) 
+from (select seqnum, userid, sessid, my_agg(data) as dur 
+   	  from click_stream 
+   	  group by seqnum, userid, sessid) as click_dur_view
+group by seqnum, userid;

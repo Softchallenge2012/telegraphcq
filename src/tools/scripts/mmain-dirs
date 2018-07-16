@@ -1,0 +1,6 @@
+#!/bin/bash
+
+echo "Swapping into main: mv * *-main"
+mv install install-main
+mv pgdb pgdb-main
+mv postgres postgres-main

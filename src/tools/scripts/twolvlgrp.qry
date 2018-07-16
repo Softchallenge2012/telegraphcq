@@ -1,0 +1,1 @@
+select seqnum, userid, my_agg(dur) from click_dur_view group by seqnum, userid;

@@ -1,0 +1,107 @@
+============== starting postmaster                    ==============
+running on port 65432 with pid 23498
+============== populating station table               ==============
+============== running regression test queries        ==============
+simpleSelect
+measurements
+ region | stationid |    name    | unknown | highway | mile  | direction | longitude | latitude 
+--------+-----------+------------+---------+---------+-------+-----------+-----------+----------
+      4 |      4131 | SB SR-242. |      28 |       4 | 14.49 | E         |   38.0008 | -122.039
+(1 row)
+
+      4 |      4134 | Port Chicago Hwy |      28 |       4 | 14.49 | W         |   38.0075 | -122.039
+
+success=1, cqcancel=1
+simpleSelect passed...
+
+simpleSelect4
+measurements
+ stationid | speed 
+-----------+-------
+      4138 |    59
+(1 row)
+
+      4147 |    48
+
+success=1, cqcancel=1
+simpleSelect4 passed...
+
+simpleSelect
+measurements
+ region | stationid |    name    | unknown | highway | mile  | direction | longitude | latitude 
+--------+-----------+------------+---------+---------+-------+-----------+-----------+----------
+      4 |      4131 | SB SR-242. |      28 |       4 | 14.49 | E         |   38.0008 | -122.039
+(1 row)
+
+      4 |      4134 | Port Chicago Hwy |      28 |       4 | 14.49 | W         |   38.0075 | -122.039
+
+success=1, cqcancel=1
+simpleSelect passed...
+
+simpleSelect4
+measurements
+ stationid | speed 
+-----------+-------
+      4138 |    59
+(1 row)
+
+      4147 |    48
+
+success=1, cqcancel=1
+simpleSelect4 passed...
+
+simpleSelect4
+measurements
+ stationid | speed 
+-----------+-------
+      4138 |    59
+(1 row)
+
+      4147 |    48
+
+success=1, cqcancel=1
+simpleSelect4 passed...
+
+simpleSelect4
+measurements
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+success=0, cqcancel=0
+simpleSelect4 passed...
+
+simpleSelect
+measurements
+simpleSelect passed...
+
+simpleSelect
+measurements
+simpleSelect passed...
+
+============== shutting down postmaster               ==============
+did i clean up?
+
+
+2 rows per query.
+2 rows per query.
+2 rows per query.
+2 rows per query.
+2 rows per query.
+2 rows per query.
+NOTICE:  Message from PostgreSQL backend:
+        The Postmaster has informed me that some other backend
+        died abnormally and possibly corrupted shared memory.
+        I have rolled back the current transaction and am
+        going to terminate your database system connection and exit.
+        Please reconnect to the database system and repeat your query.
+2 rows per query.
+psql: could not connect to server: No such file or directory
+        Is the server running locally and accepting
+        connections on Unix domain socket "/tmp/.s.PGSQL.65432"?
+2 rows per query.
+psql: could not connect to server: No such file or directory
+        Is the server running locally and accepting
+        connections on Unix domain socket "/tmp/.s.PGSQL.65432"?
+pg_ctl: cannot find /home/eshan/db/db/postmaster.pid
+Is postmaster running?
+[eshan@darwin TelegraphCQ]$ ls

@@ -1,0 +1,86 @@
+WARNINGS:
+
+1. This software is an alpha release made available for early
+   dissemination only.  It is not a robust release and there are
+   several  bugs.  Please contact the author for any problems;
+   feedback is greatly appreciated. 
+
+2. Code documentation and release notes are quite primitive.
+   Hopefully these will get better soon.
+
+3. Testing of wrappers is currently very difficult, methods to improve
+   this are in the works.
+
+4. Thanks for being a guinea pig. Be careful if this software is
+   sending a probe to Mars.
+
+SUPPORTED PLATFORMS:  This software should run on any platform that
+supports java (version 1.2 or better).  It has currently only been
+tested on RedHat Linux ver 6.2 and Debian Sid.  
+
+
+REQUIRED SOFTWARE:
+- Java version 1.2 or better (previous versions may work but have not
+  been tested)
+- gnu-regexp-1.0.8 or better.  See http://www.cacas.org/~wes/java/ for
+  more information about the regexp library tess uses
+
+
+INSTALL:
+Since you're reading this I'll assume you've got the tarball
+unpacked.  If for some reason you haven't you can do that by typing
+tar -xzvf TeSS-0.1.tar.gz
+in the directory you downloaded TeSS to.
+
+For all these instructions I'm assuming you have TeSS in your home
+directory.  If you don't you should replace all the references to
+~/TeSS with the path to TeSS on your machine.
+
+1. Add the gnu-regexp package to your classpath.
+   For bash type shells type: 
+   export CLASSPATH=$CLASSPATH:~/TeSS/gnu-regexp-1.0.8.jar
+
+   For csh type shells type:
+   setenv CLASSPATH "$CLASSPATH"\:~/TeSS/gnu-regexp-1.0.8.jar
+
+2. Compile TeSS.
+   cd ~/TeSS
+   make
+
+3. If you don't get any errors you should be good to go.  You can run
+   a brief test by typing make runurlt, you should see something like
+   the following:
+
+
+$ make runurlt
+java TeSS.NativeWrapper google.jsc
+Row Prefix is ^<p>
+Parsed google.jsc successfully 
+
+Getting default 0 with val: telegraph
+Getting default 1 with val: 0
+Args are: [q, start] -- [telegraph, 0]
+Target is: www.google.com/search?q=telegraph&start=0
+Reading:www.google.com/search?q=telegraph&start=0
+Done fetching page
+
+Found: [Electronic Telegraph | Front Page, Britain's biggest-selling broadsheet
+daily., www.telegraph.co.uk/]
+Found: [The Telegraph - Calcutta, NULL, www.telegraphindia.com/]
+Found: [Belfast Telegraph News, NULL, www.belfasttelegraph.co.uk/]
+Found: [The Nashua Telegraph on the Web, NULL, www.nashuatelegraph.com/]
+Found: [macon - home, The No. 1 online source for news and information about Macon, Warner Robins, and the rest of Middle..., web.philly.com/content/macon/2001/01/23/home/]
+Found: [Dubuque Telegraph Herald, NULL, www.thonline.com/]
+Found: [Bluefield Daily Telegraph, Local news, sports, weather and web sites of local interest for southern West Virginia and southwestern..., www.bdtonline.com/]
+Found: [The Evening Telegraph: Wednesday, January 24, 2001, Dundee's popular daily newspaper., www.dcthomson.co.uk/mags/tele/]
+Found: [The Telegraph Office -- A Tribute to Morse Telegraphy and ..., Information on telegraph keys, bugs, sounders, relays, spark keys, camelback keys, morse registers,..., www.metronet.com/~nmcewen/ref.html]
+Found: [The Daily Telegraph, NULL, www.dailytelegraph.co.uk/]
+Time: 283
+
+
+If you get something similar there is a very good chance TeSS is
+working properly.  Now you can go read the wrapper documentation to
+figure out how to write wrappers for the infomation you really want.
+
+Any questions, comments, problems, etc. should be directed to
+tessinfo@db.cs.berkeley.edu.

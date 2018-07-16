@@ -1,0 +1,183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <title>Data Acquisition</title>
+</head>
+<body>
+<h2><a href="http://telegraph.cs.berkeley.edu"><img
+ src="tcq_logo_50pct.png" alt="telegraph.cs.berkeley.edu"
+ style="border: 0px solid ; width: 192px; height: 95px;"></a></h2>
+<br>
+<h2>Data Acquisition in TelegraphCQ</h2>
+<br>
+TelegraphCQ interacts with data sources via its wrapper clearinghouse
+process.&nbsp; The wrapper clearing house manages connections with
+external data sources, and the user defined wrappers which read data
+from these data sources.&nbsp; The sole function of the wrapper
+clearinghouse is to set-up, schedule, and clean up&nbsp; wrapper
+instances.<br>
+<br>
+<h3>What is a wrapper?</h3>
+<br>
+A wrapper consists of a set of functions which are defined using the
+Postgres CREATE FUNCTION command.&nbsp; A wrapper will typically define
+an initialization function, a next data tuple function, a done
+function, and possibly a rescan function.&nbsp; The init, next, and
+done functions are used by the wrapper clearing house to set up wrapper
+state, retrieve data rows from the data source, and
+cleanup when the wrapper is done.&nbsp; <br>
+<br>
+TelegraphCQ supports two types of data sources.&nbsp; PUSH data sources
+initiate a connection to TelegraphCQ, declare which wrapper should
+handle the data, and which stream will receive the data once it has
+been turned into a data tuple. <br>
+<br>
+A PULL type source is not aware of TelegraphCQ, and thus cannot
+initiate a connection to it.&nbsp; For such sources, the wrapper must
+set up a connection to the data source in its init
+function.&nbsp;&nbsp; In addition, some PULL sources may require that
+TelegraphCQ send some information to the source before it will produce
+data results.&nbsp; An example of such a source would be a data
+provider that returns search results in response to a set of key
+words.&nbsp; The last wrapper function, the rescan function,is
+required for PULL sources which require input values in order to
+produce
+data items. <br>
+<br>
+Wrappers can also have a set of KEY/VALUE pairs associated with them
+when they are created. This information, which is typically used for
+wrapper or wrapper clearinghouse configuration,&nbsp; can be retrieved
+via an API&nbsp; from within a wrapper function.<br>
+<br>
+<h4>Specifing the wrapper type</h4>
+<br>
+A wrapper can be either a PUSH or PULL type wrapper.&nbsp; Setting the
+WRAPPERTYPE configuration parameter to either PUSH or PULL specifies
+the type of the wrapper.&nbsp; By default wrappers are PUSH type
+wrappers.<br>
+&nbsp;<br>
+<br>
+<h3>The CSV Wrapper</h3>
+<br>
+Many TelegraphCQ users may not want to worry about the details of
+wrapper implementation.&nbsp; We have developed a flexible wrapper that
+will serve the needs of many users.<br>
+<br>
+The wrapper supports the input of data that arrives at the server in a
+delimited format.&nbsp; By default the per column delimiters are
+commas, and data tuples are delimited by a newline, but these defaults
+can be overridden using wrapper configuration parameters.&nbsp;
+Further, the number of columns in a data item need not match the number
+of columns in the target stream exactly: data tuples with too many
+items will be truncated by the wrapper to fit into the target, and data
+tuples with fewer columns will be padded with NULL&#8217;s for the columns
+that are missing.<br>
+<br>
+Recall that each TelegraphCQ data stream must have a special timestamp
+attribute which the executor uses for stream operations.&nbsp; This
+timestamp attribute must be the last attribute in any stream that will
+be used with the CSV wrapper.<br>
+<br>
+The data conversion for a particular column uses the postgres data
+input function for the type of the column in the target stream.&nbsp;
+If this function is unable to do the conversion, that column will have
+a NULL value.<br>
+<br>
+<br>
+<h4>Setting up the CSV wrapper</h4>
+<br>
+The CSV wrapper is predefined in the system catalogs.&nbsp; A wrapper
+named csvwrapper is available immediately upon installation.&nbsp;
+Users may create additional instances of the CSV wrapper with different
+configuration parameters using the CREATE WRAPPER DDL statement.&nbsp; <br>
+<br>
+The pre-defined wrapper functions for the CSV wrapper are called:<br>
+Csv_init&nbsp; -- initialization function<br>
+Csv_next &#8211; next tuple<br>
+Csv_done -- cleanup<br>
+<br>
+<h4>Providing data to the CSV wrapper</h4>
+<br>
+By default, the wrapper clearinghouse listens for connections from PUSH
+data sources on port 5533.&nbsp; A simple perl script called source.pl
+is provided with the distribution to send data to the wrapper
+clearinghouse.&nbsp; It functions much like the unix &#8220;tee&#8221; command with
+its input going both to TelegraphCQ and the standard output.&nbsp; <br>
+<br>
+The script is invoked as follows: <br>
+<br>
+source.pl hostname port name<br>
+<br>
+the host and port specify the location where the wrapper clearinghouse
+listens for connections.<br>
+<br>
+The name string is actually composed of two parts separated by
+commas.&nbsp; The first is the name of the wrapper that will be used to
+process the data stream (in this example, csvwrapper).&nbsp; The second
+is the fully qualified name of the stream that will receive the data
+(this, for instance, might be myschema.csvstream)<br>
+<br>
+<br>
+<h4>Configuring the CSV wrapper</h4>
+<br>
+By default, the CSV wrapper expects columns to be delimited by
+commas.&nbsp; These per column delimiters can be overridden by creating
+a new wrapper object.&nbsp; The following wrapper attributes are
+recognized by the CSV wrapper:<br>
+<table cellpadding="2" cellspacing="2" border="1"
+ style="text-align: left; width: 100%;">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">KEY<br>
+      </td>
+      <td style="vertical-align: top;">VALUE<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">DELIMITERS#</td>
+      <td style="vertical-align: top;">,A string containing all the
+possible delimiters for a particular column, numbered starting from 0<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">DEFAULT_DELIMITERS</td>
+      <td style="vertical-align: top;">&nbsp;Set up the delimiters for
+columns not explicitly specified using the DELIMITERS# key.&nbsp; The
+default is ,<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">ERROR_INDICATOR</td>
+      <td style="vertical-align: top;">When the csv wrapper looks for a
+new data row, it first looks to see if the row begins with the text
+specified in the error_indicator key.&nbsp; If so, the error message is
+extracted, and the wrapper passes the error back to the wrapper
+clearinghouse.&nbsp; The default for this column is &#8220;ERROR:&#8221;</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">DONE_INDICATOR</td>
+      <td style="vertical-align: top;">This key is used only&nbsp; for
+wrappers which retrieve rows in response to some query that has been
+sent via the rescan function.&nbsp; For such wrappers, the text in this
+key is used by the csv_next function to determine when all of the
+results for a particular query have been processed.&nbsp; The default
+is &#8220;DONE WITH PROBE&#8221;<br>
+      <span style="text-decoration: underline;"><br>
+      </span></td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<br>
+<br>
+SEE ALSO:<br>
+<br>
+<a href="wrapperwriter.html">TelegraphCQ Wrapper Writers guide</a><br>
+<br>
+<br>
+<span style="text-decoration: underline;"><br>
+</span>
+</body>
+</html>

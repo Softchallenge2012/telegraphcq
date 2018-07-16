@@ -1,0 +1,5 @@
+#echo "Starting up TelegraphCQ";
+#PGDIR=$PGDATA
+#pg_ctl start -l $PGDIR/logfile -o "-i -t tcqsanity -u $USER -G -y -x -z "
+
+echo "THIS SCRIPT IS NO LONGER USED ! CHECK YOUR SCRIPTS !!"

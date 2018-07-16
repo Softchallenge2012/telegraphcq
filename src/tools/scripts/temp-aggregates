@@ -1,0 +1,7 @@
+Command used to create the my_count aggregate that I will need to run my aggregations.
+
+create aggregate ( basetype = 'ANY', sfunc = int4inc, stype = integer, initcond = '0' );
+
+This allows the return and transition type to be integer which can be
+used with my int4count_w function.
+

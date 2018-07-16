@@ -1,0 +1,17 @@
+host=quote.yahoo.com	
+url=/q
+method=get
+arguments=s
+columns=symbol,last, price
+prefix=<html
+rowprefix=Volume
+rowterm=Messages
+symbol_prefix=<td[^>]*>
+symbol_term=</td>
+last_prefix=<td[^>]*>
+last_term=</td>
+price_prefix=<td[^>]*>
+price_term=</td>
+termination=</HTML>
+end
+

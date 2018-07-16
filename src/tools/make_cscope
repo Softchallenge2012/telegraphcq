@@ -1,0 +1,10 @@
+#!/bin/sh
+trap "rm -f /tmp/$$" 0 1 2 3 15
+rm -f ./cscope.out ./cscope.in.out ./cscope.po.out
+#cscope -b -I`pwd`/include -q -R -P`pwd`/
+cscope -b -q -R
+
+#find . -type d -print | \
+#while read DIR; do
+#  [ "$DIR" != "." ] && ln -f -s `pwd`/cscope.out $DIR
+#done

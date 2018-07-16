@@ -1,0 +1,10 @@
+#!/bin/sh
+#
+
+case $# in
+    0) INTERFACE=eth0;;
+    1) INTERFACE=$1;;
+    *) echo 'Usage: $1 [interface]';;
+esac
+
+tcpdump -l -i $INTERFACE -n -nnnn -tttt tcp 

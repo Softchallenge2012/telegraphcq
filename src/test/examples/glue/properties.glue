@@ -1,0 +1,36 @@
+# Port that GlueServer listens to
+port = 6789
+#hifi.proxy_sensors_1 = select * from hifi.sensors where id = 1;drones.cs.berkeley.edu;5432;cdb;sailesh;
+
+hifi.rfid_stream_1 = SELECT c1.area_id, c2.tag_name, count(*) FROM hifi.readings r, Catalog.setup c1, Catalog.tag_names c2 WHERE r.receptor_id = c1.receptor_id  AND r.tag_id = c2.tag_id and times_read >= 1 GROUP BY c1.area_id, c2.tag_name HAVING count(*) >= 2 WINDOW r['1 sec'];192.168.0.2;5432;hifi;hifi;
+hifi.rfid_stream_2 = SELECT c1.area_id, c2.tag_name, count(*) FROM hifi.readings r, Catalog.setup c1, Catalog.tag_names c2 WHERE r.receptor_id = c1.receptor_id  AND r.tag_id = c2.tag_id and times_read >= 1 GROUP BY c1.area_id, c2.tag_name HAVING count(*) >= 2  WINDOW r['1 sec'];192.168.0.4;5432;hifi;hifi;
+#hifi.rfid_stream_3 = SELECT c1.area_id, c2.tag_name, count(*) FROM hifi.readings r, Catalog.setup c1, Catalog.tag_names c2 WHERE r.receptor_id = c1.receptor_id  AND r.tag_id = c2.tag_id and times_read >= 1 GROUP BY c1.area_id, c2.tag_name HAVING count(*) >= 2 WINDOW r['1 sec'];192.168.0.4;5432;hifi;hifi;
+
+#hifi.rfid_stream_1 = SELECT c1.area_id, c2.tag_name, count(*) FROM hifi.readings r, Catalog.setup c1, Catalog.tag_names c2 WHERE r.receptor_id = c1.receptor_id  AND r.tag_id = c2.tag_id and times_read >= 1 GROUP BY c1.area_id, c2.tag_name WINDOW r['1 sec'];192.168.0.2;5432;hifi;hifi;
+#hifi.rfid_stream_2 = SELECT c1.area_id, c2.tag_name, count(*) FROM hifi.readings r, Catalog.setup c1, Catalog.tag_names c2 WHERE r.receptor_id = c1.receptor_id  AND r.tag_id = c2.tag_id and times_read >= 1 GROUP BY c1.area_id, c2.tag_name WINDOW r['1 sec'];192.168.0.4;5432;hifi;hifi;
+
+#hifi.rfid_stream_1 = select s.area_id, c.tag_name, count(*) from hifi.readings r, Catalog.setup s, Catalog.tag_names c WHERE r.receptor_id = s.receptor_id AND c.tag_id = r.tag_id group by s.area_id, c.tag_name WINDOW r['0.5 sec'];192.168.0.2;5432;hifi;hifi;
+#hifi.rfid_stream_2 = select s.area_id, c.tag_name, count(*) from hifi.readings r, Catalog.setup s, Catalog.tag_names c WHERE r.receptor_id = s.receptor_id AND c.tag_id = r.tag_id group by s.area_id, c.tag_name WINDOW r['0.5 sec'];192.168.0.4;5432;hifi;hifi;
+
+#hifi.rfid_stream_1 = select 1, r.tag_id, 5 from hifi.readings r;192.168.0.2;5432;hifi;hifi;
+#hifi.rfid_stream_2 = select 1, r.tag_id, 5 from hifi.readings r;192.168.0.4;5432;hifi;hifi;
+
+
+#hifi.rfid_stream_2 = SELECT  c1.area_id, distinct c2.tag_name, count(*) FROM hifi.readings r, Catalog.setup c1, Catalog.tag_names c2 WHERE r.receptor_id = c1.receptor_id AND c2.tag_id = r.tag_id AND c1.area_id = '2' AND r.times_read >= 2 GROUP BY c1.area_id, r.tag_id HAVING  count(*) > 1 AND r.tag_id <> '' WINDOW r['2 sec'];192.168.0.4;5432;hifi;hifi;
+
+
+#hifi.rfid_stream_1 = select '1' as area_id, tag_id, 3 from hifi.readings window r['1 sec'];192.168.0.4;5432;hifi;hifi;
+#hifi.rfid_stream_2 = select '2' as area_id, tag_id, 3 from hifi.readings window r['1 sec'];192.168.0.4;5432;hifi;hifi;
+
+#hifi.rfid_stream = UNION;hifi.rfid_stream_1;hifi.rfid_stream_2;hifi.rfid_stream_3;
+hifi.rfid_stream = UNION;hifi.rfid_stream_1;hifi.rfid_stream_2;
+
+
+
+
+hifi.sensor_stream_1 = SELECT c.area_id, avg(s.temp) as avgtmp, avg(s.noise) as avgnoise FROM hifi.sensors s, Catalog.setup c WHERE s.receptor_id = c. receptor_id  GROUP BY c.area_id WINDOW s['0.5 sec'];192.168.0.2;5432;hifi;hifi;
+#hifi.sensor_stream_2 = SELECT c.area_id, avg(s.temp) as avgtmp, avg(s.noise) as avgnoise FROM hifi.sensors s, Catalog.setup c WHERE s.receptor_id = c. receptor_id  GROUP BY c.area_id WINDOW s['0.5 sec'];192.168.0.3;5432;hifi;hifi;
+hifi.sensor_stream_3 = SELECT c.area_id, avg(s.temp) as avgtmp, avg(s.noise) as avgnoise FROM hifi.sensors s, Catalog.setup c WHERE s.receptor_id = c. receptor_id  GROUP BY c.area_id WINDOW s['0.5 sec'];192.168.0.4;5432;hifi;hifi;
+
+#hifi.sensor_stream = UNION;hifi.sensor_stream_1;hifi.sensor_stream_2;hifi.sensor_stream_3;
+hifi.sensor_stream = UNION;hifi.sensor_stream_1;hifi.sensor_stream_3;

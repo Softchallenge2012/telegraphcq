@@ -1,0 +1,83 @@
+----------------------------------------------------------------------
+This file contains information on TelegraphCQ 2.0. 
+
+What's new
+----------------------------------------------------------------------
+
+- Better stability: Extensive testing. Lots of bugs have been squashed
+
+- Better performance: System has been load-tested, profiled and optimized
+to a large extent.
+
+- New window semantics: You can now specify a sliding, hopping or 
+jumping time window over streams using the window clause:
+[ RANGE BY '<time>' SLIDE BY '<time>' START AT '<time>' ]. 
+In addition, a special aggregate, wtime(*),returns the latest timestamp
+in the current time window.
+
+- SQL:1999-like WITH syntax and recursive queries.
+
+- Flux: A dataflow operator that encapsulates adaptive state partioning 
+and data flow routing.
+
+- Heartbeats: We've added support for heartbeats using punctuation tuples.
+
+- Summarize on drop (Data Triage): Tuples dropped on stream overload can
+now be summarized. 
+
+Request
+-------------------------------------------------------------------
+
+If you are using TelegraphCQ for any project (research or otherwise),
+we'd like to know ! 
+
+  - If you are making any performance measurements of TelegraphCQ and
+  are publishing it or disseminating it in some way, please do let us
+  know.
+
+  - We welcome bug fixes and code contributions of any kind. Please
+  send all patches to tcqfeedback@db.cs.berkeley.edu
+
+Note
+-------------------------------------------------------------------
+- You will need to create a fresh database to use TelegraphCQ 2.0
+as it will not work against an existing PostgreSQL database. You are
+free to use pgdump to export and then import your data from an
+existing PostgreSQL database. 
+
+For more information
+-------------------------------------------------------------------
+
+Getting Started: 
+  
+  A TelegraphCQ Getting Started guide can be found in
+  docs/TelegraphCQ/TelegraphCQ_v2.0.html and on the web at 
+  http://telegraph.cs.berkeley.edu/v2.0/
+
+  The Getting Started guide also has links to other information such
+  as DDL/DML syntax, examples etc. Note that the documentation
+  installed in your TelegraphCQ installation directory contains
+  documentation for the new syntax changes (CREATE/ALTER/DROP STREAM,
+  the new window clause in DML) integrated into the existing PostgreSQL
+  documentation.
+
+The Telegraph Project:
+
+  http://telegraph.cs.berkeley.edu
+
+Supported Platforms
+---------------------------------------------------------------------
+
+TelegraphCQ is supported on Linux x86 (Fedora Core 1), the platform on 
+which it was developed.
+
+In general, TelegraphCQ should run anywhere PostgreSQL runs. However,
+there are significant differences in how we use shared memory and
+synchronization primitives such as semaphores. This is likely to cause
+some hiccups on platforms where we have not tested it yet. We welcome
+patches that help in porting TelegraphCQ. 
+
+
+Please send all comments (and patches) to tcqfeedback@db.cs.berkeley.edu
+
+

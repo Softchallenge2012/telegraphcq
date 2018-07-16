@@ -1,0 +1,20 @@
+host=cad.chp.ca.gov
+url=/sa_stcc.asp?centerin=BOCC&
+columns=no,time,url,type,location,area
+prefix=<U>Area</U></FONT><B></TD></TR>
+termination=<\/table><\/center>
+rowprefix=<TR VALIGN="TOP" ALIGN="left">
+rowterm=<\/TR>
+no_prefix=<FONT SIZE=-2 FACE="Arial">
+no_term=\&nbsp\;\&nbsp\;
+time_prefix=<FONT SIZE=-2 FACE="Arial">
+time_term=\&nbsp\;\&nbsp\;
+url_prefix=<FONT SIZE=-2 FACE="Arial"><A HREF=
+url_term=[ ]TARGET\=
+type_prefix=>
+type_term=<\/A>\&nbsp\;\&nbsp\;
+location_prefix=<FONT SIZE=-2 FACE="Arial">
+location_term=\&nbsp\;\&nbsp\;
+area_prefix=<FONT SIZE=-2 FACE="Arial">
+area_term=\&nbsp\;\&nbsp\;
+end

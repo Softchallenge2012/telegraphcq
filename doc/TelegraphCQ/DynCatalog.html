@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>TelegraphCQ Dynamic Catalog</title>
+  <meta name="generator"
+ content="amaya 8.0, see http://www.w3.org/Amaya/">
+</head>
+<body>
+<h2><a href="http://telegraph.cs.berkeley.edu"><img
+ src="tcq_logo_50pct.png" alt="telegraph.cs.berkeley.edu"
+ style="border: 0px solid ; width: 192px; height: 95px;"></a></h2>
+<h2>Introspective Query Processing</h2>
+<p>TelegraphCQ supports <em>introspective queries</em>the state of the
+system. This is achieved through the <em>dynamic catalog </em>- a new
+feature
+in TelegraphCQ. In a traditional RDBMS, the system catalogs are used to
+store
+meta-data of user data. This meta-data could be queried just like user
+data.
+In the same vein, the TelegraphCQ dynamic catalog is used to store data
+that
+represents events happening <em>in </em>the system. This data appears
+continuously in three special streams that can be queried like any user
+stream.</p>
+<p></p>
+<p>This feature is not totally integrated in TelegraphCQ yet. To
+activate the
+feature, the appropriate DDL statements (in
+<code>src/test/examples/dyncat/dyncat.sql</code>) must be executed
+against
+your database, after which TelegraphCQ<strong> must be restarted</strong>.
+Once this is done, you may write queries against the dynamic catalog
+streams.</p>
+<p></p>
+<h4>Dynamic Catalog Streams</h4>
+<p>Currently, TelegraphCQ supports three dynamic catalog streams -
+<code>tcq_queries, tcq_operators </code>and <code>tcq_queues</code>.
+The
+<code>tcq_queries </code>stream captures events corresponding to the
+entry
+and exit of queries in the system. The <code>tcq_operators</code>
+stream
+captures events corresponding to changes in operators in the system.
+The
+entry of a query causes either an operator to be added or folded into
+an
+existing operator. Similarly, the exit of a query causes either an
+operator
+to be unfolded from an existing operator or removed from the system.
+The
+<code>tcq_queues</code> stream captures events corresponding to the
+<em>queues </em>associated with each operator. Each operator has an
+input and
+and output queue, and tuples are enqueued to and dequeued from these
+queues.
+For each such operation a tuple appears on the <code>tcq_queues</code>
+stream. </p>
+<p>The following tables describe in detail the schemas of each of these
+streams.</p>
+<h4><code>tcq_queries</code></h4>
+<table border="1">
+  <caption><br>
+  </caption> <tbody>
+    <tr>
+      <td>Column</td>
+      <td>Type</td>
+      <td> Description </td>
+    </tr>
+    <tr>
+      <td><code>tcqtime</code></td>
+      <td><code>timestamp without time zone</code></td>
+      <td>Timestamp of the event</td>
+    </tr>
+    <tr>
+      <td><code>qrynum</code></td>
+      <td><code>integer</code></td>
+      <td>Sequentially increasing query number</td>
+    </tr>
+    <tr>
+      <td><code>qid</code></td>
+      <td><code>integer</code></td>
+      <td>Result queue associated with this query</td>
+    </tr>
+    <tr>
+      <td><code>kind</code></td>
+      <td><code>character(1)</code></td>
+      <td>Nature of the event:
+      <p></p>
+      <p><code>'E' - Entry</code></p>
+      <p><code>'X' - Exit</code></p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>qrystr</code></td>
+      <td><code>character varying(1000)</code></td>
+      <td>Query string</td>
+    </tr>
+  </tbody>
+</table>
+<h4><code><strong>tcq_operators</strong></code></h4>
+<table border="1">
+  <caption><br>
+  </caption> <tbody>
+    <tr>
+      <td>Column</td>
+      <td>Type</td>
+      <td>Description</td>
+    </tr>
+    <tr>
+      <td><code>tcqtime</code></td>
+      <td><code>timestamp without time zone</code></td>
+      <td>Timestamp of the event</td>
+    </tr>
+    <tr>
+      <td><code>opnum</code></td>
+      <td><code>integer</code></td>
+      <td>Sequentially increasing operator number</td>
+    </tr>
+    <tr>
+      <td><code>opid</code></td>
+      <td><code>integer</code></td>
+      <td>Current operator identifier associated with this operator</td>
+    </tr>
+    <tr>
+      <td><code>numqrs</code></td>
+      <td><code>integer</code></td>
+    </tr>
+    <tr>
+      <td><code>kind</code></td>
+      <td><code>character(1)</code></td>
+      <td>Nature of the event:
+      <p><code>'E' - Enter operator (brand new operator created)</code></p>
+      <p><code>'A' - Add query to operator (operator folded with
+existing operator)</code></p>
+      <p><code>'R' - Remove query from operator </code></p>
+      <p><code>'X' - Exit operator </code></p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>qid</code></td>
+      <td><code>integer</code></td>
+      <td>Queue that corresponds to the query that caused this operator
+event</td>
+    </tr>
+    <tr>
+      <td><code>opstr</code></td>
+      <td><code>character varying(1000)</code></td>
+      <td>Exact textual description of the <code>Node </code>data
+structure corresponding to this operator</td>
+    </tr>
+    <tr>
+      <td><code>opkind</code></td>
+      <td><code>character(1)</code></td>
+      <td>Nature of this operator
+      <p>'F' - FSteM</p>
+      <p>'G' - GSFilter</p>
+      <p>'M' - ScanModule</p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>opdesc</code></td>
+      <td><code>character varying(100)</code></td>
+      <td>Readable textual description of the expression associated
+with this operator</td>
+    </tr>
+  </tbody>
+</table>
+<p></p>
+<h4><code><strong>tcq_queues</strong></code></h4>
+<table border="1">
+  <caption><br>
+  </caption> <tbody>
+    <tr>
+      <td>Column</td>
+      <td>Type</td>
+      <td>Description</td>
+    </tr>
+    <tr>
+      <td><code>tcqtime</code></td>
+      <td><code>timestamp without time zone</code></td>
+      <td>Timestamp of the event</td>
+    </tr>
+    <tr>
+      <td><code>opid</code></td>
+      <td><code>integer</code></td>
+      <td>Operator associated with this queue</td>
+    </tr>
+    <tr>
+      <td><code>qkind</code></td>
+      <td><code>character(1)</code></td>
+      <td>Nature of this queue
+      <p><code>'I' - Input Queue</code></p>
+      <p><code>'O' - Output Queue</code></p>
+      </td>
+    </tr>
+    <tr>
+      <td><code>kind</code></td>
+      <td><code>character(1)</code></td>
+      <td>Nature of the event
+      <p><code>'E' - Successful enqueue</code></p>
+      <p><code>'F' - Failed enqueue</code></p>
+      <p><code>'D' - Successful dequeue</code></p>
+      <p><code>'N' - NULL dequeue</code></p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

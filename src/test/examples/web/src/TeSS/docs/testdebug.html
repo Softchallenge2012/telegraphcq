@@ -1,0 +1,71 @@
+<HTML>
+<HEAD>
+<TITLE>Testing and Debuging TESS Wrappers</TITLE>
+</HEAD>
+<BODY BGCOLOR="white">
+<H2>Testing and Debuging TESS Wrappers</H2>
+<P>You should always test your wrapper before considering it done.
+There are often weirdness in the HTML that you don't notice otherwise. These
+can usually be delt with rather easily by a slight modification of a
+regular expression somewhere. To test your wrapper you can either use
+the Makefile in the directory or just run the NativeWrapper class.
+I'll give a brief introduction to doing both here.</P>
+<H3>Using the Makefile</H3>
+<P>To use the Makefile you need only supply the name of the wrapper
+and optionally any arguments you want to pass in.</P>
+<P>To test the <A HREF="example.html">google example</A> you would type
+<PRE>
+$ make test google.jsc "q=telegraph"
+</PRE>
+If you leave of the arguments it will just use the default arguments
+you supply.</P>
+<P>What gets printed when you run tests is what the wrapper is finding
+as it searches.  It should look something like:
+<PRE>
+Parsed telegraph/source/tupleReader/URLScan/google.jsc successfully 
+
+Args are: [q] -- [telegraph]
+Target is: www.google.com/search?q=telegraph
+Reading:www.google.com/search?q=telegraph
+adding Electronic Telegraph | Front Page to column 0
+adding Britain's biggest-selling broadsheet daily. to column 1
+Done fetching page
+
+adding www.telegraph.co.uk/ to column 2
+Found: [Electronic Telegraph | Front Page, Britain's biggest-selling broadsheet daily., www.telegraph.co.uk/]
+adding Electronic Telegraph | Front Page to column 0
+adding www.telegraph.co.uk/home.html to column 2
+Found: [Electronic Telegraph | Front Page, NULL, www.telegraph.co.uk/home.html]
+adding Belfast Telegraph News to column 0
+adding www.belfasttelegraph.co.uk/ to column 2
+Found: [Belfast Telegraph News, NULL, www.belfasttelegraph.co.uk/]
+adding The Daily Telegraph to column 0
+adding www.dailytelegraph.co.uk/ to column 2
+Found: [The Daily Telegraph, NULL, www.dailytelegraph.co.uk/]
+</PRE>
+What does all this mean?  The first thing that happens is that
+google.jsc is parsed by the URLConfig class.  When it's finished it
+prints out Parsed [yourfile] successfully.  It then prints out the target
+page that it is going to try and fetch.  The PageBuffer then goes out
+and starts fetching the page, since it does this in another thread you
+notice that the results can start coming back before the page has been
+fully fetched.  The scanner then outputs what it is adding to each
+column and finally outputs a comma delimited list of each row as it
+finds it.</P>
+<P>If you want to use the main method of the NativeWrapper class you
+need to provide it a .jsc file and optionally arguments (it's almost
+the same as using the makefile).  You would do something like:
+<PRE>
+$ java NativeWrapper google.jsc "q=telegraph"
+</PRE>
+The advantage here is that you can specify the debug level.  (Once
+it's supported)</P>
+
+<BR><BR>
+<A HREF="">[Home]</A>
+<A HREF="tutorial.html">[Tutorial Start]</A>
+<A HREF="example.html">[Example 1]</A>
+<A HREF="testdebug.html">[Testing and debuging]</A>
+
+</BODY>
+</HTML>

@@ -1,0 +1,66 @@
+============== starting postmaster                    ==============
+running on port 65432 with pid 26297
+============== populating station table               ==============
+============== running regression test queries        ==============
+simpleSelect2
+measurements
+        tcqtime         | stationid | speed 
+------------------------+-----------+-------
+ 2003-04-21 10:02:15-07 |      4130 |    61
+(1 row)
+
+ 2003-04-21 10:02:15-07 |      4138 |    67
+
+success=1, cqcancel=1
+simpleSelect2 passed...
+
+simpleSelect2
+measurements
+        tcqtime         | stationid | speed 
+------------------------+-----------+-------
+ 2003-04-21 10:02:20-07 |      4130 |    61
+(1 row)
+
+ 2003-04-21 10:02:20-07 |      4138 |    67
+
+success=1, cqcancel=1
+simpleSelect2 passed...
+
+simpleSelect5
+measurements
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+success=0, cqcancel=0
+simpleSelect5 passed...
+
+simpleSelect5
+measurements
+simpleSelect5 passed...
+
+simpleSelect2
+measurements
+simpleSelect2 passed...
+
+============== shutting down postmaster               ==============
+
+
+2 rows per query.
+2 rows per query.
+1 rows per query.
+NOTICE:  Message from PostgreSQL backend:
+        The Postmaster has informed me that some other backend
+        died abnormally and possibly corrupted shared memory.
+        I have rolled back the current transaction and am
+        going to terminate your database system connection and exit.
+        Please reconnect to the database system and repeat your query.
+1 rows per query.
+psql: could not connect to server: No such file or directory
+        Is the server running locally and accepting
+        connections on Unix domain socket "/tmp/.s.PGSQL.65432"?
+2 rows per query.
+psql: could not connect to server: No such file or directory
+        Is the server running locally and accepting
+        connections on Unix domain socket "/tmp/.s.PGSQL.65432"?
+pg_ctl: cannot find /home/eshan/db/db/postmaster.pid
+Is postmaster running?

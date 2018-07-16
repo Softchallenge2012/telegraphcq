@@ -1,0 +1,49 @@
+create stream test_stream ( seqnum int, ssn int, age int ) type UNARCHIVED;
+
+create stream click_stream ( seqnum int, userid int, sessid int, 
+							 data character[32] ) type UNARCHIVED;
+
+create stream click_stream_lat ( seqnum int, tv_sec int, tv_usec int, userid int, sessid int, data character[32] ) type UNARCHIVED;
+
+create aggregate my_agg ( basetype = 'ANY', sfunc = int4count_w, 
+						  stype = integer, initcond = '0' );
+
+create view click_dur_view AS 
+	select seqnum, userid, sessid, my_agg(data) as dur 
+	from click_stream 
+	group by seqnum, userid, sessid;
+
+create stream t_lvl_grp_stream ( seqnum int, att1 int, att2 int, 
+								 att3 int, data character[32] ) type UNARCHIVED;
+
+create view f_lvl_view AS 
+	select seqnum, att1, att2, att3, my_agg(data) as att4 
+	from t_lvl_grp_stream group 
+	by seqnum, att1, att2, att3;
+
+create view s_lvl_view AS 
+	select seqnum, att1, att2, my_agg(att4) as att4 
+	from f_lvl_view group 
+	by seqnum, att1, att2;
+
+create stream four_lvl_grp_stream ( seqnum int, att1 int, att2 int, 
+									att3 int, att4 int, 
+									data character[32] ) type UNARCHIVED;
+
+create stream access_log ( seqnum integer,
+	timestamp float8,	
+	btrans integer,
+	client_ip varchar,	
+	browser varchar,
+	dur integer,
+	status integer,
+	method varchar,
+	url varchar,
+	url_query varchar,
+	doc_type varchar,
+	referer varchar,
+	ref_query varchar) type ARCHIVED;
+
+create aggregate my_url_agg ( basetype = varchar,
+	sfunc = first_url_agg,
+	stype = varchar );

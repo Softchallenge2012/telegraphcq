@@ -1,0 +1,15 @@
+#!/bin/sh
+
+case $# in
+  0) 
+	 PGDIR=$PGDATA;;
+  1)
+	 PGDIR=$1;;
+  *) echo 'Usage: $0 [PGDIR] ';;
+esac
+
+echo "PGDIR is $PGDIR"
+
+cd ../demo
+echo yes | ./bounce random $PGDIR
+sleep 10

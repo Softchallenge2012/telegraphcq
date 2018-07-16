@@ -1,0 +1,328 @@
+<HTML>
+<HEAD>
+<TITLE>A Step by Step TESS Wrapper</TITLE>
+<BODY BGCOLOR="WHITE">
+In the following example we will wrap the results of a simple <A HREF="http://www.google.com">Google</A>(C) search.
+
+<H3>Step 1</H3>
+Find out what host you will be contacting and what parameters the query needs.<BR><BR>
+ 
+To do this you'll need to look for form tags in the html.  In viewing the html source we notice the following form:<BR>
+<TABLE BORDER=0>
+<TR><TD>
+<PRE>
+&lt;form <B>action="/search" method=get</B> name=f&gt;
+&lt;table cellspacing=0 cellpadding=0 &gt;&lt;tr align=center valign=baseline&gt;
+&lt;td width=75&gt;&nbsp;&lt;/td&gt;&lt;td nowrap&gt;&lt;font
+face=arial,sans-serif size=-1&gt;
+Search 1,326,920,000 web pages&lt;/font&gt;
+&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr align=center valign=middle&gt;&lt;td width=75&gt;&nbsp;&lt;/td&gt;&lt;td align=center&gt;
+<B>&lt;input type=text value=""</B> framewidth=4 <B>name=q</B> size=55&gt;&lt;br&gt;
+<B>&lt;input name=btnG type=submit</B> value="Google Search"&gt;
+<B>&lt;input name=btnI type=submit</B> value="I'm Feeling Lucky"&gt;
+&lt;/td&gt;&lt;td nowrap valign=top align=left&gt;&lt;font face=arial,sans-serif size=-2&gt;&nbsp;
+&lt;a href="/advanced_search"&gt;Advanced&nbsp;Search&lt;/a&gt;&lt;br&gt;&nbsp;
+&lt;a href="/preferences"&gt;Preferences&lt;/a&gt;&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/form&gt;
+</PRE>
+</TD>
+<TD>
+<IMG SRC="google1.jpg"><BR>
+<CENTER>The form that the html to left produces</CENTER>
+</TD></TR></TABLE>
+<BR>
+The important information that you'll need is highlighted in bold.<BR>
+<P>The first thing to notice is the action tag.  This tells you what page the form is going to contact when you submit the query.<BR>
+In this case the action tag points to /search<BR>
+So in our wrapper file we would add host=www.google.com (since there is no http:// at the start of the action the browser will use the current page as the base and expand the action into http://www.google.com/search) and url=/search?.</P>
+So far our wrapper looks like:
+<PRE>
+host=www.google.com
+url=/search?
+</PRE>
+<P>Now we need to figure out what method this form uses to send the data to the server.  The two possibilities in a form are get and post.  You can look at the method tag to figure out which one to use.  This form happens to use get.  See the documentation on query types for more infomation.  So now our wrapper looks like:
+<PRE>
+host=www.google.com
+url=/search?
+method=get
+</PRE>
+<P>Now we need to figure out what parameters the query is expecting.  To do this find all the input tags in the form and look at thier values.  Lucky for this form has only one input we need to worry about.  Inputs of type submit and reset you don't need to worry about since they just tell the browser to render a button that submits the query or resets the form and they are not parameters to the query.  See the documentation about different input tags for more information.  In our query we only need to concern ourselves with the line:<BR>
+<PRE>
+<B>&lt;input type=text value=""</B> framewidth=4 <B>name=q</B> size=55&gt;&lt;br&gt;
+</PRE>
+The important fields here are the value and name fields.  The value is the default value for the input, the name is the name of the parameter.</P>
+<P>So what we have is a form with one parameter named q that is a text string that defaults to the empty string. To put this the wrapper we would add:
+<PRE>
+arguments=q,
+default1=
+</PRE>
+Note that the default does not have to be the same as the form default.  If you wanted to default to searching for Blue Meanies you could write
+<PRE>
+arguments=q,
+default1=Blue Meanies
+</PRE>
+and you would have no problems.  If we had more arguments (say r and s) we would write (Assuming we wanted the given defaults):
+<PRE>
+arguments=q,r,s,
+default1=Blue Meanies
+default2=Moog Cookbook
+default3=NOFX
+</PRE>
+and q would default to Blue Meanies, s to Moog Cookbook and so on.</P>
+So now our wrapper looks like:
+<PRE>
+host=www.google.com
+url=/search?
+method=get
+arguments=q,
+default1=
+</PRE>
+<P>Now we need to tell TESS what results to expect.  This is done with the columns tag.  For this example we will get the name of the site, the description, and the url.  The ordering is important here, the columns need to be listed in the order they appear in the data set.  To get this information you'll probably need to run a query.</P>
+<P>So now we have:
+<PRE>
+host=www.google.com
+url=/search?
+method=get
+arguments=q,
+default1=
+columns=name,description,url,
+</PRE></P>
+<H3>Step 2</H3>
+<P>At this point you have fully specified everything TESS needs to know to find the data.  Now it's on to telling it how to put that data into tabular form.  You'll need to run a sample query on the webpage now.  Sometimes different queries can return results differently (for example Mirriam Websters dictionary search will return one type of result if you search for a word it knows about and fairly different kind if you search of one it doesn't know about) so you might need to run a number of sample queries</P>
+<P>To run a sample query we will add the dump directive in our wrapper.  This tells TESS to dump the html it gets back from running the query and not to try and return any real data.  This can be usful both for row/column regular expresion writing but also for debuging the argument part of your script.<BR>
+For our example lets run a query on "Telegraph". We will change our wrapper to look like:
+<PRE>
+host=www.google.com
+url=/search?
+method=get
+arguments=q,
+default1=telegraph
+columns=name,description,url,
+dump
+end
+</PRE>
+<P>Looking at the top of the html that gets returned we see:
+<PRE>
+&lt;html&gt;
+&lt;head&gt;&lt;META HTTP-EQUIV="content-type" CONTENT="text/html; charset=ISO-8859-1"&gt;
+&lt;title&gt;Google Search: telegraph &lt;/title&gt;
+&lt;style&gt;&lt;!--
+body {font-family: arial,sans-serif;}
+div.nav {margin-top: 1ex;}
+div.nav A,span.nav {font-size: 10pt; font-family: arial,sans-serif;}
+div.nav A,span.big {font-size: 12pt; color: #0000cc;}
+div.nav A {font-size: 10pt; color: black;}
+A.l:link {color: #6f6f6f;}
+//--&gt;&lt;/style&gt;
+&lt;/head&gt;
+&lt;body bgcolor=#ffffff text=#000000 link=#0000cc vlink=#551A8B alink=#ff0000&gt;
+&lt;form method=GET action=/search&gt;&lt;table border=0 cellpadding=2
+cellspacing=0&gt;&lt;tr&gt;&lt;td rowspan=2&gt;&lt;a href=/&gt;&lt;img border=0
+src=/intl/en_extra/images/Title_Left.gif width=200 height=78
+alt="Google "&gt;&lt;/a&gt;&lt;/td&gt;&lt;td nowrap&gt;&lt;font face=arial,sans-serif
+size=-1&gt;&nbsp;&nbsp;&nbsp;&nbsp;&lt;A
+HREF=/advanced_search?q=telegraph&lr=&safe=off&gt;Advanced
+Search&lt;/A&gt;&nbsp;&nbsp;&nbsp;&nbsp;&lt;A
+HREF=/preferences?q=telegraph&lr=&safe=off&gt;Preferences&lt;/A&gt;&nbsp;&nbsp;&nbsp;&nbsp;&lt;A
+HREF=/intl/en_extra/help.html&gt;Search&nbsp;Tips&lt;/A&gt;&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td
+align=left valign=middle&gt;&lt;INPUT type=text name=q size=31 maxlength=256
+value="telegraph"&gt; &lt;INPUT TYPE=hidden name=lr value=&gt;&lt;INPUT
+TYPE=hidden name=safe value=off&gt;&lt;INPUT type=submit name=btnG
+VALUE="Google Search"&gt; &lt;INPUT type=submit name=btnI VALUE="I'm Feeling
+Lucky"&gt;&lt;br&gt;&lt;/form&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table width=100% cellpadding=2 cellspacing=0 border=0&gt;&lt;tr&gt;&lt;td
+bgcolor=#3366cc align=left nowrap&gt;&lt;font face=arial,sans-serif size=-1
+color=white&gt;Searched the web for &lt;b&gt;&lt;a
+href=/url?sa=X&q=http://www.dictionary.com/cgi-bin/dict.pl?term=telegraph
+title="Look up telegraph on dictionary.com"&gt;&lt;font
+color=white&gt;telegraph&lt;/font&gt;&lt;/a&gt;&lt;/b&gt;. &nbsp; &lt;/td&gt;&lt;td bgcolor=#3366cc
+align=right nowrap&gt;&lt;font face=arial,sans-serif size=-1
+color=white&gt;Results &lt;b&gt;1 - 10&lt;/b&gt; of about &lt;b&gt;745,000&lt;/b&gt;.  Search
+took &lt;b&gt;0.07&lt;/b&gt; seconds.&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;br&gt;&lt;table border=0
+cellpadding=1 cellspacing=0 width=100%&gt;&lt;tr&gt;&lt;td nowrap&gt;&lt;font
+color=#6f6f6f size=-1
+face=arial,sans-serif&gt;Categories:&lt;/font&gt;&nbsp;&nbsp;&nbsp;&lt;font
+size=-1 face=arial,sans-serif&gt;
+&lt;A href=http://directory.google.com/Top/Recreation/Antiques/Telephones_and_Telegraphs/Telegraphs/&gt;
+Recreation&nbsp;&gt;&nbsp;Antiques&nbsp;&gt;&nbsp;Telephones&nbsp;and&nbsp;Telegraphs&nbsp;&gt;&nbsp;Telegraphs&lt;/A&gt;&nbsp;&nbsp;
+&lt;A href=http://directory.google.com/Top/Recreation/Amateur_Radio/Boatanchors/Morse_Telegraphy/&gt;
+Recreation&nbsp;&gt;&nbsp;Amateur&nbsp;Radio&nbsp;&gt;&nbsp;Boatanchors&nbsp;&gt;&nbsp;Morse&nbsp;Telegraphy&lt;/A&gt;&nbsp;&nbsp;
+&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+<B>&lt;p&gt</B>;&lt;A HREF=http://www.telegraph.co.uk/&gt;Electronic &lt;b&gt;Telegraph&lt;/b&gt; |
+Front Page&lt;/A&gt;&lt;font size=-1&gt;&lt;br&gt; &lt;b&gt;...&lt;/b&gt; the first train operating
+company to lose its franchise since privatisation in the&lt;br&gt;
+mid-1990s. Yesterday in Parliament Daily &lt;b&gt;Telegraph&lt;/b&gt;: Connex
+shunted off. &lt;b&gt;...&lt;/b&gt;
+
+&lt;br&gt;&lt;font size=-1 color=#6f6f6f&gt;Description:&lt;/font&gt; Britain's
+biggest-selling broadsheet daily. &lt;br&gt;&lt;font size=-1
+color=#6f6f6f&gt;Category:&lt;/font&gt; &lt;a
+href=http://directory.google.com/Top/News/Newspapers/Regional/United_Kingdom/
+class=l&gt;News&nbsp;&gt;&nbsp;Newspapers&nbsp;&gt;&nbsp;Regional&nbsp;&gt;&nbsp;United&nbsp;Kingdom&lt;/a&gt;&lt;br&gt;&lt;font
+color=green&gt;www.telegraph.co.uk/ - 32k - &lt;A
+HREF=/search?q=cache:www.telegraph.co.uk/+telegraph class=l&gt;Cached&lt;/A&gt;
+- &lt;A HREF=/search?lr=&safe=off&num=10&q=related:www.telegraph.co.uk/
+class=l&gt;Similar pages&lt;/A&gt;&lt;/font&gt;&lt;/font&gt;&lt;br&gt;
+&lt;BLOCKQUOTE&gt;
+
+<B>&lt;p&gt</B>;&lt;A HREF=http://www.telegraph.co.uk/home.html&gt;Electronic
+&lt;b&gt;Telegraph&lt;/b&gt; | Front Page&lt;/A&gt;&lt;font size=-1&gt;&lt;br&gt; &lt;b&gt;...&lt;/b&gt;
+Feedback poll, See text menu at bottom of page Turner Prize 2000&lt;br&gt;
+Giorgio Armani &lt;b&gt;Telegraph&lt;/b&gt; Money &lt;b&gt;...&lt;/b&gt; Search Electronic
+&lt;b&gt;Telegraph&lt;/b&gt; for. &lt;b&gt;...&lt;/b&gt;
+&lt;br&gt;&lt;font color=green&gt;www.telegraph.co.uk/home.html - 25k - &lt;A
+HREF=/search?q=cache:www.telegraph.co.uk/home.html+telegraph
+class=l&gt;Cached&lt;/A&gt; - &lt;A
+HREF=/search?lr=&safe=off&num=10&q=related:www.telegraph.co.uk/home.html
+class=l&gt;Similar pages&lt;/A&gt;&lt;/font&gt;
+&lt;br&gt;[ &lt;A
+HREF=/search?lr=&safe=off&q=site:www.telegraph.co.uk+telegraph
+class=l&gt;More results from www.telegraph.co.uk&lt;/A&gt; ]
+&lt;/font&gt;&lt;br&gt;
+&lt;/BLOCKQUOTE&gt;
+</PRE>
+<TABLE BORDER=0>
+<TR><TD>
+<CENTER>What the returned results look like:<BR>
+<IMG SRC="google2.jpg">
+</CENTER>
+</TD><TD>
+<P>Ugg, kinda messy.  This is what we need to parse through and
+extract meaningful data out of.  Note that I've only displayed the HTML for the first two results here but we exploit the fact that most web-based searches return each result in a very similar fashion.  It is often useful to use both the HTML and the actual display text. Sometimes certain words in the displayed results will jump out as obvious delimiters, other times certain html tags will be the clear delimiters.</P>
+<P>The first thing to look for is some prefix text.  Something that signifies that meaningful data is about to follow.  The word seconds (circled in red in the picture) seems to appear at the top of the data and will probably appear in all queries so that's what we'll use</P>
+<PRE>
+prefix=seconds
+</PRE>
+<P>Now we need to break the data into rows.  To do this we need to write regular expresions that match only what we want to act as the beginings and ends of rows.  In this case we notice by looking at the html that each new result is prefixed by a paragraph tag at the beginning of a line like &lt;p&gt; (In bold in the above text).  We want to only match &lt;p&gt;s that are at the start of lines so we will use the ^ character in our regular expresion. So we have:
+<PRE>
+rowprefix=^&lt;p&gt;
+</PRE>
+<P>It also appears that all results end with the text "Similar pages" (circled in red) so we can use that as our rowterm.
+<PRE>
+rowterm=Similar pages
+</PRE>
+</TD></TR></TABLE>
+Now our wrapper looks like:
+<PRE>
+host=www.google.com
+url=/search?
+method=get
+arguments=q,
+default1=
+columns=name,description,url,
+prefix=seconds
+rowprefix=^&lt;p&gt;
+rowterm=Similar pages
+</PRE>
+<P>So now we have the google data broken down into rows.  All that's left to do is to extract the columns from those rows.
+To do this let's look at a single row:
+<PRE>
+&lt;p&gt;&lt;A HREF=http://www.telegraph.co.uk/&gt;<B>Electronic &lt;b&gt;Telegraph&lt;/b&gt; |
+Front Page</B>&lt;/A&gt;&lt;font size=-1&gt;&lt;br&gt; &lt;b&gt;...&lt;/b&gt; the first train operating
+company to lose its franchise since privatisation in the&lt;br&gt;
+mid-1990s. Yesterday in Parliament Daily &lt;b&gt;Telegraph&lt;/b&gt;: Connex
+shunted off. &lt;b&gt;...&lt;/b&gt;
+
+&lt;br&gt;&lt;font size=-1 color=#6f6f6f&gt;<B>Description:&lt;/font&gt; Britain's
+biggest-selling broadsheet daily.</B> &lt;br&gt;&lt;font size=-1
+color=#6f6f6f&gt;Category:&lt;/font&gt; &lt;a
+href=http://directory.google.com/Top/News/Newspapers/Regional/United_Kingdom/
+class=l&gt;News&nbsp;&gt;&nbsp;Newspapers&nbsp;&gt;&nbsp;Regional&nbsp;&gt;&nbsp;United&nbsp;Kingdom&lt;/a&gt;&lt;br&gt;&lt;font
+color=green&gt;<B>www.telegraph.co.uk/</B> - 32k - &lt;A
+HREF=/search?q=cache:www.telegraph.co.uk/+telegraph class=l&gt;Cached&lt;/A&gt;
+- &lt;A HREF=/search?lr=&safe=off&num=10&q=related:www.telegraph.co.uk/
+class=l&gt;Similar pages
+</PRE>
+<P>In bold is the data we wish to extract.  What we need to do is write a set of prefixes and terminators, similar to how we did for rows, that will extract exactly the data we want.  The way to think of this is sequentially.  TESS will search through the row for the first column you specify.  Once it's found that coloumn it adds it into the result set and keep searching for the next column <B>in the rest of row text.</B>  It ignores anything before, or contained within, previous columns.</P>
+<P>So what should we use in our example.  It would appear that the name of the site is prefixed by a link to it.  We can exploit this fact in writing our name_prefix.  Since all the varies in a url tag is the url itself we can just write a url matcher:
+<PRE>&lt;A HREF=[^>]*></PRE> should work just fine.  (This looks for &lt;A HREF= followed by anything that's not a greater than sign, followed by a greater than sign which is exactly what a link tag is.)
+<P>The termination is easy, it's just the end of the link tag, &lt;/A&gt;  So now we can write our name prefixes and terms:
+<PRE>
+name_prefix=&lt;A HREF=[^>]*>
+name_term=&lt;/A&gt;
+</PRE>
+Tess will now continue searching for the description field in the rest of the row.  It seems to be a safe bet that the description will start with the text Description: and end a with a &lt;br&gr;.  Similarly we can grab the url by using font color=green&gt; as the prefix and a - as the term.  So now our wrapper looks like:
+<PRE>
+host=www.google.com
+url=/search?
+method=get
+arguments=q,
+default1=
+columns=name,description,url,
+prefix=seconds
+rowprefix=^&lt;p&gt;
+rowterm=Similar pages
+name_prefix=&lt;A HREF=[^>]*>
+name_term=&lt;/A&gt;
+description_prefix=Description:
+description_term=&lt;br&gt;
+url_prefix=font color=green&gt;
+url_term=-
+</PRE>
+We're almost done!  If you look at all the results you will notice that sometimes there is no description of the site.  If we were just to leave the wrapper as is TESS would complain because by default it expects to always find all columns.  We have to tell it that in this case it's okay for the description to be missing.  To do this we use the nullifmissing directive.
+<PRE>
+description_nullifmissing
+</PRE>
+We also need to tell tess where it can stop looking for more rows with the termination tag.  By looking at the end of the results that google returned:
+<PRE>
+&lt;p&gt;&lt;A HREF=http://www.nbnews.com/telegraphjournal/&gt;The New Brunswick
+&lt;b&gt;Telegraph&lt;/b&gt; Journal&lt;/A&gt;&lt;font size=-1&gt;&lt;br&gt; &lt;b&gt;...&lt;/b&gt; Limbering
+up. Noel Chenier/ &lt;b&gt;Telegraph&lt;/b&gt;-Journal Adam Mitton is framed by
+the legs&lt;br&gt;
+of a teammate as he stretches during a running practice in preparation
+for the &lt;b&gt;...&lt;/b&gt;
+&lt;br&gt;&lt;font color=green&gt;www.nbnews.com/telegraphjournal/ - 16k - &lt;A
+HREF=/search?q=cache:www.nbnews.com/telegraphjournal/+telegraph
+class=l&gt;Cached&lt;/A&gt; - &lt;A
+HREF=/search?lr=&safe=off&num=10&q=related:www.nbnews.com/telegraphjournal/
+class=l&gt;Similar pages&lt;/A&gt;&lt;/font&gt;&lt;/font&gt;&lt;br&gt;&lt;p&gt;&lt;center&gt;
+<B>&lt;div class=nav&gt;</B>
+&lt;p&gt;&lt;table border=0 cellpadding=0 width=10% cellspacing=0&gt;&lt;tr
+align=center valign=top&gt;&lt;td valign=bottom nowrap&gt;&lt;font
+face=arial,sans-serif size=-1&gt;Result&nbsp;Page:&nbsp;&lt;/font&gt;&lt;/td&gt;
+&lt;td&gt;&lt;IMG SRC=/intl/en_extra/nav_first.gif alt=""&gt;&lt;/td&gt;
+&lt;td&gt;&lt;IMG SRC=/intl/en_extra/nav_current.gif alt=""&gt;&lt;br&gt;&lt;span
+class=nav&gt;&lt;font color=#A90A08&gt;1&lt;/font&gt;&lt;/span&gt;&lt;/td&gt;
+</PRE>
+it seems that &lt;div class=nav&gt; seems to be a good indicator that the results are finished.  As such we will add
+<PRE>
+termination=&lt;div class=nav&gt;
+</PRE>
+to our wrapper.  We also need to tell TESS that the wrapper is finished by adding an "end" at the end.</P>
+<P>So the completed wrapper looks like:
+<PRE>
+host=www.google.com
+url=/search?
+method=get
+arguments=q,
+default1=
+columns=name,description,url,
+prefix=seconds
+rowprefix=^&lt;p&gt;
+rowterm=Similar pages
+name_prefix=&lt;A HREF=[^>]*>
+name_term=&lt;/A&gt;
+description_prefix=Description:
+description_term=&lt;br&gt;
+url_prefix=font color=green&gt;
+url_term=-
+description_nullifmissing
+termination=&lt;div class=nav&gt;
+end
+</PRE>
+Congratulations, you've just written your first TESS wrapper!<BR>
+You can find out how to test it by heading over to <A HREF="testdebug.html">testing and debuging wrappers</A>.<BR>
+Now it's on to bigger and better things in the <A HREF="advanced.html">advanced</A> section.</P>
+
+<BR><BR>
+<A HREF="">[Home]</A>
+<A HREF="tutorial.html">[Tutorial Start]</A>
+<A HREF="example.html">[Example 1]</A>
+<A HREF="testdebug.html">[Testing and debuging]</A>
+<BR>
+
+</BODY>
+</HTML>
+  
+

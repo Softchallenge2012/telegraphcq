@@ -1,0 +1,7 @@
+select seqnum, att1, my_agg(att4) 
+from (select seqnum, att1, att2, my_agg(att4) as att4 
+      from (select seqnum, att1, att2, att3, my_agg(data) as att4 
+		    from t_lvl_grp_stream 
+            group by seqnum, att1, att2, att3) as f_lvl_view
+      group by seqnum, att1, att2) as s_lvl_view
+group by seqnum, att1;

@@ -1,0 +1,7 @@
+#! /bin/bash
+echo postmaster -D /home/mashah/research/pgdb/data/ -t test -u mashah -i -d 2 -H $*
+
+# The -i informs it to use a TCP/IP port for connections.
+# The -d turns on debugging information.
+
+postmaster -D /home/mashah/research/pgdb/data/ -t test -u mashah -i -d 2 -H $*

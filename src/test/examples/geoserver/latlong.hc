@@ -1,0 +1,2654 @@
+HashCacheHeader
+50
+-1
+latlong.hc
+-1
+0
+HeadNodeInfo
+11
+15
+9
+12
+6
+13
+13
+6
+7
+15
+16
+10
+12
+18
+16
+13
+17
+13
+12
+15
+9
+8
+8
+16
+7
+15
+10
+9
+16
+19
+15
+12
+18
+9
+15
+18
+11
+11
+17
+12
+16
+4
+11
+15
+15
+14
+8
+12
+13
+12
+BucketNodeInfo
+BeginChain
+8
+20
+Tulsa+OK
+36.116665 -95.900002
+16
+21
+San+Francisco+CA
+37.783333 -122.550003
+11
+19
+Lodz+Poland
+52.299999 17.000000
+11
+20
+Hamilton+NY
+42.816666 -75.533333
+16
+19
+Erlangen+Germany
+49.500000 11.000000
+10
+20
+Detroit+MI
+42.366665 -83.099998
+9
+21
+Covine+OR
+44.000000 -123.000000
+14
+20
+Chattanooga+TN
+35.049999 -85.250000
+16
+20
+Bowling+Green+OH
+41.366665 -83.633331
+14
+19
+Berlin+Germany
+52.516666 13.333333
+19
+19
+Aston+UnitedKingdom
+52.500000 -3.000000
+EndChain
+BeginChain
+14
+19
+Zagreb+Croatia
+45.799999 15.966666
+9
+20
+Vienna+VA
+38.900002 -77.250000
+8
+20
+Tyler+TX
+32.316666 -95.300003
+16
+19
+Sundsvall+Sweden
+62.299999 17.299999
+14
+20
+Sioux+Falls+SD
+43.533333 -96.716667
+14
+20
+Marlborough+MA
+42.349998 -71.533333
+10
+20
+Machias+ME
+44.700001 -67.466667
+13
+19
+Lublin+Poland
+52.299999 22.500000
+11
+21
+Longmont+CO
+40.166668 -105.099998
+12
+19
+Kista+Sweden
+60.000000 19.000000
+11
+20
+Florence+SC
+34.166668 -79.766670
+13
+20
+Clearwater+FL
+27.966667 -82.750000
+14
+20
+Bridgewater+MA
+41.983334 -70.966667
+15
+20
+Spring+Field+MA
+42.299999 -71.000000
+12
+20
+Abbeville+SC
+34.166668 -82.366669
+EndChain
+BeginChain
+18
+20
+Scarborough+Canada
+43.750000 -79.199997
+16
+19
+Salzburg+Austria
+47.766666 13.000000
+11
+21
+Portland+OR
+45.533333 -122.650002
+12
+20
+Levittown+PA
+40.150002 -74.849998
+16
+18
+Freiburg+Germany
+48.016666 7.816667
+12
+20
+Covington+KY
+39.033333 -84.500000
+10
+20
+Chicago+IL
+41.799999 -87.800003
+10
+20
+Chicago+IL
+41.799999 -87.800003
+10
+21
+Anaheim+CA
+33.833332 -117.866669
+EndChain
+BeginChain
+12
+20
+Rochester+MN
+44.000000 -92.466667
+10
+20
+Roanoke+VA
+37.266666 -79.949997
+12
+21
+Pocatello+ID
+42.866665 -112.466667
+10
+21
+Phoenix+AZ
+33.533333 -112.066666
+10
+21
+Oakland+CA
+37.766666 -122.216667
+13
+18
+Namur+Belgium
+50.500000 4.900000
+18
+18
+Montpellier+France
+43.633335 3.883333
+21
+18
+Eindhoven+Netherlands
+51.500000 5.500000
+18
+18
+Dusseldorf+Germany
+51.266666 6.750000
+9
+21
+Denver+CO
+39.766666 -104.866669
+10
+21
+Compton+CA
+33.883335 -118.216667
+16
+18
+Bern+Switzerland
+46.916668 7.416667
+EndChain
+BeginChain
+22
+18
+Siggenthal+Switzerland
+47.299999 8.500000
+15
+21
+Sherman+Oaks+CA
+34.150002 -118.433334
+9
+21
+Fresno+CA
+36.766666 -119.783333
+11
+20
+Chamblee+GA
+33.883335 -84.300003
+10
+21
+Burbank+CA
+34.183334 -118.316666
+12
+20
+Arlington+VA
+38.866665 -77.099998
+EndChain
+BeginChain
+12
+21
+Wenatchee+WA
+47.416668 -120.316666
+9
+20
+Wausau+WI
+44.950001 -89.633331
+10
+21
+Seattle+WA
+47.616665 -122.349998
+13
+20
+Orangeburg+SC
+33.483334 -80.849998
+12
+20
+Nashville+GA
+31.200001 -83.233330
+16
+18
+Mannheim+Germany
+49.466667 8.500000
+15
+20
+Madisonville+PA
+41.349998 -75.466667
+12
+20
+Haverford+PA
+40.000000 -75.283333
+7
+21
+Eden+CA
+33.866665 -117.050003
+16
+18
+Compiegne+France
+49.400002 2.800000
+12
+20
+Cambridge+ME
+45.016666 -69.466667
+13
+20
+Birmingham+MI
+42.533333 -83.199997
+10
+20
+Baytown+TX
+29.733334 -94.966667
+EndChain
+BeginChain
+9
+20
+Winona+MN
+44.033333 -91.650002
+16
+21
+Santa+Barbara+CA
+34.400002 -119.699997
+8
+21
+Provo+UT
+40.233334 -111.633331
+20
+19
+Prague+CzechRepublic
+50.000000 14.500000
+9
+20
+Moline+IL
+41.483334 -90.483330
+10
+20
+Memphis+TN
+35.099998 -90.000000
+11
+20
+Marshall+MN
+44.450001 -95.783333
+12
+20
+Lynchburg+VA
+37.400002 -79.183334
+13
+20
+Greenville+SC
+34.833332 -82.366669
+14
+19
+Florence+Italy
+43.799999 11.300000
+8
+20
+Flint+MI
+43.016666 -83.683334
+10
+20
+Emporia+KS
+38.400002 -96.183334
+16
+18
+Augsburg+Germany
+54.500000 9.100000
+EndChain
+BeginChain
+14
+20
+Springfield+IL
+39.766666 -89.633331
+13
+20
+Providence+RI
+41.816666 -71.416664
+13
+20
+Louisville+KY
+38.216667 -85.733330
+14
+19
+Leoben+Austria
+47.400002 27.000000
+13
+19
+Gdansk+Poland
+54.333332 18.666666
+9
+21
+Eugene+OR
+44.049999 -123.099998
+EndChain
+BeginChain
+10
+21
+Tukwila+WA
+47.466667 -122.266670
+13
+19
+Sevilla+Spain
+39.000000 -5.400000
+10
+21
+Sequoia+CA
+37.799999 -119.883331
+16
+19
+Limerick+Ireland
+52.700001 -6.300000
+14
+20
+Gainesville+FL
+29.666666 -82.333336
+10
+21
+Bowdoin+MT
+48.383335 -107.599998
+9
+20
+Boston+MA
+42.333332 -71.016670
+EndChain
+BeginChain
+17
+20
+Willow+Springs+IL
+41.733334 -87.866669
+11
+19
+Riga+Latvia
+56.950001 24.100000
+13
+19
+Poznan+Poland
+52.400002 17.000000
+11
+18
+Nice+France
+43.700001 7.350000
+22
+20
+Montreal+Quebec+Canada
+45.500000 -73.500000
+10
+20
+Manheim+PA
+40.150002 -76.383331
+13
+20
+Livingston+IL
+38.966667 -89.750000
+11
+20
+Lampasas+TX
+31.049999 -98.166664
+14
+20
+Jersey+City+NJ
+40.700001 -74.050003
+17
+19
+Innsbruck+Austria
+47.250000 11.333333
+17
+19
+Ciudad+Real+Spain
+39.000000 -4.000000
+11
+20
+Cheswick+VA
+40.500000 -74.199997
+12
+20
+Cambridge+MA
+42.366665 -71.116669
+12
+19
+Boden+Sweden
+65.800003 21.700001
+9
+20
+Austin+TX
+30.299999 -97.750000
+EndChain
+BeginChain
+16
+20
+Tysons+Corner+VA
+38.916668 -77.216667
+16
+21
+Somerset+West+OR
+45.533333 -122.866669
+14
+20
+New+Bedford+MA
+41.650002 -70.933334
+21
+18
+Marknesse+Netherlands
+52.700001 5.900000
+12
+21
+Las+Vegas+NV
+36.200001 -115.216667
+15
+19
+Kempele+Finland
+65.000000 25.400000
+9
+20
+Hudson+FL
+28.350000 -82.683334
+13
+20
+Hagerstown+MD
+39.633335 -77.716667
+21
+18
+Groningen+Netherlands
+53.200001 6.500000
+11
+20
+Fairmont+WV
+39.466667 -80.133331
+9
+20
+Edmond+OK
+35.666668 -97.400002
+17
+18
+Delft+Netherlands
+52.000000 4.400000
+14
+21
+Burnaby+Canada
+49.200001 -122.000000
+11
+21
+Berkeley+CA
+37.866665 -122.283333
+12
+21
+Beaverton+OR
+45.466667 -122.816666
+14
+21
+Albuquerque+NM
+35.116665 -106.616669
+EndChain
+BeginChain
+13
+19
+Skovde+Sweden
+58.400002 13.900000
+11
+21
+San+Jose+CA
+37.299999 -121.833336
+10
+20
+Rutgers+NJ
+40.483334 -74.400002
+10
+19
+Pisa+Italy
+43.400002 10.700000
+17
+19
+Nuremberg+Germany
+49.529999 10.540000
+8
+20
+Macon+GA
+32.833332 -83.650002
+15
+20
+Indianapolis+IN
+39.766666 -86.133331
+13
+20
+Greenville+NC
+35.583332 -77.366669
+13
+20
+Des+Moines+IA
+41.566666 -93.616669
+17
+19
+Caparica+Portugal
+38.700001 -9.200000
+EndChain
+BeginChain
+12
+19
+Venice+Italy
+45.416668 12.300000
+12
+21
+Sunnyvale+CA
+37.383335 -122.016670
+11
+20
+Sterling+VA
+43.333332 -76.616669
+11
+21
+Stanford+CA
+37.416668 -122.150002
+15
+20
+Myrtle+Beach+SC
+33.683334 -78.883331
+9
+20
+Mclean+VA
+38.933334 -77.166664
+14
+18
+Limoges+France
+50.599998 4.500000
+15
+19
+Leipzig+Germany
+51.400002 12.216666
+12
+20
+Charlotte+NC
+35.183334 -80.833336
+18
+18
+Charlebourg+France
+48.900002 2.250000
+24
+18
+Canterbury+UnitedKingdom
+51.299999 1.100000
+13
+18
+Bergen+Norway
+60.283333 5.216667
+EndChain
+BeginChain
+20
+18
+Brunel+UnitedKingdom
+59.000000 0.000000
+13
+20
+Youngstown+OH
+41.083332 -80.633331
+16
+18
+Vincennes+France
+48.900002 2.400000
+8
+20
+Sylva+NC
+35.366665 -83.216667
+13
+20
+Sioux+City+IA
+42.500000 -96.383331
+12
+18
+Rouen+France
+49.416668 1.083333
+11
+20
+Pittston+PA
+41.316666 -75.783333
+12
+18
+Paris+France
+48.849998 2.333333
+7
+21
+Orem+UT
+40.283333 -111.683334
+12
+20
+Milwaukee+WI
+43.049999 -87.966667
+9
+21
+Malibu+CA
+34.000000 -118.800003
+22
+18
+Maastricht+Netherlands
+51.000000 5.700000
+10
+20
+Lincoln+MD
+38.950001 -76.816666
+16
+18
+Dortmund+Germany
+51.516666 7.600000
+15
+20
+Chesterfield+MO
+38.650002 -90.566666
+13
+19
+Catania+Italy
+37.400002 14.700000
+13
+19
+Bracke+Sweden
+62.799999 15.700000
+12
+20
+Ann+Arbor+MI
+42.266666 -83.716667
+EndChain
+BeginChain
+13
+20
+Titusville+FL
+28.583334 -80.816666
+15
+19
+Tallinn+Estonia
+59.416668 24.750000
+24
+19
+Nottingham+UnitedKingdom
+53.000000 -1.000000
+10
+21
+Newberg+OR
+45.299999 -122.949997
+11
+21
+Monterey+CA
+36.599998 -121.866669
+9
+20
+Mobile+AL
+30.666666 -88.083336
+9
+20
+Goshen+IN
+41.566666 -85.833336
+16
+20
+Downers+Grove+IL
+41.783333 -88.016670
+9
+20
+Conway+SC
+33.833332 -79.050003
+15
+20
+Collinsville+IL
+38.666668 -89.983330
+10
+20
+Clarion+PA
+41.200001 -79.366669
+10
+20
+Carlton+TX
+31.916666 -98.166664
+12
+20
+Brookdale+NJ
+40.833332 -74.183334
+21
+19
+Bristol+UnitedKingdom
+51.500000 -2.600000
+15
+19
+Bamberg+Germany
+49.816666 10.816667
+9
+20
+Alfred+NY
+42.250000 -77.783333
+EndChain
+BeginChain
+14
+19
+Uppsala+Sweden
+59.400002 12.000000
+15
+20
+Toccoa+Falls+GA
+34.583332 -83.349998
+9
+21
+Orange+CA
+33.799999 -117.816666
+9
+20
+Muncie+IN
+40.183334 -85.383331
+12
+19
+Madrid+Spain
+40.433334 -3.700000
+12
+20
+Lexington+KY
+37.983334 -84.466667
+12
+20
+Iowa+City+IA
+41.650002 -91.533333
+11
+20
+Elkridge+MD
+39.200001 -76.750000
+16
+18
+Elgg+Switzerland
+47.500000 8.500000
+12
+19
+Ejby+Denmark
+55.700001 12.400000
+8
+21
+Chico+CA
+39.750000 -121.800003
+11
+21
+Chandler+AZ
+33.283333 -111.866669
+12
+20
+Asheville+NC
+35.566666 -82.533333
+EndChain
+BeginChain
+13
+20
+Wilmington+DE
+39.733334 -75.516670
+8
+20
+Wayne+PA
+40.033333 -75.383331
+15
+21
+Santa+Monica+CA
+34.000000 -118.483330
+11
+20
+Richmond+VA
+40.516666 -74.216667
+10
+21
+Redmond+WA
+47.666668 -122.099998
+13
+19
+Palermo+Italy
+38.116665 13.366667
+16
+21
+Mountain+View+CA
+37.400002 -122.066666
+11
+20
+Marietta+GA
+33.950001 -84.533333
+10
+20
+Madison+WI
+43.066666 -89.383331
+14
+18
+Lyngby+Denmark
+57.400002 9.750000
+9
+21
+Irvine+CA
+33.650002 -117.783333
+17
+19
+Gothenburg+Sweden
+57.500000 12.000000
+20
+18
+Fribourg+Switzerland
+46.799999 7.100000
+10
+21
+Everett+WA
+47.950001 -122.183334
+8
+21
+Boise+ID
+43.599998 -116.199997
+16
+18
+Biel+Switzerland
+47.160000 7.250000
+15
+18
+Bagnolet+France
+48.799999 2.400000
+EndChain
+BeginChain
+12
+20
+Worcester+MA
+42.266666 -71.800003
+12
+19
+Viby+Denmark
+56.099998 10.200000
+22
+19
+Toronto+Ontario+Canada
+43.700001 79.199997
+12
+20
+Princeton+NJ
+40.349998 -74.650002
+14
+19
+Odense+Denmark
+55.400002 10.400000
+12
+19
+Naples+Italy
+40.616665 14.200000
+13
+18
+Nantes+France
+44.900002 5.800000
+13
+20
+Montgomery+AL
+32.349998 -86.283333
+18
+19
+Ljubljana+Slovenia
+46.049999 14.516666
+15
+20
+Independence+KS
+37.216667 -95.699997
+10
+20
+Houston+TX
+29.766666 -95.383331
+9
+20
+Geneva+TX
+31.466667 -93.916664
+12
+20
+Annapolis+MD
+38.966667 -76.500000
+EndChain
+BeginChain
+12
+20
+Weehawken+NJ
+40.700001 -74.000000
+14
+19
+Wroclaw+Poland
+51.099998 17.000000
+12
+20
+Weehawken+NJ
+40.766666 -74.016670
+17
+18
+Strasbourg+France
+48.533333 7.616667
+11
+20
+Stamford+CT
+41.083332 -73.550003
+10
+21
+Spokane+WA
+47.666668 -117.400002
+13
+21
+Scottsdale+AZ
+33.683334 -111.866669
+12
+19
+Oviedo+Spain
+37.700001 -3.500000
+11
+19
+Oslo+Norway
+59.933334 10.683333
+13
+18
+Essen+Germany
+52.750000 9.050000
+9
+20
+Duluth+MN
+46.766666 -92.116669
+11
+20
+Anderson+IN
+40.083332 -85.683334
+EndChain
+BeginChain
+15
+19
+Harburg+Germany
+48.799999 10.700000
+21
+19
+Warwick+UnitedKingdom
+52.299999 -1.500000
+16
+19
+Stockholm+Sweden
+59.383335 18.000000
+9
+20
+Reston+VA
+38.950001 -77.333336
+11
+20
+Plymouth+MA
+41.950001 -70.650002
+20
+18
+Oxford+UnitedKingdom
+51.700001 1.000000
+15
+20
+Montreal+Canada
+45.500000 -73.500000
+15
+20
+Montreal+Canada
+45.500000 -73.566666
+9
+20
+Fulton+NJ
+40.000000 -74.000000
+9
+20
+Hoover+AL
+33.366665 -86.816666
+16
+19
+Garching+Germany
+18.100000 12.500000
+19
+21
+Colorado+Springs+CO
+38.849998 -104.750000
+8
+20
+Bronx+NY
+40.849998 -73.866669
+17
+18
+Basel+Switzerland
+47.560001 7.600000
+9
+20
+Albany+NY
+42.650002 -73.783333
+EndChain
+BeginChain
+14
+20
+Weatherford+OK
+35.533333 -98.683334
+13
+20
+Washington+DC
+38.900002 -77.000000
+13
+19
+Warsaw+Poland
+52.583332 21.083334
+19
+18
+Utrecht+Netherlands
+52.099998 5.100000
+9
+20
+Newark+DE
+39.666668 -75.750000
+14
+19
+Munich+Germany
+48.133335 11.583333
+14
+19
+Kjeller+Norway
+60.000000 11.000000
+9
+20
+Elmira+NY
+42.083332 -76.800003
+11
+21
+Amarillo+TX
+35.200001 -101.816666
+EndChain
+BeginChain
+11
+20
+Syracuse+NY
+43.033333 -76.133331
+12
+20
+Nashville+TN
+36.150002 -86.783333
+9
+20
+Nashua+NH
+42.733334 -71.483330
+9
+21
+Mercer+WA
+47.566666 -122.216667
+14
+20
+Mercerville+NJ
+40.233334 -74.683334
+12
+20
+Mansfield+OH
+40.750000 -82.516670
+13
+20
+Cedarville+OH
+39.733334 -83.800003
+9
+21
+Aurora+CO
+39.700001 -104.716667
+EndChain
+BeginChain
+24
+19
+Palma+De+Mallorcas+Spain
+40.400002 -3.700000
+20
+18
+Nijmegen+Netherlands
+51.799999 5.750000
+17
+19
+Earlsfort+Ireland
+53.299999 -9.000000
+15
+18
+Clermont+France
+43.049999 2.400000
+14
+18
+Cagliari+Italy
+39.500000 8.750000
+14
+20
+Bridgewater+VA
+38.383335 -78.966667
+19
+19
+Bratislava+Slovakia
+48.150002 17.116667
+10
+21
+Boulder+CO
+40.016666 -105.250000
+EndChain
+BeginChain
+23
+18
+Murchison+UnitedKingdom
+59.000000 0.000000
+20
+18
+Aubervilliers+France
+48.400002 2.000000
+16
+19
+Taastrup+Denmark
+56.299999 10.500000
+16
+20
+State+College+PA
+40.783333 -77.849998
+12
+20
+Sheboygan+WI
+43.733334 -87.716667
+21
+18
+Rotterdam+Netherlands
+51.916668 4.450000
+12
+20
+New+Haven+CT
+41.299999 -72.916664
+7
+21
+Napa+CA
+38.283333 -122.300003
+13
+19
+Lahti+Finland
+63.200001 22.900000
+12
+19
+Kemi+Finland
+65.800003 24.500000
+9
+20
+Denton+TX
+33.200001 -97.116669
+12
+19
+Cork+Ireland
+52.000000 -8.500000
+11
+20
+Columbia+SC
+34.033333 -80.883331
+14
+18
+Aubagne+France
+43.299999 5.500000
+9
+20
+Athens+OH
+39.316666 -82.083336
+13
+19
+Almeria+Spain
+36.900002 -2.450000
+EndChain
+BeginChain
+16
+20
+New+Brunswick+NJ
+40.483334 -74.433334
+8
+20
+Miami+FL
+25.766666 -80.199997
+10
+20
+Jackson+MS
+32.316666 -90.199997
+18
+18
+Geneva+Switzerland
+46.233334 6.066667
+8
+20
+Essex+MD
+39.299999 -76.433334
+15
+20
+Broken+Arrow+OK
+36.033333 -95.783333
+9
+20
+Bangor+ME
+44.816666 -68.783333
+EndChain
+BeginChain
+12
+19
+Malmo+Sweden
+55.599998 13.000000
+15
+19
+Aviero+Portugal
+37.799999 -9.000000
+15
+19
+Aviero+Portugal
+37.799999 -9.000000
+8
+21
+Tempe+AZ
+33.383335 -111.916664
+11
+20
+St+Louis+MO
+38.633335 -90.233330
+15
+20
+Philadelphia+PA
+40.000000 -75.133331
+16
+18
+Normandie+France
+49.000000 0.000000
+9
+19
+London+UK
+51.500000 -0.116667
+13
+18
+Koeln+Germany
+51.000000 7.000000
+6
+21
+Irvine
+33.650002 -117.783333
+13
+20
+Framingham+MA
+42.299999 -71.433334
+17
+18
+Buchs+Switzerland
+47.450001 8.450000
+17
+19
+Bucharest+Romania
+44.383335 26.166666
+17
+19
+Bucharest+Romania
+44.383335 26.166666
+10
+20
+Ashland+OH
+40.866665 -82.316666
+EndChain
+BeginChain
+8
+20
+Tampa+FL
+27.950001 -82.466667
+9
+20
+Summit+NJ
+40.700001 -74.349998
+17
+18
+Stuttgart+Germany
+48.799999 9.250000
+10
+21
+Salinas+CA
+36.683334 -121.633331
+19
+20
+Mississippi+City+MS
+30.366667 -89.033333
+17
+21
+Marina+Del+Rey+CA
+33.966667 -118.449997
+14
+20
+Little+Rock+AR
+34.716667 -92.349998
+12
+18
+Lille+France
+51.000000 4.900000
+13
+21
+Las+Cruces+NM
+32.333332 -106.750000
+9
+20
+Ithaca+NY
+42.433334 -76.500000
+EndChain
+BeginChain
+17
+20
+Whipple+Corner+NY
+42.466667 -76.566666
+14
+20
+West+Orange+NJ
+40.783333 -74.250000
+11
+20
+Portland+ME
+43.666668 -70.199997
+10
+20
+Newbury+NH
+43.316666 -72.033333
+15
+19
+Halmstad+Sweden
+56.700001 12.900000
+7
+20
+Gary+IN
+41.583332 -87.333336
+9
+20
+Durant+OK
+33.983334 -96.383331
+16
+20
+Daytona+Beach+FL
+29.183332 -81.050003
+21
+18
+Amsterdam+Netherlands
+52.349998 4.866667
+EndChain
+BeginChain
+10
+20
+Wichita+TX
+33.883335 -98.500000
+13
+20
+Valparaiso+IN
+41.466667 -87.050003
+15
+18
+Toulouse+France
+43.616665 1.450000
+14
+19
+Tenerife+Spain
+37.299999 -1.750000
+14
+19
+Sofia+Bulgaria
+42.716667 23.333334
+17
+21
+San+Bernardino+CA
+34.133335 -117.283333
+17
+20
+North+Royalton+OH
+41.299999 -81.733330
+11
+20
+New+York+NY
+40.666668 -73.933334
+12
+20
+Melbourne+FL
+28.100000 -80.633331
+15
+20
+Mahoneyville+NJ
+39.616665 -75.500000
+18
+18
+Magden+Switzerland
+47.500000 7.800000
+15
+19
+Lisbon+Portugal
+38.700001 -9.083333
+12
+20
+Grapevine+TX
+32.933334 -97.066666
+12
+18
+Dijon+France
+47.349998 5.033333
+13
+20
+Charleston+SC
+32.783333 -79.983330
+14
+19
+Braga+Portugal
+41.500000 -8.500000
+EndChain
+BeginChain
+11
+19
+Boras+Spain
+40.400002 -3.700000
+10
+20
+Waldorf+MD
+38.633335 -76.900002
+16
+19
+Trondheim+Norway
+63.400002 10.400000
+12
+18
+Torino+Italy
+45.000000 7.300000
+14
+19
+Szeged+Hungary
+46.299999 20.000000
+10
+19
+Rome+Italy
+41.866665 12.616667
+9
+21
+Polson+MT
+47.683334 -114.150002
+11
+20
+Petoskey+MI
+45.349998 -84.949997
+11
+18
+Milan+Italy
+45.483334 9.200000
+9
+20
+London+KY
+37.116665 -84.066666
+14
+18
+Leuven+Belgium
+51.000000 4.700000
+12
+20
+Lafayette+IN
+40.400002 -86.866669
+11
+20
+Kentland+IN
+40.766666 -87.433334
+10
+20
+Johnson+IN
+38.266666 -87.733330
+18
+19
+Heidelberg+Germany
+51.480000 10.500000
+11
+21
+Coos+Bay+OR
+43.366665 -124.216667
+10
+20
+Buffalo+NY
+42.883335 -78.849998
+15
+18
+Boulogne+France
+50.700001 1.500000
+13
+20
+Boca+Raton+FL
+26.366667 -80.099998
+EndChain
+BeginChain
+12
+18
+Varese+Italy
+45.799999 8.800000
+9
+20
+Taylor+MI
+39.000000 -84.483330
+17
+20
+Stone+Mountain+GA
+33.799999 -84.166664
+17
+21
+Salt+Lake+City+UT
+40.766666 -111.916664
+8
+21
+Salem+OR
+44.916668 -123.016670
+14
+20
+Northampton+PA
+40.683334 -75.483330
+18
+18
+Leiden+Netherlands
+52.000000 4.500000
+14
+20
+Kansas+City+MO
+39.116665 -94.550003
+13
+20
+Huntington+WV
+38.400002 -82.433334
+14
+19
+Dublin+Ireland
+53.416668 -6.250000
+9
+20
+Dallas+TX
+32.783333 -96.750000
+15
+20
+Conshohocken+PA
+40.066666 -75.300003
+16
+19
+Coimbra+Portugal
+40.200001 -8.400000
+11
+21
+Cheyenne+WY
+41.133335 -104.783333
+10
+20
+Bemidji+MN
+47.466667 -94.866669
+EndChain
+BeginChain
+16
+20
+Winston+Salem+NC
+36.099998 -80.250000
+11
+20
+Wheeling+WV
+40.066666 -80.683334
+9
+20
+Toledo+OH
+41.650002 -83.566666
+13
+19
+Saeby+Denmark
+57.299999 10.500000
+11
+21
+Kirkland+WA
+47.683334 -122.183334
+15
+19
+Heraklio+Greece
+41.000000 24.799999
+13
+20
+Harrisburg+PA
+40.266666 -76.883331
+17
+18
+Frankfurt+Germany
+50.016666 8.566667
+13
+19
+Faro+Portugal
+37.000000 -8.000000
+23
+19
+Cranfield+UnitedKingdom
+52.000000 -0.100000
+8
+20
+Bryan+TX
+30.666666 -96.349998
+14
+18
+Bremen+Germany
+53.033333 8.783334
+EndChain
+BeginChain
+17
+20
+Willow+Springs+MO
+36.983334 -91.966667
+13
+19
+Trieste+Italy
+45.599998 13.800000
+13
+20
+Shreveport+LA
+32.466667 -93.783333
+24
+19
+Rutherford+UnitedKingdom
+55.599998 -2.550000
+11
+21
+Redwoods+CA
+40.583332 -121.933334
+24
+19
+Pontypridd+UnitedKingdom
+51.599998 -3.300000
+8
+20
+Omaha+NE
+41.250000 -96.000000
+9
+20
+Monroe+NC
+34.983334 -80.533333
+14
+19
+Kuopio+Finland
+63.000000 27.500000
+16
+19
+Jonkoping+Sweden
+57.500000 14.500000
+10
+20
+Herndon+VA
+38.966667 -77.383331
+8
+21
+Davis+CA
+38.549999 -121.733330
+10
+20
+Chester+PA
+39.833332 -75.366669
+14
+20
+Bull+Shoals+AR
+36.366665 -92.583336
+12
+20
+Brentwood+NY
+40.766666 -73.233330
+10
+20
+Atlanta+GA
+33.750000 -84.416664
+12
+20
+Abbeville+LA
+29.966667 -92.116669
+14
+18
+Aachen+Germany
+50.759998 6.100000
+EndChain
+BeginChain
+15
+18
+L'+Aquila+Italy
+45.500000 9.200000
+15
+20
+Poughkeepsie+NY
+41.683334 -73.916664
+16
+20
+Pompano+Beach+FL
+26.233334 -80.116669
+11
+19
+Padua+Italy
+45.299999 11.800000
+24
+19
+Manchester+UnitedKingdom
+53.500000 -2.200000
+20
+18
+London+UnitedKingdom
+59.000000 0.000000
+12
+20
+Claremore+OK
+36.299999 -95.616669
+14
+21
+Bakersfield+CA
+35.349998 -119.000000
+13
+19
+Athens+Greece
+38.016666 23.733334
+EndChain
+BeginChain
+17
+19
+Oldenburg+Germany
+52.500000 13.300000
+13
+19
+Xanthi+Greece
+41.000000 25.000000
+9
+21
+Tacoma+WA
+47.250000 -122.449997
+14
+20
+Springfield+MO
+37.183334 -93.283333
+12
+21
+San+Diego+CA
+32.799999 -117.133331
+14
+20
+New+Britain+CT
+41.666668 -72.783333
+11
+19
+Lund+Sweden
+59.000000 12.200000
+12
+20
+Kalamazoo+MI
+42.266666 -85.583336
+15
+19
+Joensuu+Finland
+64.699997 27.000000
+9
+20
+Irving+TX
+32.849998 -96.966667
+15
+18
+Grenoble+France
+45.349998 5.316667
+13
+21
+El+Segundo+CA
+33.900002 -118.416664
+11
+20
+Elmhurst+IL
+41.883335 -87.933334
+12
+21
+Claremont+CA
+34.116665 -117.699997
+9
+20
+Beloit+WI
+42.516666 -89.016670
+EndChain
+BeginChain
+13
+19
+Bromma+Sweden
+59.000000 18.000000
+18
+18
+Zurich+Switzerland
+47.366665 8.533334
+7
+20
+Waco+TX
+31.566668 -97.183334
+13
+19
+Tromso+Norway
+68.699997 19.000000
+11
+21
+Richmond+WA
+47.750000 -122.333336
+16
+20
+Pleasantville+NJ
+39.383335 -74.516670
+16
+18
+Palaiseau+France
+48.700001 2.250000
+9
+20
+Newark+NJ
+40.716667 -74.166664
+11
+20
+Moorhead+MN
+46.849998 -96.750000
+10
+20
+Mankato+MN
+44.166668 -93.983330
+10
+20
+Ivyland+PA
+40.200001 -75.066666
+21
+19
+Glasgow+UnitedKingdom
+55.900002 -4.250000
+9
+20
+Durham+NC
+35.966667 -78.900002
+23
+18
+Cambridge+UnitedKingdom
+52.200001 0.000000
+15
+18
+Besancon+France
+47.250000 6.030000
+10
+20
+Akron+Ohio
+41.066666 -81.516670
+22
+19
+Aberdeen+UnitedKingdom
+57.099998 -2.100000
+15
+18
+Aalborg+Denmark
+57.083332 9.850000
+EndChain
+BeginChain
+18
+19
+York+UnitedKingdom
+54.000000 -1.500000
+14
+20
+San+Antonio+TX
+29.450001 -98.500000
+10
+20
+Raleigh+NC
+35.816666 -78.650002
+14
+19
+Ockelbo+Sweden
+60.900002 16.600000
+9
+20
+Naples+FL
+26.133333 -81.783333
+15
+20
+Manitoba+Canada
+49.900002 -97.116669
+12
+19
+Graz+Austria
+47.000000 15.500000
+20
+18
+Enschede+Netherlands
+52.200001 6.900000
+12
+20
+Cleveland+OH
+41.466667 -81.666664
+13
+19
+Bologna+Italy
+44.533333 11.283334
+13
+20
+Birmingham+AL
+33.516666 -86.783333
+EndChain
+BeginChain
+24
+18
+Villenueved'+Ascq+France
+48.400002 2.000000
+14
+19
+Valencia+Spain
+39.500000 -0.600000
+25
+19
+Southampton+UnitedKingdom
+50.900002 -1.400000
+21
+18
+Luxembourg+Luxembourg
+49.616665 6.200000
+12
+19
+Linz+Austria
+48.233334 14.183333
+17
+19
+Karlsruhe+Germany
+52.400002 12.800000
+11
+18
+Ispra+Italy
+45.799999 8.600000
+23
+19
+Glamorgan+UnitedKingdom
+51.700001 -3.700000
+12
+19
+Bilbao+Spain
+43.250000 -3.000000
+10
+20
+Austell+GA
+33.816666 -84.633331
+9
+20
+Auburn+AL
+32.583332 -85.466667
+EndChain
+BeginChain
+9
+21
+Tucson+AZ
+32.183334 -110.883331
+14
+19
+Toronto+Canada
+43.700001 79.199997
+14
+20
+Toronto+Canada
+43.666668 -79.366669
+11
+21
+Stockton+CA
+37.966667 -121.300003
+14
+21
+Santa+Clara+CA
+37.349998 -121.966667
+15
+19
+Potsdam+Germany
+52.400002 13.060000
+11
+20
+Perryman+MD
+39.466667 -76.199997
+12
+21
+Palo+Alto+CA
+37.383335 -122.133331
+18
+20
+Madison+Heights+VA
+37.433334 -79.099998
+14
+20
+Kansas+City+KS
+39.116665 -94.716667
+8
+21
+Hobbs+NM
+32.733334 -103.150002
+14
+18
+Hilden+Germany
+51.160000 6.940000
+10
+20
+Decatur+IL
+39.849998 -88.933334
+11
+20
+Columbia+MD
+39.200001 -76.849998
+16
+19
+Bayreuth+Germany
+49.930000 11.560000
+12
+19
+Ancona+Italy
+43.599998 13.500000
+9
+20
+Alpena+MI
+45.066666 -83.433334
+EndChain
+BeginChain
+12
+20
+Knoxville+TN
+36.000000 -84.000000
+15
+20
+White+Plains+NY
+41.016666 -73.750000
+10
+20
+Waltham+MA
+42.383335 -71.233330
+13
+18
+Velizy+France
+48.400002 2.200000
+12
+20
+Roachdale+IN
+39.833332 -86.800003
+13
+19
+Rennes+France
+48.116665 -1.033333
+16
+20
+Oklahoma+City+OK
+35.466667 -97.500000
+10
+20
+Norfolk+VA
+36.916668 -76.233330
+14
+20
+Minneapolis+MN
+44.950001 -93.266670
+9
+20
+Dayton+OH
+39.766666 -84.183334
+16
+18
+Brussels+Belgium
+50.849998 4.350000
+11
+21
+Bellevue+WA
+47.599998 -122.150002
+EndChain
+BeginChain
+7
+20
+York+SC
+34.983334 -81.233330
+12
+20
+Tahlequah+OK
+35.900002 -94.966667
+12
+20
+Pittsburg+PA
+40.433334 -79.966667
+12
+19
+Oulu+Finland
+65.000000 27.000000
+14
+19
+Oultor+Finland
+65.000000 27.000000
+12
+21
+Oceanside+CA
+33.216667 -117.300003
+13
+19
+Moscow+Russia
+55.750000 37.616665
+16
+18
+Marseille+France
+43.299999 5.416667
+9
+20
+Lorton+VA
+38.700001 -77.233330
+13
+19
+Krakow+Poland
+51.700001 18.500000
+15
+20
+Jacksonville+FL
+30.333334 -81.650002
+11
+20
+Hartford+CT
+41.750000 -72.683334
+20
+19
+Durham+UnitedKingdom
+54.799999 -1.500000
+13
+19
+Cracow+Poland
+50.000000 20.000000
+17
+18
+Bielefeld+Germany
+52.029999 8.540000
+18
+19
+Bath+UnitedKingdom
+51.299999 -2.500000
+EndChain
+BeginChain
+11
+21
+Lynnwood+WA
+47.816666 -122.300003
+14
+19
+Galway+Ireland
+53.299999 -9.000000
+12
+20
+Cleveland+GA
+34.583332 -83.750000
+12
+18
+Bonn+Germany
+50.716667 7.066667
+EndChain
+BeginChain
+22
+18
+Wageningen+Netherlands
+52.000000 5.700000
+11
+20
+Stafford+TX
+29.616667 -95.550003
+10
+20
+Orlando+FL
+28.500000 -81.366669
+17
+19
+Norrkoping+Sweden
+58.599998 16.299999
+9
+20
+Marion+OH
+40.583332 -83.116669
+11
+21
+Honolulu+HI
+21.316668 -157.800003
+15
+19
+Hamburg+Germany
+53.566666 10.033334
+10
+20
+Clemson+SC
+34.683334 -82.800003
+20
+19
+Braunschweig+Germany
+52.259998 10.540000
+14
+20
+Bloomington+IL
+40.466667 -88.966667
+21
+19
+Belfast+UnitedKingdom
+54.500000 -6.000000
+EndChain
+BeginChain
+9
+20
+Topeka+KS
+39.033333 -95.683334
+10
+19
+Roma+Italy
+42.000000 12.700000
+12
+18
+Nancy+France
+46.020000 6.600000
+26
+18
+Luxembourg+City+Luxembourg
+49.616665 6.200000
+14
+21
+Los+Angeles+CA
+34.099998 -118.400002
+15
+18
+Kolding+Denmark
+55.500000 9.500000
+16
+18
+Hannover+Germany
+52.450001 9.700000
+22
+18
+Gieterveen+Netherlands
+53.000000 6.800000
+10
+20
+Earlham+IA
+41.483334 -94.116669
+12
+20
+Deer+Park+NY
+40.750000 -73.316666
+18
+19
+Copenhagen+Denmark
+55.716667 12.450000
+13
+20
+Carbondale+IL
+37.716667 -89.216667
+16
+19
+Budapest+Hungary
+47.416668 19.250000
+18
+19
+Brno+CzechRepublic
+49.200001 16.600000
+12
+20
+Baltimore+MD
+39.299999 -76.599998
+EndChain
+BeginChain
+17
+19
+Lattelekom+Latvia
+57.000000 24.000000
+10
+20
+Wichita+KS
+37.683334 -97.333336
+16
+19
+Vretstorp+Sweden
+59.000000 14.900000
+12
+19
+Visby+Sweden
+57.599998 18.299999
+13
+19
+Tartu+Estonia
+58.299999 26.700001
+11
+21
+Pasadena+CA
+34.150002 -118.133331
+12
+20
+Oak+Ridge+TN
+35.950001 -84.283333
+8
+20
+Emory+NY
+40.599998 -74.000000
+10
+20
+Madison+NJ
+40.750000 -74.416664
+19
+19
+Leeds+UnitedKingdom
+53.799999 -1.500000
+13
+20
+Greensboro+NC
+36.066666 -79.816666
+11
+20
+Columbus+OH
+39.983334 -82.983330
+13
+20
+Clarksburg+WV
+39.266666 -80.316666
+13
+20
+Cincinnati+OH
+39.133335 -84.500000
+10
+21
+Alameda+CA
+37.750000 -122.266670
+EndChain
+BeginChain
+13
+20
+Whitewater+WI
+42.833332 -88.733330
+12
+20
+Rochester+NY
+43.166668 -77.599998
+21
+19
+Reading+UnitedKingdom
+51.500000 -1.000000
+19
+18
+Niedernberg+Germany
+50.669998 8.600000
+13
+20
+Mocksville+NC
+35.883335 -80.550003
+10
+20
+Lincoln+NE
+40.799999 -96.683334
+9
+20
+Lehigh+PA
+41.266666 -75.449997
+15
+20
+Jacksonville+IN
+38.816666 -85.033333
+12
+20
+Covington+OH
+40.116665 -84.349998
+22
+19
+Bradford+UnitedKingdom
+53.799999 -1.750000
+14
+21
+Bloomington+CA
+34.049999 -117.383331
+13
+20
+Binghamton+NY
+42.099998 -75.900002
+20
+18
+Balzers+Leichenstein
+47.099998 9.500000
+15
+18
+Antwerp+Belgium
+51.216667 4.400000
+EndChain
+BeginChain
+19
+19
+Thessaloniki+Greece
+43.599998 23.000000
+11
+20
+Superior+WI
+46.683334 -92.050003
+10
+20
+Seymour+IN
+38.950001 -85.883331
+12
+19
+Oulo+Finland
+65.000000 27.000000
+12
+18
+Orsay+France
+48.700001 2.200000
+14
+19
+Munich+germany
+48.133335 11.583333
+16
+18
+Kortrijk+Belgium
+51.000000 3.300000
+13
+20
+Huntsville+AL
+34.700001 -86.616669
+EndChain
+BeginChain
+10
+20
+Wooster+OH
+40.816666 -81.916664
+10
+20
+Wingate+NC
+34.983334 -80.433334
+23
+19
+Sheffield+UnitedKingdom
+53.180000 -1.500000
+13
+20
+Pennsauken+NJ
+39.950001 -75.050003
+10
+20
+Oberlin+OH
+41.283333 -82.216667
+16
+20
+Nebraska+City+NE
+40.666668 -95.849998
+20
+18
+Lausanne+Switzerland
+46.500000 6.700000
+14
+20
+Garden+City+NY
+40.716667 -73.633331
+12
+20
+Creighton+NE
+42.450001 -97.900002
+12
+21
+Corvallis+OR
+44.566666 -123.266670
+12
+20
+Champlain+NY
+44.983334 -73.433334
+24
+19
+Birmingham+UnitedKingdom
+52.299999 -2.000000
+EndChain
+BeginChain
+14
+20
+Tallahassee+FL
+30.450001 -84.266670
+15
+19
+Szczecin+Poland
+51.000000 22.000000
+13
+21
+Sacramento+CA
+38.566666 -121.466667
+10
+20
+Reserve+LA
+30.066668 -90.550003
+13
+21
+Palo+Verde+CA
+33.416668 -114.716667
+12
+18
+Molde+Norway
+62.700001 7.200000
+11
+18
+Lyon+France
+45.733334 4.866667
+16
+19
+Linkoping+Sweden
+58.400002 15.600000
+16
+19
+Helsinki+Finland
+60.166668 24.883333
+18
+20
+Fort+Lauderdale+FL
+26.133333 -80.133331
+20
+18
+Den+Haag+Netherlands
+52.099998 4.300000
+17
+18
+Darmstadt+Germany
+49.529999 8.630000
+12
+20
+Champaign+IL
+40.099998 -88.250000
+EndChain
+BeginChain
+14
+19
+Zaragoza+Spain
+41.666668 -1.050000
+14
+19
+Vienna+Austria
+48.216667 16.366667
+12
+20
+Rockhurst+NY
+43.500000 -73.599998
+17
+20
+Reykjavik+Iceland
+64.150002 -21.900000
+14
+19
+Porto+Portugal
+42.000000 -8.500000
+12
+20
+Rockhurst+NY
+40.599998 -73.900002
+14
+20
+New+Orleans+LA
+30.049999 -89.916664
+11
+20
+Mckinney+TX
+33.200001 -96.650002
+12
+20
+Lafayette+LA
+46.783333 -89.833336
+14
+20
+Baton+Rouge+LA
+30.433332 -91.116669
+15
+18
+Archamps+France
+46.130001 6.130000
+10
+20
+Amherst+MA
+42.366665 -72.516670
+EndChain

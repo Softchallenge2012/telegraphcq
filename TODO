@@ -1,0 +1,20 @@
+If you plan to take ownership of any of these issues, please place
+your name in [brackets] against the item.
+
+* Clean up the code in pg_exec_query_string
+
+  Right now there is a big mass of code identifying all the different
+  paths in which queries are compiled in our system (SQ,CQ,Flux
+  etc.). A big disadvantage of this is that this is loosely copied in
+  the explain code (ExplainQuery in backend/commands/explain.c). If
+  this code is properly abstracted we can reuse it in explain and in
+  pg_exec_query_string - this way we can have proper EXPLAIN support
+  for our queries .. this will be a big debugging aid.
+
+* Clean up window semantics
+
+* Support views
+
+* Move aggregates to the front end
+
+

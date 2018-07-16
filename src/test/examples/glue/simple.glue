@@ -1,0 +1,9 @@
+# Port that GlueServer listens to
+port = 6789
+
+hifi.sensor_stream_1 = SELECT c.area_id, avg(s.temp) as avgtmp, avg(s.noise) as avgnoise FROM hifi.sensors s [ RANGE BY '0.5 sec', SLIDE BY '0.5 sec'], Catalog.setup c WHERE s.receptor_id = c. receptor_id  GROUP BY c.area_id ;datafix.cs.berkeley.edu;hifi;sailesh;
+#hifi.sensor_stream_2 = SELECT c.area_id, avg(s.temp) as avgtmp, avg(s.noise) as avgnoise FROM hifi.sensors s, Catalog.setup c WHERE s.receptor_id = c. receptor_id  GROUP BY c.area_id WINDOW s['0.5 sec'];datafix.cs.berkeley.edu;5432;hifi;sailesh;
+#hifi.sensor_stream_3 = SELECT c.area_id, avg(s.temp) as avgtmp, avg(s.noise) as avgnoise FROM hifi.sensors s, Catalog.setup c WHERE s.receptor_id = c. receptor_id  GROUP BY c.area_id WINDOW s['0.5 sec'];datafix.cs.berkeley.edu;5432;hifi;sailesh;
+
+hifi.sensor_stream = UNION;hifi.sensor_stream_1;hifi.sensor_stream_2;
+

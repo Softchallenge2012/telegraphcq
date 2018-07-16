@@ -1,0 +1,33 @@
+#!/usr/bin/perl
+
+print @ARGV, "\n";
+
+$proc_name = shift @ARGV;
+$in_emacs  = 0;
+
+if ($proc_name =~ /-fullname/) {
+  $in_emacs = 1;
+  $proc_name = shift @ARGV;
+  print "Running within emacs ... \n";
+} 
+
+@process = `ps -eavx`;
+
+foreach $item (@process) {
+
+    if ($item =~ /(\d+) (.*) (\d+.\d+) $proc_name/) {
+
+	if ($in_emacs) {
+	  $command = "gdb -fullname postmaster $1";
+	} else {
+	  $command = "ddd postmaster $1";
+	}
+
+	print "------------------------------------------------------------------\n";
+	print $item;
+	print "Running: $command \n";
+	print "------------------------------------------------------------------\n\n";
+	exec($command);
+    } 
+}
+

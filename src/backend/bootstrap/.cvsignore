@@ -1,0 +1,4 @@
+.deps
+bootparse.c
+bootscanner.c
+bootstrap_tokens.h

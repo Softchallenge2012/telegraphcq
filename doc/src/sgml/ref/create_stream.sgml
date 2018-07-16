@@ -1,0 +1,227 @@
+<!--
+$Header: /project/eecs/db/cvsroot/postgres/doc/src/sgml/ref/create_stream.sgml,v 1.1 2003/04/07 23:23:04 sailesh Exp $
+PostgreSQL documentation
+-->
+
+<refentry id="SQL-CREATESTREAM">
+ <refmeta>
+  <refentrytitle id="SQL-CREATESTREAM-TITLE">
+   CREATE STREAM
+  </refentrytitle>
+  <refmiscinfo>SQL - Language Statements</refmiscinfo>
+ </refmeta>
+
+ <refnamediv>
+  <refname>
+   CREATE STREAM
+  </refname>
+  <refpurpose>
+   define a new stream
+  </refpurpose>
+ </refnamediv>
+
+ <refsynopsisdiv>
+  <refsynopsisdivinfo>
+   <date>2000-03-25</date>
+  </refsynopsisdivinfo>
+
+<synopsis>CREATE STREAM <replaceable class="PARAMETER">stream</replaceable> ( <replaceable class="PARAMETER">column_name</replaceable> <replaceable class="PARAMETER">data_type</replaceable> [ TIMESTAMPCOLUMN ] [, ... ] )
+TYPE [ ARCHIVED | UNARCHIVED ] </synopsis> 
+
+ </refsynopsisdiv>
+
+ <refsect1 id="SQL-CREATESTREAM-description">
+ <title>Description</title>
+  <para>
+   <command>CREATE STREAM</command> will create a new archived or
+   unarchived stream in the current database. At present the
+   historical contents of an archived stream cannot be queried. A
+   stream can participate in one or more continuous queries in the
+   system. For a stream <replaceable
+   class="PARAMETER">stream</replaceable> three wrapper user-defined
+   functions must be created. These must have the names <replaceable
+   class="PARAMETER">stream_init</replaceable>,<replaceable
+   class="PARAMETER">stream_next</replaceable> and <replaceable
+   class="PARAMETER">stream_close</replaceable> and are responsible
+   for converting incoming data from a network connection into fields
+   of tuples in PostgreSQL format. 
+  </para>
+  <para>
+   A TIMESTAMPCOLUMN constraint is used to specify that a particular
+   column of the stream identifies the creation time of the tuples in
+   the stream. It is assumed that creation time of tuples entering the
+   system is monotonically increasing. There may be other columns in
+   the stream of type TIMESTAMP. This column is used whenever a stream
+   is used in a query with a "window" expression.  A stream
+   <emphasis>must</emphasis> have precisely one TIMESTAMPCOLUMN
+   constraint.
+  </para> 
+  <para>
+   It is not possible to update, insert or delete records in
+   streams. Aggregate queries over streams must involve window
+   expressions.
+  </para>
+ </refsect1>
+
+ <refsect1 id="SQL-CREATESTREAM-inputs">
+  <title>Inputs</title>
+  <para>
+   <variablelist>
+    <varlistentry>
+     <term><replaceable class="parameter">stream</replaceable></term>
+     <listitem>
+      <para>
+       The name of a stream to be created.
+      </para>
+     </listitem>
+    </varlistentry>
+    <varlistentry>
+     <term><replaceable class="parameter">column_name</replaceable></term>
+     <listitem>
+      <para>
+       The name of a column of a stream
+      </para>
+     </listitem>
+    </varlistentry>
+    <varlistentry>
+     <term><replaceable class="parameter">data_type</replaceable></term>
+     <listitem>
+      <para>
+       The type of a column of a stream
+      </para>
+     </listitem>
+    </varlistentry>
+    <varlistentry>
+     <term>TIMESTAMPCOLUMN</term>
+     <listitem>
+      <para>
+        A special constraint that identifies the column containing
+        creation time of tuples in the stream. In the current release,
+        the name of the column <emphasis>must</emphasis> be
+        <replaceable class="PARAMETER">tcqtime</replaceable>.
+      </para>
+     </listitem>
+    </varlistentry>
+   </variablelist>
+  </para>
+ </refsect1>
+
+ <refsect1 id="SQL-CREATESTREAM-diagnostics">
+  <title>Diagnostics</title>
+
+  <msgset>
+   <msgentry>
+    <msg>
+     <msgmain>
+      <msgtext>
+       <simpara><computeroutput>CREATE</computeroutput></simpara>
+      </msgtext>
+     </msgmain>
+    </msg>
+
+    <msgexplan>
+     <para>
+      Message returned if stream is successfully created.
+     </para>
+    </msgexplan>
+   </msgentry>
+
+
+   <msgentry>
+    <msg>
+     <msgmain>
+      <msgtext>
+       <simpara><computeroutput>ERROR</computeroutput></simpara>
+      </msgtext>
+     </msgmain>
+    </msg>
+
+    <msgexplan>
+     <para>
+      Message returned if stream creation failed.  This is usually
+      accompanied by some descriptive text, such as:
+      <computeroutput>ERROR: Relation '<replaceable
+      class="parameter">stream</replaceable>' already
+      exists</computeroutput>, which occurs at runtime if the stream
+      specified already exists in the database.
+     </para>
+    </msgexplan>
+   </msgentry>
+  </msgset>
+ </refsect1>
+
+ <refsect1 id="SQL-CREATESTREAM-notes">
+  <title>Notes</title>
+  <itemizedlist>
+   <listitem>
+    <para>
+     The name of the column for which the TIMESTAMPCOLUMN constraint
+     is set <emphasis>must</emphasis> be <replaceable
+     class="PARAMETER">tcqtime</replaceable>. 
+    </para>
+   </listitem>
+   <listitem>
+    <para>
+     Creating and installing the three wrapper functions is the
+     responsibility of the user.
+    </para>
+   </listitem>
+  </itemizedlist>
+ </refsect1>
+ <refsect1 id="SQL-CREATESTREAM-examples">
+  <title>Examples</title>
+   <para>
+   Create an archived stream <structname>measurements</> and
+   an unarchived stream <structname>tinydb</>:
+
+   <programlisting>
+    CREATE STREAM measurements (
+     tcqtime   TIMESTAMP TIMESTAMPCOLUMN, 
+     stationid INTEGER, 
+     speed     REAL) 
+    TYPE ARCHIVED;
+   </programlisting>
+   <programlisting>
+    CREATE STREAM tinydb (
+     tcqtime     TIMESTAMP TIMESTAMPCOLUMN,
+     light       REAL,
+     temperature REAL)
+    TYPE UNARCHIVED;
+   </programlisting>
+  </para>
+ </refsect1>
+ <refsect1 id="SQL-CREATESTREAM-compatibility">
+  <title id="SQL-CREATESTREAM-compatibility-title">Compatibility</title>
+  <para>
+   The <command>CREATE STREAM</command> is a <productname>TelegraphCQ</productname> extension and
+   is not part of either SQL99 or SQL99. It is subject to change in
+   future releases of <productname>TelegraphCQ</productname>.
+  </para>
+ </refsect1>
+
+ <refsect1>
+  <title>See Also</title>
+
+  <simplelist type="inline">
+   <member><xref linkend="sql-dropstream"></member>
+  </simplelist>
+ </refsect1>
+
+</refentry>
+
+<!-- Keep this comment at the end of the file
+Local variables:
+mode: sgml
+sgml-omittag:nil
+sgml-shorttag:t
+sgml-minimize-attributes:nil
+sgml-always-quote-attributes:t
+sgml-indent-step:1
+sgml-indent-data:t
+sgml-parent-document:nil
+sgml-default-dtd-file:"../reference.ced"
+sgml-exposed-tags:nil
+sgml-local-catalogs:"/usr/lib/sgml/catalog"
+sgml-local-ecat-files:nil
+End:
+-->

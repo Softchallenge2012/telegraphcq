@@ -1,0 +1,1 @@
+env CFLAGS="-O0" ./configure --enable-debug --enable-cassert --enable-depend --prefix=$PGRSHOME --with-includes=$HOME/tools/include --with-libraries=$HOME/tools/lib 

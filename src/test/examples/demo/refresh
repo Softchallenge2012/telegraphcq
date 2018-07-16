@@ -1,0 +1,30 @@
+#!/bin/bash
+#           -*-mode:ksh-*-  (keep emacs happy)
+#
+# refresh: Ask and refresh the entire demo setup
+# 
+# Sailesh Krishnamurthy
+#
+
+PATH=${PGRSHOME}/bin:${PATH}
+export PATH
+
+if [ $1 != "-f" ] 
+then
+  echo "!! We are going to totally refresh the demo -  continue? (Yes or No)"
+  agreed=0
+  read resp leftover
+  case "$resp" in
+    [Yy][Ee][Ss]) agreed=1;
+  esac
+  if [ $agreed == 0 ]
+  then
+    echo "!! Chicken :-) "
+    exit 1;
+  fi
+fi
+
+echo "Executing: ./stop.sh; ./clean.sh; ./setup.sh; ./startup.sh; ./streamers.sh nohup"
+./stop.sh; ./clean.sh; sleep 20; ./setup.sh; ./startup.sh; sleep 20; ./streamers.sh nohup
+
+echo "TCQ Demo setup refreshed - knock yourself out !"

@@ -1,0 +1,9 @@
+create wrapper csvwrapper1 (init=wrappers.csv_init, next=wrappers.csv_next, done=wrappers.csv_done); 
+create wrapper csvwrapper2 (init=wrappers.csv_init, next=wrappers.csv_next, done=wrappers.csv_done); 
+create wrapper csvwrapper3 (init=wrappers.csv_init, next=wrappers.csv_next, done=wrappers.csv_done); 
+create wrapper csvwrapper4 (init=wrappers.csv_init, next=wrappers.csv_next, done=wrappers.csv_done); 
+create wrapper csvwrapper5 (init=wrappers.csv_init, next=wrappers.csv_next, done=wrappers.csv_done); 
+create wrapper csvwrapper6 (init=wrappers.csv_init, next=wrappers.csv_next, done=wrappers.csv_done); 
+create wrapper csvwrapper7 (init=wrappers.csv_init, next=wrappers.csv_next, done=wrappers.csv_done); 
+create wrapper csvwrapper8 (init=wrappers.csv_init, next=wrappers.csv_next, done=wrappers.csv_done); 
+create wrapper csvwrapper9 (init=wrappers.csv_init, next=wrappers.csv_next, done=wrappers.csv_done); 

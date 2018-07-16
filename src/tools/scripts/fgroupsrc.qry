@@ -1,0 +1,3 @@
+select seqnum, att1, att2, att3, att4, my_agg(data) 
+from four_lvl_grp_stream 
+group by seqnum, att1, att2, att3, att4;

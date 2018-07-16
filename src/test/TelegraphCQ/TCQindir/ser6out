@@ -1,0 +1,61 @@
+============== starting postmaster                    ==============
+running on port 65432 with pid 25559
+============== populating station table               ==============
+============== running regression test queries        ==============
+simpleSelect5
+measurements
+ stationid | max  | avg 
+-----------+------+-----
+    999409 | 15.6 |  72
+(1 row)
+
+success=1, cqcancel=1
+simpleSelect5 passed...
+
+simpleSelect5
+measurements
+ stationid | max  | avg 
+-----------+------+-----
+    999409 | 15.6 |  69
+(1 row)
+
+success=1, cqcancel=1
+simpleSelect5 passed...
+
+simpleSelect5
+measurements
+ stationid | max  | avg 
+-----------+------+-----
+    999409 | 15.6 |  70
+(1 row)
+
+success=1, cqcancel=1
+simpleSelect5 passed...
+
+simpleSelect5
+measurements
+ stationid | max  | avg 
+-----------+------+-----
+    999409 | 15.6 |  70
+(1 row)
+
+success=1, cqcancel=1
+simpleSelect5 passed...
+
+simpleSelect5
+measurements
+ stationid | max  | avg 
+-----------+------+-----
+    999409 | 15.6 |  70
+(1 row)
+
+success=1, cqcancel=1
+simpleSelect5 passed...
+
+
+
+ passed...
+
+============== shutting down postmaster               ==============
+waiting for postmaster to shut down........done
+postmaster successfully shut down

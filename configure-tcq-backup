@@ -1,0 +1,3 @@
+export DIR=`pwd`
+export PGRSHOME=$HOME/applications/TelegraphCQ
+env CFLAGS="-O0" ./configure --enable-debug --enable-cassert --enable-depend --without-readline --prefix=$PGRSHOME --with-includes=$HOME/applications/tcq-tools/include --with-libraries=$HOME/applications/tcq-tools/lib 

@@ -1,0 +1,35 @@
+<!-- $Header: /project/eecs/db/cvsroot/postgres/doc/src/sgml/developer.sgml,v 1.1.1.2 2003/04/17 22:43:42 sailesh Exp $ -->
+<!-- PostgreSQL Developer's Guide -->
+
+<book id="developer">
+ <title>PostgreSQL &version; Developer's Guide</title>
+
+ <bookinfo>
+  <corpauthor>The PostgreSQL Global Development Group</corpauthor>
+  &legal;
+
+  <abstract>
+   <para>
+    This document contains assorted information that can be of use to
+    <productname>PostgreSQL</> developers.
+   </para>
+  </abstract>
+ </bookinfo>
+ 
+ &sources;
+ &arch-dev;
+ &catalogs;
+ &protocol;
+ &compiler;
+ &bki;
+ &page;
+ &geqo;
+ &gist;
+ &nls;
+<!-- appendices -->
+ &cvs;
+ &docguide;
+<![%single-book;[
+ &biblio;
+]]>
+</book>

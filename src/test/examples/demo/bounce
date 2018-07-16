@@ -1,0 +1,65 @@
+#!/bin/bash
+#           -*-mode:ksh-*-  (keep emacs happy)
+#
+# refresh: Ask and refresh the entire demo setup
+# 
+# Sailesh Krishnamurthy
+#
+
+STREAMERS="no"
+
+if [ $# -lt 1 ]
+then
+    echo "Usage: bounce (smart | random) [PGDATA] "
+	exit 1;
+fi
+
+if [ $1 == "random" ]
+then
+  SCHED="random"
+elif [ $1 == "smart" ]
+then
+  SCHED="smart"
+else
+    echo "Usage: bounce (smart | random) [PGDATA] "
+	exit 1
+fi
+
+if [ $#  -ge 2 ]
+then
+  PGDIR=$2
+else
+  PGDIR=$PGDATA
+fi
+
+echo "!! Bouncing the sever with following parameters: "
+echo "!! Streamers: $STREAMERS"
+echo "!! PGDATA: $PGDIR "
+echo "!! Scheduling: $SCHED"
+echo "!! Continue? (Yes or No)"
+agreed=0
+read resp leftover
+case "$resp" in
+  [Yy][Ee][Ss]) agreed=1;
+esac
+if [ $agreed == 0 ]
+then
+	 echo "!! Chicken :-) "
+	 echo "!! Bouncing can be good for health !"
+	 exit 1;
+fi
+cp $PGDATA/postgresql.conf.$SCHED $PGDATA/postgresql.conf
+
+if [ $STREAMERS == "yes" ]
+then 
+  echo "Executing: ./stop.sh $PGDIR; ./archive; ./startup.sh $PGDIR; ./streamers.sh nohup"
+  ./stop.sh $PGDIR; ./startup.sh $PGDIR; 
+  echo "Let's give poor TelegraphCQ some time to warm up - 3 seconds "
+  sleep 3
+  ./streamers.sh nohup
+else
+  echo "Executing: ./stop.sh $PGDIR; ./startup.sh $PGDIR; "
+  ./stop.sh $PGDIR; ./startup.sh $PGDIR; 
+fi
+
+echo "TCQ Demo setup bounced - knock yourself out !"

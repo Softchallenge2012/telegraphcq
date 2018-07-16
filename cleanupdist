@@ -1,0 +1,13 @@
+rm notes.txt
+rm -rf src/test/wrappers
+rm -rf src/test/sources
+rm src/backend/rqueue/pripc.c
+rm src/include/rqueue/pripc.h
+rm configure-opts
+rm configure-alt
+rm src/test/examples/freeway.tar.gz
+rm -rf src/backend/utils/debug.o
+rm -rf src/test/examples/geoserver
+rm -rf src/backend/amol-scripts
+rm ChangeLog
+rm cleanupdist

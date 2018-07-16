@@ -1,0 +1,6 @@
+#!/bin/bash
+
+echo "Restoring check: mv *-main *"
+mv install-check install
+mv pgdb-check pgdb
+mv postgres-check postgres

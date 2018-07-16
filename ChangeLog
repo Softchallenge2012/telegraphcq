@@ -1,0 +1,590 @@
+2003-09-25  Sailesh Krishnamurthy  <sailesh@cs.berkeley.edu>
+
+	* src/test/examples/tcqsanity/tcqsanity.c: It runs now - also easy
+	to disable specific queries - just change the run_queries[] array.
+
+	* src/backend/nodes/outfuncs.c: Added printing support for
+	FStemOuterHashkeys and FSteMClauses
+
+	* src/backend/executor/nodeSteM.c: Cleaned up debugging
+
+	* src/backend/executor/nodeFSteM.c (FSteMGenerateOutputTuple): Fix
+	for bug #169 - we omit to use the interested_queries list of the
+	stemclauses to turn on the queriesCompleted bits for any queries
+	that are _not_ part of the interested_queries and are a part of
+	the usedByQueries.
+
+	* src/backend/executor/nodeCQEddy.c (processOutputQ): Cleaned up
+	the debugging print statements.
+
+2003-07-16  Sailesh Krishnamurthy  <sailesh@cs.berkeley.edu>
+
+	* src/backend/executor/execQual.c: Changed ExecEvalVar to use the
+	tuple descriptor in the IHT in the CQ case.
+
+2003-07-14  Sailesh Krishnamurthy  <sailesh@cs.berkeley.edu>
+
+	* src/test/examples/tcqsanity/tcqsanity.old.c: Convert C++ comments to C
+
+	* src/test/examples/tcq-sample/trafficincidents.c: Convert C++ comments to C
+
+	* src/test/examples/geoserver/tracelog.c: Convert C++ comments to C
+
+	* src/test/examples/geoserver/gettrace.c: Convert C++ comments to C
+
+	* src/test/examples/demo/tcqsanity.c: Convert C++ comments to C
+
+	* src/include/nodes/plannodes.h: Convert C++ comments to C
+
+	* src/include/nodes/execnodes.h: Convert C++ comments to C
+
+	* src/include/executor/nodeEddy.h: Convert C++ comments to C
+
+	* src/include/executor/intermediateTuple.h: Convert C++ comments to C
+
+	* src/backend/utils/misc/guc.c: Convert C++ comments to C
+
+	* src/backend/telegraphcq/wrapch.c: Convert C++ comments to C
+
+	* src/backend/telegraphcq/telegraphcq.c: Convert C++ comments to C
+
+	* src/backend/tcop/postgres.c: Convert C++ comments to C
+
+	* src/backend/rqueue/ingresq.c: Convert C++ comments to C
+
+	* src/backend/postmaster/postmaster.c: Convert C++ comments to C
+
+	* src/backend/parser/parse_wrapper.c: Convert C++ comments to C
+
+	* src/backend/optimizer/plan/eddy.c: Convert C++ comments to C
+
+	* src/backend/optimizer/plan/converttofsched.c: Convert C++ comments to C
+
+	* src/backend/optimizer/plan/convertoeddy.c: Convert C++ comments to C
+
+	* src/backend/executor/routingPolicy.c: Convert C++ comments to C
+
+	* src/backend/executor/nodeSteMHashjoin.c: Convert C++ comments to C
+
+	* src/backend/executor/nodeSteM.c: Convert C++ comments to C
+
+	* src/backend/executor/nodeScanModule.c: Convert C++ comments to C
+
+	* src/backend/executor/nodeSQEddy.c: Convert C++ comments to C
+
+	* src/backend/executor/nodeIndexSteM.c: Convert C++ comments to C
+
+	* src/backend/executor/nodeFluxCons.c: Convert C++ comments to C
+
+	* src/backend/executor/nodeEddy.c: Convert C++ comments to C
+
+	* src/backend/executor/nodeCQEddy.c: Convert C++ comments to C
+
+	* src/backend/executor/execQual.c: Convert C++ comments to C
+
+	* src/backend/executor/execProcnode.c: Convert C++ comments to C
+
+	* src/backend/executor/execMain.c: Convert C++ comments to C
+
+2003-07-09  Sailesh Krishnamurthy  <sailesh@cs.berkeley.edu>
+
+	* src/backend/executor/routingPolicy.c: Cosmetic
+
+	* src/backend/executor/nodeFluxProd_FT.c: setSocketOptions
+
+	* src/backend/executor/nodeFluxProd.c: setSocketOptions
+
+	* src/backend/executor/nodeFluxCons_FT.c: Need include file
+
+	* src/backend/executor/nodeFluxCons.c: Need include file
+
+	* src/backend/executor/nodeFluxAcceptor.c: setSocketOptions
+
+	* src/backend/executor/nodeFSched.c: timersub doesn't run on Solaris
+
+	* configure.in: Changed version
+
+	* configure: Reran autoconf
+
+	* src/backend/commands/tcqcommands.c: Cosmetic
+
+	* src/backend/commands/tablecmds.c: Reinstate check for precisely
+	one timestamp constraint in a stream.
+
+	* src/backend/access/common/tupdesc.c: Cosmetic
+
+2003-07-08  Sailesh Krishnamurthy  <sailesh@cs.berkeley.edu>
+
+	* src/include/telegraphcq/wrapch.h: Add prototype for
+	setSocketOptions
+
+	* src/backend/telegraphcq/wrapch.c: Change setSocketOptions to
+	non-static function
+
+	* src/backend/parser/gram.y: Compilation error .. grrr
+
+	* src/backend/executor/nodeFSched.c: Use setSocketOptions for
+	portable setting of non-blocking IO
+
+2003-06-20  Sailesh Krishnamurthy  <sailesh@cs.berkeley.edu>
+
+	* src/backend/optimizer/plan/eddy.c: Purged commented code
+
+	* src/backend/optimizer/plan/convertoeddy.c: Cleaned up
+	superfluous error checking for filters. This has to be tested more.
+
+	* src/backend/executor/nodeEddy.c: Added include file
+
+2003-06-07  Sailesh Krishnamurthy  <sailesh@cs.berkeley.edu>
+
+	* src/backend/optimizer/plan/eddy.c (add_planitem_to_eddy): Stupid
+	bug ! We fell foul of the fact that we no longer compact sources
+	and modules. So the Eddy's sources and modules array can keep
+	growing. I changed the assertion that checks if numSources is <= 8
+	to actually check the number of "active" sources (that is, those
+	with eddy->sources[i] non-null). Same for modules. Two new
+	functions get_num_active_sources/modules added. Needs to be
+	investigated more. Dangerous for the demo env. where we keep
+	adding and removing queries.
+  
+	* src/backend/executor/nodeEddy.c (_getNodeInformation): Fix crash
+	when subjected to an expression that is not an operator (happens
+	with incidents-table join !) - if unchecked will cause crash in
+	the presence of the dyncatalog
+ 
+2003-06-06  Sailesh Krishnamurthy  <sailesh@cs.berkeley.edu>
+
+	* src/backend/optimizer/plan/eddy.c (sanity_check_rt_sources):
+	Extra debug LOG code.
+
+	* src/backend/executor/nodeFSteM.c (ProcessEndFSteM): Fix nasty
+	bug - the sourceStems bitmap wasn't being cleared as appropriate.
+
+	* src/backend/lib/bit.c (BitArrayPrintDebug): Protect ourself from
+	broken debug code.
+
+	* src/backend/executor/nodeCQEddy.c: Protect ourself from broken
+	debug code.
+
+	* src/backend/lib/bit.c: Stupid bug
+
+	* src/backend/executor/processNode.c: Add argument to
+	tcq_operators_add
+
+	* src/backend/executor/nodeCQEddy.c (update_weights): Amol magic
+	to ensure we "unlearn" routing soon.
+ 
+	* src/include/utils/bit.h: Prototype for BitArrayContained()
+
+	* src/include/executor/nodeEddy.h: Prototype for
+	setReadyFromPJOList()
+
+	* src/backend/lib/bit.c (bitArrayContained): New function
+	added. Fixed bug in BitArrayPrintDebug
+
+	* src/backend/executor/nodeSteM.c: There is some strange SteM code
+	that deals with a "timestamp" of tuples - this is not the tcqtime
+	timestamp - rather it's used to eliminate duplicates for some SteM
+	specific case that certainly doesn't apply to CQ processing. I've
+	commented it out. 
+ 
+	* src/backend/executor/nodeFSteM.c: Fixed so that it now calls
+	setReadyFromPJOList() - this fixes the ugly bug that in the
+	presence of a table a window join with multiple streams doesn't
+	get routed to its GSFilter thereby causing the tuple to be thrown
+	away. In the process we found cases (with shared qp) where we'll
+	be doing a lot of extra work sending tuples to stems and modules
+	they don't need to go to. Bug 133 (not for demo !) has been filed
+	and we'll chase it down later.
+
+	* src/backend/executor/nodeCQEddy.c: New function
+	setReadyFromPJOList() added. This is necessary to properly set the
+	ready bits of a newly joined probe tuple. Multiple stream join in
+	the presence of a table introduced this nasty. In addition, a new
+	function dumpEddy() has been added to dump the state of the eddy
+	at any point in time. Kicks in when server_min_messages is set to
+	DEBUG1.
+  
+2003-06-03  Sailesh Krishnamurthy  <sailesh@cs.berkeley.edu>
+
+	* src/backend/optimizer/plan/eddy.c: Fidx bogus assertions. It
+	turns out that it's perfectly legal to have some sources not get
+	transformed at all. 
+
+	* src/include/telegraphcq/telegraphcqinit.h: Diff says it all:
+                     -#define TCQMAXOPERATORS  8
+                     +#define TCQMAXOPERATORS  32
+	
+	* src/backend/telegraphcq/dyncatalog.c: Minor changes aimed at
+	making dyncatalogs opaque to themselves.
+
+	* src/backend/optimizer/plan/eddy.c: Added new
+	ProcessMarkDynCatalog and appropriate calls to it.
+
+	* src/backend/executor/processNode.c: Removed old
+	ProcessMarkDynCatalog()
+
+	* src/backend/executor/nodeScanModule.c
+	(ProcessMarkDynCatalogScanModule): Removed the function. Now the
+	modified ProcessMarkDynCatalog is called appropriately from
+	adjust_scan_and_rt()
+	
+	* src/backend/optimizer/plan/eddy.c (add_stem_to_matching_fstem):
+	Fix breakage - same query being added multiple times. The API
+	FjordAddQuery was not used thus causing the problem.
+
+	* src/backend/executor/nodeScanModule.c (ProcessInitScanModule):
+	Fix breakage in determining the nature of varbindings field.
+
+2003-06-02  Sailesh Krishnamurthy  <sailesh@cs.berkeley.edu>
+
+	* src/include/telegraphcq/telegraphcqinit.h: TCQMAXSOURCES .. uh
+	increased to 8.
+
+	* src/backend/rqueue/ingresq.c (IngresQInsertTuple): Previous
+	checkin broke my dyncat functionality. Restored .. uh partially.
+
+	* src/backend/optimizer/plan/eddy.c: The range table
+	transformation logic was still broken - how lame ! This time the
+	bug showed up because the incoming eddy's sources referred to the
+	rangetable in reverse order .. sigh .. talk about being lucky. If
+	this had not come up we wouldn't have fixed the bug. Our testing
+	has been really lame :-( 
+
+	* src/backend/optimizer/plan/converttostream.c: Although the
+	streamoid was added to the StrmScan it is only used in some paths
+	I believe. As a result it does not get set during
+	convert_to_streamscan. Fixed. 
+
+	* src/backend/nodes/copyfuncs.c: The copyfunc for StrmScan was not
+	updated when the new field streamoid was added to StrmScan. Came
+	back to bite us severely later. 
+
+	* src/backend/executor/nodeStrmScan.c: Cosmetic
+
+	* src/backend/optimizer/plan/eddy.c (sanity_check_rt_sources): New
+	function. Change  to query removal as well.
+
+	* src/backend/executor/nodeSteM.c: Commented out debug messages
+
+	* src/backend/executor/nodeScanModule.c (getRealSourceOid): New
+	function
+
+	* src/backend/executor/nodeFSteM.c: Cosmetic
+
+	* src/backend/executor/nodeCQEddy.c: Cosmetic
+
+2003-05-31  Sailesh Krishnamurthy  <sailesh@cs.berkeley.edu>
+
+	* src/test/examples/vis/CQPlotter/CQPlotter/CQPlotter.java:
+	Changed so that the grouping column can be specified as an
+	argument
+
+	* src/include/nodes/execnodes.h: Changed pjo->operator to
+	pjo->done
+
+	* src/include/executor/nodeFjord.h: Prototype changes
+
+	* src/include/executor/nodeEddy.h: Prototype changes
+
+	* src/backend/optimizer/plan/eddy.c(setupDependentModules):
+	Replace pjo->operators with pjo->done
+
+	* src/backend/executor/processNode.c(FjordEnd): Add call to new
+	function cleanOperatorFromPJOList() to do proper cleanup for all
+	operators
+
+	* src/backend/executor/nodeScanModule.c: Changed params to
+	FjordEnd() call and zero'd out ScanModule struct on exit to help
+	detect dangling references.
+
+	* src/backend/executor/nodeGSFilter.c(ProcessEndGSFilter): Move
+	call to findPJOFromOperator to FjordEnd() - current call is buggy.
+
+	* src/backend/executor/nodeFluxProd.c: Cosmetic
+
+	* src/backend/executor/nodeFSteM.c: Fixed bug in case of joins
+	with more than one stem on a single source. Also clarified with
+	comments how ready and done bits are set after probe
+  
+	* src/backend/executor/nodeCQEddy.c: Changed operator field in
+	PostJoinOperator to ready
+
+2003-05-28  Sailesh Krishnamurthy  <sailesh@cs.berkeley.edu>
+
+	* src/backend/executor/nodeFSteM.c: Changed the way the code
+	traverses the substems - we need to carefully use modular
+	arithmetic in the loops - changed the do-while loops to for. There
+	may be more such problems. Amol/Fred: please recheck your code.
+	
+	* src/include/executor/nodeFSteM.h: Moved some macros here from
+	nodeFSteM.c
+
+	* src/backend/executor/nodeFSteM.c: Fixed so that stream-table
+	joins work with max-work-units set to 1.
+ 
+2003-05-27  Sailesh Krishnamurthy  <sailesh@cs.berkeley.edu>
+
+	* src/include/nodes/plannodes.h: Cosmetic
+
+	* src/include/executor/nodeFjord.h: Remove monitoring unsuccessful
+	enq/deq in dyncat streams
+
+	* src/backend/parser/analyze.c: Cosmetic
+
+	* src/backend/optimizer/plan/eddy.c: Cosmetic
+
+	* src/backend/executor/nodeSort.c: When Sort does _not_ have a
+	Window below it, it should behave "normally"
+
+	* src/backend/executor/nodeGroup.c: Fixed nasty bug introduced
+	while making Group sensitive to a Sort that has a Window below it.
+
+	* src/backend/executor/nodeFSteM.c: Fixed build breakage
+
+2003-05-22  Sailesh Krishnamurthy  <sailesh@cs.berkeley.edu>
+
+	* src/backend/executor/nodeGroup.c: Magic bug fix ! 
+
+	* src/include/nodes/execnodes.h: Added child_Done field to sortstate
+
+	* src/backend/tcop/postgres.c (pg_exec_query_string): Fixed bug
+	that skipped Sort while inserting Window node
+ 
+	* src/backend/executor/nodeWindow.c: Cosmetic
+
+	* src/backend/executor/nodeSort.c: Changed to examine Window
+
+	* src/backend/executor/nodeGroup.c: Changed to examine Sort as
+	well as Window
+
+	* src/backend/commands/explain.c: Minor additions
+
+2003-05-12  Sailesh Krishnamurthy  <sailesh@cs.berkeley.edu>
+
+	* src/test/examples/dyncat/dyncat.sql: Firmed up defn of tcq_queries.
+
+	* src/include/utils/debug.h: Trivial cosmetics
+
+	* src/include/telegraphcq/dyncatalog.h: Support for new
+	dyn. catalog stream infrastructure.
+
+	* src/include/nodes/plannodes.h: New field indicating that a Fjord
+	might deal with a dyncat stream
+
+	* src/include/executor/nodeScanModule.h: Added cosmetics ..
+
+	* src/include/executor/nodeFjord.h: Defined new FQUEUE magic macro
+	and the new FJORD_ENQ/DEQ_INP/OUT macros that use FQUEUE. Also
+	added prototypes.
+
+	* src/include/executor/intermediateTuple.h: Removed
+	ENQUEUE_IHT,DEQUEUE_IHT,FENQUEUE,FDEQUEUE macros in favour of new
+	ones.
+
+	* src/backend/telegraphcq/dyncatalog.c: New functions for the
+	dyncat stuff.
+
+	* src/backend/optimizer/plan/eddy.c: re-jiggered to use new naming
+	conventions .. and a call to ProcessMarkDynCatalog
+ 
+	* src/backend/optimizer/plan/convertoeddy.c: Cosmetic
+
+	* src/backend/executor/processNode.c: re-jiggered to distinguish
+	dyn dispatch interfaces and generic interfaces.
+
+	* src/backend/executor/nodeScanModule.c: Re-jiggered to use new
+	macros. Also changed a bunch of Fjord model function names to make
+	'em more uniform. Also changed order of appearance of func defs.
+
+	* src/backend/executor/nodeGSFilter.c: Re-jiggered to use new
+	macros. Also changed a bunch of Fjord model function names to make
+	'em more uniform. Also changed order of appearance of func defs.
+
+	* src/backend/executor/nodeFSteM.c: Re-jiggered to use new
+	macros. Also changed a bunch of Fjord model function names to make
+	'em more uniform.
+
+	* src/backend/executor/nodeCQEddy.c: Extensively re-jiggered to
+	use the FJORD_ENQ/DEQ_INP/OUT macros that also activate the
+	tcq_queues dyncat stream
+ 
+2003-05-09  Sailesh Krishnamurthy  <sailesh@cs.berkeley.edu>
+
+	* src/include/telegraphcq/wrapch.h: Cosmetic
+
+	* src/include/telegraphcq/dyncatalog.h: Support for tcq_operators
+	dynamic catalog
+
+	* src/include/rqueue/ingresq.h: Add prototype for
+	IngresQInsertTuple
+
+	* src/include/optimizer/eddy.h: Backport from HEAD
+
+	* src/include/nodes/plannodes.h (Fjord): Cosmetic
+
+	* src/include/executor/nodeFjord.h: Added prototype for
+	ProcessRemoveQueryCommon
+
+	* src/backend/telegraphcq/dyncatalog.c: Added functions for the
+	tcq_operators dynamic catalog
+
+	* src/backend/tcop/postgres.c (PostgresMain): Removed stupid prints
+
+	* src/backend/rqueue/ingresq.c: Added function: IngresQInsertTuple
+
+	* src/backend/optimizer/plan/eddy.c: Backport from HEAD
+
+	* src/backend/optimizer/plan/converttofsched.c: Cosmetic
+
+	* src/backend/executor/processNode.c: Added calls to
+	tcq_operators_add and tcq_operators_remove, added
+	ProcessRemoveQueryCommon
+
+	* src/backend/executor/nodeScanModule.c (ProcessRemoveQueryScanModule):
+	Moved common logic to ProcessRemoveQueryCommon
+
+	* src/backend/executor/nodeGSFilter.c (ProcessRemoveQueryGSFilter):
+	Moved common logic to ProcessRemoveQueryCommon
+
+	* src/backend/executor/nodeFSteM.c (ProcessRemoveQueryFSteM):
+	Moved common logic to ProcessRemoveQueryCommon
+
+	* src/backend/executor/nodeEddy.c (setCompletionBits): Cosmetic
+
+	* src/backend/executor/nodeCQEddy.c (ProcessQueryRemove): Backport
+	from HEAD
+
+2003-04-30  Sailesh Krishnamurthy  <sailesh@cs.berkeley.edu>
+
+	* src/include/telegraphcq/userwrapper.h: Cosmetic
+
+	* src/include/telegraphcq/telegraphcq.h: Added prototype for
+	GetCurrentTimestamp
+
+	* src/include/telegraphcq/dyncatalog.h: Removed tz field in
+	Info_tcq_queries - it's now a tcq global - tcqlocaltz 
+
+	* src/include/nodes/parsenodes.h: Cosmetic
+
+	* src/backend/telegraphcq/telegraphcq.c: Added
+	GetCurrentTimestamp() as well as timezone setup in TelegraphCQMain
+ 
+	* src/backend/telegraphcq/dyncatalog.c(insert_tcq_queries_entry):
+	Re-jiggered to use GetCurrentTimestamp()
+ 
+	* src/backend/parser/parse_clause.c: (transformWindowClause) Fix
+	call to refnameRangeTblEntry
+
+2003-04-29  Sailesh Krishnamurthy  <sailesh@cs.berkeley.edu>
+
+	* src/test/examples/dyncat/dyncat.sql: Added one more column
+
+	* src/include/telegraphcq/dyncatalog.h: Complete implementation of
+	tcq_queries dyncatalog
+
+	* src/backend/telegraphcq/telegraphcq.c (TelegraphCQMain): Add
+	call to setupDynCatalogStreams()
+
+	* src/backend/telegraphcq/dyncatalog.c: Complete implementation of
+	tcq_queries dyncatalog - need to move to shared memory ?
+
+	* src/backend/tcop/postgres.c: Ensure StrmScan is non-blocking in
+	TCQ-Backend
+
+	* src/backend/rqueue/rqdest.c: Cosmetic
+
+	* src/backend/executor/nodeScanModule.c (ProcessNextScanModule):
+	Fixed nasty bug when ScanQ is non-blocking
+
+	* src/backend/executor/nodeCQEddy.c: Add hooks to dyncat streams
+
+	* src/test/examples/dyncat/dyncat.sql: Temp setup for new dynamic
+	catalog streams
+
+	* src/include/telegraphcq/wrapch.h: setupUnarchivedStreamInfo 
+
+	* src/include/telegraphcq/telegraphcq.h: Cosmetic
+
+	* src/include/telegraphcq/dyncatalog.h: Infrastructure for new
+	catalog streams
+
+	* src/include/rqueue/planq.h: Added querystr to planqentry
+
+	* src/include/rqueue/ingresq.h: Cosmetic - use pgsql conventions
+
+	* src/include/parser/parse_wrapper.h: Added prolog
+
+	* src/bin/psql/describe.c (listTables): Added logic for '\dz'
+
+	* src/bin/psql/command.c (exec_command): Added '\dz'
+
+	* src/backend/telegraphcq/wrapch.c: Re-jiggered so that
+	setupUnarchivedStreamInfo is a new publicly exported function -
+	it's also called in dyncatalog.c
+	
+	* src/backend/telegraphcq/telegraphcq.c: Cosmetic
+
+	* src/backend/telegraphcq/dyncatalog.c: New file
+	Initial infrastructure for dynamic catalog streams
+
+	* src/backend/tcop/postgres.c: Fix DROP STREAM/DROP WRAPPER
+
+	* src/backend/rqueue/planq.c: Cosmetic .. assert->Assert
+
+	* src/backend/parser/parse_clause.c: Avoid leaks: RelationClose()
+
+	* src/backend/parser/analyze.c: Call RelationClose to avoid leaks
+
+	* src/backend/optimizer/plan/eddy.c (add_projection_info): Set the
+	hasoids:bool argument to be TRUE
+
+	* src/backend/optimizer/plan/converttostream.c
+	(convert_seqscan_to_strmscan): Call RelationClose to prevent leaks
+
+	* src/backend/executor/nodeScanModule.c (ProcessNextScanModule):
+	Fix call to setCompletionBits()
+
+	* src/backend/executor/nodeCQEddy.c: Mostly cosmetic
+
+	* src/backend/commands/tcqcommands.c (AlterStreamWrapper):
+	Cosmetic
+
+2003-04-25  Sailesh Krishnamurthy  <sailesh@cs.berkeley.edu>
+
+	* src/backend/parser/parse_node.c: (setOperatorType) vetted 
+
+	* src/backend/optimizer/plan/eddy.c: (LookupOperForGSF) Vetted
+	call to makeOper - things are good
+ 
+	* src/backend/nodes/outfuncs.c: (_outCreateStrmStmt) Synced to
+	7.3.2 fields
+	
+
+2003-04-24  Sailesh Krishnamurthy  <sailesh@cs.berkeley.edu>
+
+	* src/backend/executor/nodeEddy.c (getVarInformation): Fixed use
+	of RangeTblEntry
+
+	* src/backend/executor/nodeCQEddy.c (ExecCQEddy): Fixed call to
+	dest setup
+
+	* ChangeLog: Added ChangeLog
+	
+	* src/test/examples/tcq-sample/stations.sql: Modified stations.sql 
+
+	* src/include/nodes/parsenodes.h: Added comments for
+	STREAM/WRAPPER in Drop defines for (DropStmt->removeType)
+
+	* src/include/catalog/pg_tcq_wrapper.h: Fixed copyright notice
+
+	* src/include/catalog/pg_class.h: Added dummy RELKIND_STREAM for
+	future use
+
+	* src/backend/tcop/utility.c: Revived CheckDropStreamPermissions
+
+	* src/backend/tcop/postgres.c: Added DROP_STREAM in CreateCommandTag
+
+	* configure-alt (Repository): Restored enable-cassert as default
+	
+

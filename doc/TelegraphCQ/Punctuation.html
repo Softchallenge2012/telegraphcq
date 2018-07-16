@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Punctuation in TelegraphCQ</title>
+  <meta name="generator"
+ content="amaya 8.0, see http://www.w3.org/Amaya/">
+  <link rel="stylesheet" type="text/css" href="tcqstyle.css">
+</head>
+<body>
+<h1>Punctuation
+in TelegraphCQ</h1>
+TelegraphCQ supports basic punctuation tuples. A punctuation tuple is a
+tuple with just a timestamp attribute and no data. TelegraphCQ inserts
+punctuation tuples into streams to indicate that no tuples with
+timestamps before than the indicated value will occur in the stream.
+<br>
+<h2>Implementation of Punctuation</h2>
+Punctuation tuples are implemented as <span class="code">HeapTuples</span>
+with every field Additionally, TelegraphCQ sets the bit <span
+ class="code">HEAP_ISPUNCT</span>
+in a punctuation tuple's header. Code
+can use the <span class="code">HeapTupleIsPunct()</span>
+macro to
+check whether a tuple is a punctuation tuple.<br>
+<br>
+TelegraphCQ uses the function <span class="code">form_punct_tup()</span>
+to create punctuation tuples.<br>
+<br>
+<h2>Punctuation Producers</h2>
+Portions of TelegraphCQ that generate punctuation tuples are:<br>
+<ul>
+  <li><span style="font-weight: bold;">The CSV wrapper: </span>If
+the
+CSV wrapper is generating its own timestamps, it will send periodic
+punctuation tuples during quiet periods. Currently, the wrapper sends a
+punctuation tuple whenever it goes for a second without receiving any
+tuples.</li>
+  <li><span style="font-weight: bold;">The Fjord Aggregate node: </span>This
+operator, which takes care of windowed aggregates, places a punctuation
+tuple after every group of aggregate tuples. The node timestamps the
+tuple with the <span style="font-style: italic;">next</span> point in
+time at which it will output aggregate results, indicating that there
+will be no results until then. This punctuation should allow a query
+that uses an aggregate subquery to put a time window over that
+aggregate.</li>
+</ul>
+<h2>Punctuation Consumers</h2>
+We modified several operators to handle punctuation properly:<br>
+<ul>
+  <li><span style="font-weight: bold;">The </span><span
+ style="font-weight: bold;" class="code">Agg</span><span
+ style="font-weight: bold;"> node</span>: This node, which handles <span
+ class="code">GROUP BY</span> and aggregation, consumes punctuation
+tuples without sending them through its tree of operators.</li>
+  <li><span style="font-weight: bold;">The <span
+ style="font-weight: bold;" class="code">GSFilter </span>node:</span>
+This node, which handles most selections, passes punctuation tuples
+through to all queries.</li>
+  <li><span style="font-weight: bold;">The <span
+ style="font-weight: bold;" class="code">Filter</span> node:</span>
+This node, which handles generic selection predicates for a single
+stream, always passes through punctuation tuples.</li>
+  <li><span style="font-weight: bold;">The HeapTuple code:</span> The
+function <span class="code">DataFill()</span>, which is used to fill
+in the <span class="code">t_data</span> fields of copied HeapTuples,
+now copies over the <span class="code">HEAP_ISPUNCT</span> flag, along
+with the other flags.</li>
+  <li><span style="font-weight: bold;">Projection functions:</span>&nbsp;<span
+ class="code">ExecTargetList()</span>, which performs projection by
+creating a copy of the input tuple with just the fields being kept, now
+copies the <span class="code">HEAP_ISPUNCT</span> flag into the new
+tuple.</li>
+  <li><span style="font-weight: bold;">Data Triage:</span> The code
+that constructs summaries of kept and triaged tuples (in particular the
+function <span class="code">tupbuf_insert()</span>) ignores
+punctuation.</li>
+  <li><span style="font-weight: bold;">The FSTeM Module:</span> <span
+ style="font-style: italic;">Work in progress</span>; when an FSTeM
+receives a punctuation tuple as a probe, it should append a HeapTuple
+of NULLs to the punctuation tuple and return the resulting
+IntermediateHeapTuple to the Eddy.</li>
+</ul>
+<br>
+</body>
+</html>

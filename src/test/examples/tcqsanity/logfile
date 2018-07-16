@@ -1,0 +1,10 @@
+LOG:  postmaster: Number of result queues set to 32 from 32
+LOG:  database system was shut down at 2006-02-22 16:05:56 PST
+LOG:  checkpoint record is at 0/833384
+LOG:  redo record is at 0/833384; undo record is at 0/0; shutdown TRUE
+LOG:  next transaction id: 483; next oid: 16983
+LOG:  database system is ready
+LOG:  1140653159.671639 : query execution start
+LOG:  1140653159.673218 : query execution end
+LOG:  shutting down
+LOG:  database system is shut down
