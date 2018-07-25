@@ -222,6 +222,7 @@ MemoryContextDelete(MemoryContext context)
 	}
 	(*context->methods->delete) (context);
 	pfree(context);
+	
 }
 
 /*

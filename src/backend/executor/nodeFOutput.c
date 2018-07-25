@@ -268,7 +268,7 @@ ProcessNextFOutput(FOutput * node, Plan *parent)
 	{
 										
 #ifdef AMOLDEBUGON
-		elog(DEBUG1, "GOT ONE: finished proc. a tuple... sending to output");
+		elog(DEBUG1, "nodeFOutput==GOT ONE: finished proc. a tuple... sending to output");
 		debugitup_debug(iiht);
 #endif
 

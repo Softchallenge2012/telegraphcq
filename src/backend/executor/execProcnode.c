@@ -430,10 +430,12 @@ ExecProcNode(Plan *node, Plan *parent)
 			 * control nodes
 			 */
 		case T_Result:
+			elog(WARNING, "execProcnode======t-Result");
 			result = ExecResult((Result *) node);
 			break;
 
 		case T_Append:
+			elog(WARNING, "execProcnode======t-Append");
 			result = ExecProcAppend((Append *) node);
 			break;
 
@@ -441,35 +443,43 @@ ExecProcNode(Plan *node, Plan *parent)
 			 * scan nodes
 			 */
 		case T_SeqScan:
+			elog(WARNING, "execProcnode======t-SeqScan");
 			result = ExecSeqScan((SeqScan *) node);
 			break;
 
 		case T_IndexScan:
+			elog(WARNING, "execProcnode======t-IndexScan");
 			result = ExecIndexScan((IndexScan *) node);
 			break;
 
 		case T_TidScan:
+			elog(WARNING, "execProcnode======t-TidScan");
 			result = ExecTidScan((TidScan *) node);
 			break;
 
 		case T_ScanQueue:
+			elog(WARNING, "execProcnode======t-ScanQueue");
 			result = ExecScanQueue((ScanQueue *) node);
 			break;
 
 		case T_ScanSock:
+			elog(WARNING, "execProcnode======t-ScanSock");
 			result = ExecScanSock((ScanSock *) node);
 			break;
 
 
 		case T_StrmScan:
+			elog(WARNING, "execProcnode======t-StrmScan");
 			result = ExecStrmScan((StrmScan *) node);
 			break;
 
 		case T_SubqueryScan:
+			elog(WARNING, "execProcnode======t-SubqueryScan");
 			result = ExecSubqueryScan((SubqueryScan *) node);
 			break;
 
 		case T_FunctionScan:
+			elog(WARNING, "execProcnode======t-FunctionScan");
 			result = ExecFunctionScan((FunctionScan *) node);
 			break;
 
@@ -477,18 +487,22 @@ ExecProcNode(Plan *node, Plan *parent)
 			 * join nodes
 			 */
 		case T_NestLoop:
+			elog(WARNING, "execProcnode======t-NestLoop");
 			result = ExecNestLoop((NestLoop *) node);
 			break;
 
 		case T_MergeJoin:
+			elog(WARNING, "execProcnode======t-MergeJoin");
 			result = ExecMergeJoin((MergeJoin *) node);
 			break;
 
 		case T_Hash:
+			elog(WARNING, "execProcnode======t-Hash");
 			result = ExecHash((Hash *) node);
 			break;
 
 		case T_HashJoin:
+			elog(WARNING, "execProcnode======t-HashJoin");
 			result = ExecHashJoin((HashJoin *) node);
 			break;
 
@@ -496,26 +510,32 @@ ExecProcNode(Plan *node, Plan *parent)
 			 * materialization nodes
 			 */
 		case T_Material:
+			elog(WARNING, "execProcnode======t-Material");
 			result = ExecMaterial((Material *) node);
 			break;
 
 		case T_Sort:
+			elog(WARNING, "execProcnode======t-Sort");
 			result = ExecSort((Sort *) node);
 			break;
 
 		case T_Unique:
+			elog(WARNING, "execProcnode======t-Unique");
 			result = ExecUnique((Unique *) node);
 			break;
 
 		case T_SetOp:
+			elog(WARNING, "execProcnode======t-SetOp");
 			result = ExecSetOp((SetOp *) node);
 			break;
 
 		case T_Limit:
+			elog(WARNING, "execProcnode======t-Limit");
 			result = ExecLimit((Limit *) node);
 			break;
 
 		case T_Group:
+			elog(WARNING, "execProcnode======t-Group");
 			result = ExecGroup((Group *) node);
 			break;
 
@@ -527,88 +547,108 @@ ExecProcNode(Plan *node, Plan *parent)
 
 			/* @BhashgrpMS */
 		case T_HashGroup:
+			elog(WARNING, "execProcnode======t-HashGroup");
 			result = ExecHashGroup((HashGroup *) node);
 			break;
 			/* @EhashgrpMS */
 
 			/* @BfluxMS */
 		case T_FluxCons:
+			elog(WARNING, "execProcnode======t-FluxCons");
 			result = ExecFluxCons((FluxCons *) node);
 			break;
 
 		case T_FluxProd:
+			elog(WARNING, "execProcnode======t-FluxProd");
 			result = ExecFluxProd((FluxProd *) node);
 			break;
 
 		case T_FluxCons_FT:
+			elog(WARNING, "execProcnode======t-FluxCons-FT");
 			result = ExecFluxCons_FT((FluxCons_FT *) node);
 			break;
 
 		case T_FluxProd_FT:
+			elog(WARNING, "execProcnode======t-FluxProd_FT");
 			result = ExecFluxProd_FT((FluxProd_FT *) node);
 			break;
 
 		case T_SegCons:
+			elog(WARNING, "execProcnode======t-SegCons");
 			result = ExecSegCons((SegCons *) node);
 			break;
 
 		case T_FluxEgress:
+			elog(WARNING, "execProcnode======t-FluxEgress");
 			result = ExecFluxEgress((FluxEgress *) node);
 			break;
 
 		case T_FluxIngress:
+			elog(WARNING, "execProcnode======t-FluxIntegress");
 			result = ExecFluxIngress((FluxIngress *) node);
 			break;
 
 		case T_SegProd:
+			elog(WARNING, "execProcnode======t-SegProd");
 			result = ExecSegProd((SegProd *) node);
 			break;
 
 		case T_DataGen:
+			elog(WARNING, "execProcnode======t-DataGen");
 			result = ExecDataGen((DataGen *) node);
 			break;
 
 		case T_StateMover:
+			elog(WARNING, "execProcnode======t-StateMover");
 			result = ExecStateMover((StateMover *) node);
 			break;
 
 		case T_FluxAcceptor:
+			elog(WARNING, "execProcnode======t-FluxAcceptor");
 			result = ExecFluxAcceptor((FluxAcceptor *) node);
 			break;
 			/* @EfluxMS */
 
 		case T_Agg:
+			elog(WARNING, "execProcnode======t-Agg");
 			result = ExecAgg((Agg *) node);
 			break;
 		case T_FAgg:
+			elog(WARNING, "execProcnode======t-FAgg");
 			result = ExecFAgg((FAgg *) node);
 			break;
 
 		case T_Eddy:			/* @BdeddySK */
+			elog(WARNING, "execProcnode======t-Eddy");
 			result = ExecEddy((Eddy *) node);
 			break;
 
 		case T_FSched:			/* @dfluxMS */
+			elog(WARNING, "execProcnode======t-FSched");
 			result = ExecFSched((FSched *) node);
 			break;
 
 		case T_SteM:
+			elog(WARNING, "execProcnode======t-Stem");
 			result = ExecSteM((SteM *) node);
 			break;
 
 		case T_IndexSteM:
+			elog(WARNING, "execProcnode======t-indexStem");
 			result = ExecIndexSteM((IndexSteM *) node);
 			break;
 
 		case T_SteMHashJoin:	/* @BdeddySK */
+			elog(WARNING, "execProcnode======t-stemhashjoin");
 			result = ExecSteMHashJoin((SteMHashJoin *) node);
 			break;
 
 		case T_Filter:
+			elog(WARNING, "execProcnode======t-filter");
 			/* Error ! Filter nodes do not support iterator interface ! */
 			elog(ERROR, "ExecProcNode unsupported for Filter !");		/* @EdeddySK */
 
-		default:
+		default:			
 			elog(ERROR, "ExecProcNode: node type %d unsupported",
 				 (int) nodeTag(node));
 			result = NULL;

@@ -1,0 +1,422 @@
+NOTICE:  postmaster setting UseCQEddy
+LOG:  Setting numResultQueues to 64 
+DEBUG:  Starting TelegraphCQ on database teststream 
+DEBUG:  Starting TelegraphCQ with userid telegraphcq 
+LOG:  postmaster: Number of result queues set to 64 from 64
+DEBUG:  FindExec: found "/home/shenlu/applications/TelegraphCQ2/./bin/postgres" using argv[0]
+DEBUG:  reset_shared: Calling CreateSharedMemoryAndSemaphores
+DEBUG:  Postmaster: CreateSharedMemoryAndSemaphores - for TelegraphCQ
+DEBUG:  reset_shared: Done calling CreateSharedMemoryAndSemaphores
+DEBUG:  FindExec: found "/home/shenlu/applications/TelegraphCQ2/./bin/postmaster" using argv[0]
+LOG:  database system was interrupted at 2018-07-18 19:45:47 EDT
+LOG:  checkpoint record is at 0/8A3218
+LOG:  redo record is at 0/8A3218; undo record is at 0/0; shutdown FALSE
+LOG:  next transaction id: 504; next oid: 25177
+LOG:  database system was not properly shut down; automatic recovery in progress
+LOG:  ReadRecord: record with zero length at 0/8A3260
+LOG:  redo is not required
+LOG:  database system is ready
+DEBUG:  TelegraphCQ: InitializeTCQPlumbing()
+DEBUG:  TelegraphCQ: Created 64 slots for result queues in the shared memory context
+DEBUG:  TelegraphCQ: Created 64 slots for ingres queuesin the shared memory context
+DEBUG:  result q of size is  16384
+DEBUG:  waiting for the TelegraphCQ backend and wrapperclearinghouse to startup
+DEBUG:  For some microseconds ... 
+LOG:  TelegraphCQ backend process id: 31240
+LOG:  TelegraphCQ wrapper clearinghouse process id: 31241
+LOG:  Find your gprof files starting with (null) at data 
+DEBUG:  Entering PostgresMain in the context of TelegraphCQ Backend
+LOG:  Wrapper clearinghouse will listen on port 5533
+LOG:  Wrapper clearinghouse using delay constraint 00:00:10
+DEBUG:  WrapCH: Calling postgress main
+DEBUG:  WrapCH: Done postgress main
+DEBUG:  FSched: listening on port: 5534
+LOG:  TCQ:dyncat: Could not find oid for (public.tcq_queries)
+LOG:  TCQ:dyncat: Could not find oid for (public.tcq_operators)
+LOG:  TCQ:dyncat: Could not find oid for (public.tcq_queues)
+LOG:  Starting CQEddy ... 
+LOG:  Calling the CQEddy
+LOG:  Check: maxqueries is 128
+LOG:  MaxTuplesScannedBeforeQuit is -1
+LOG:  Eddy listening for connections on port 5544
+LOG:  Wrapper Clearinghouse running in process 31241.
+NOTICE:  TelegraphCQ processes successfully started!
+DEBUG:  pmdie 15
+DEBUG:  smart shutdown request
+INFO:  postmaster: (pmdie) sent shutdown request to tcqbackend. ret=1
+DEBUG:  sent shutdown request to the wrapper clearinghouse. ret=1
+DEBUG:  Got controlQ message for query id 0 
+INFO:  Shutdown pending set to true in process control queue
+INFO:  ======== PRINTING EDDY STATS ================================== at time 1531957773.213795
+INFO:  Printing stats for all modules
+INFO:  Printing stats for all sources
+INFO:  stats: The eddy has processed 0 tuples till now
+INFO:  stats: The total delay for 0 tuples output is 0.000000
+INFO:  ======== DONE PRINTING EDDY STATS ==========================
+LOG:  Hmm .. eddystate->shutdownPending is true
+LOG:  Returned after calling CQEddy
+LOG:  Going to call printEddyStats_debug
+INFO:  ======== PRINTING EDDY STATS ================================== at time 1531957773.213846
+INFO:  Printing stats for all modules
+INFO:  Printing stats for all sources
+INFO:  stats: The eddy has processed 0 tuples till now
+INFO:  stats: The total delay for 0 tuples output is 0.000000
+INFO:  ======== DONE PRINTING EDDY STATS ==========================
+LOG:  Going to call printEddyStats_debug
+LOG:  Done calling the CQEddy
+LOG:  Ending CQEddy ... Calling proc_exit(0)
+DEBUG:  child process (pid 31240) exited with exit code 0
+DEBUG:  dead child process type: 1
+LOG:  Wrapper clearinghouse shutting down...
+LOG:      Closing wch connection 0.
+LOG:  Done calling freeWrapperState()
+DEBUG:  child process (pid 31241) exited with exit code 0
+DEBUG:  dead child process type: 2
+LOG:  shutting down
+LOG:  database system is shut down
+DEBUG:  running CleanupTCQPlumbing
+NOTICE:  postmaster setting UseCQEddy
+LOG:  Setting numResultQueues to 64 
+DEBUG:  Starting TelegraphCQ on database teststream 
+DEBUG:  Starting TelegraphCQ with userid telegraphcq 
+LOG:  postmaster: Number of result queues set to 64 from 64
+DEBUG:  ./bin/postmaster: PostmasterMain: initial environ dump:
+DEBUG:  -----------------------------------------
+DEBUG:  	LESSOPEN=| /usr/bin/lesspipe %s
+DEBUG:  	MAIL=/var/mail/telegraphcq
+DEBUG:  	USER=telegraphcq
+DEBUG:  	SHLVL=1
+DEBUG:  	OLDPWD=/home/shenlu/applications/TelegraphCQ2/data
+DEBUG:  	HOME=/home/telegraphcq
+DEBUG:  	QT_QPA_PLATFORMTHEME=appmenu-qt5
+DEBUG:  	LOGNAME=telegraphcq
+DEBUG:  	_=./bin/pg_ctl
+DEBUG:  	TERM=xterm-256color
+DEBUG:  	PATH=/home/telegraphcq/bin:/home/telegraphcq/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/snap/bin
+DEBUG:  	DISPLAY=:0
+DEBUG:  	LANG=en_US.UTF-8
+DEBUG:  	LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
+DEBUG:  	XAUTHORITY=/home/shenlu/.Xauthority
+DEBUG:  	SHELL=/bin/bash
+DEBUG:  	LESSCLOSE=/usr/bin/lesspipe %s %s
+DEBUG:  	PWD=/home/shenlu/applications/TelegraphCQ2
+DEBUG:  	XDG_DATA_DIRS=/usr/local/share:/usr/share:/var/lib/snapd/desktop
+DEBUG:  	PGDATA=data
+DEBUG:  -----------------------------------------
+DEBUG:  FindExec: found "/home/shenlu/applications/TelegraphCQ2/./bin/postgres" using argv[0]
+DEBUG:  reset_shared: Calling CreateSharedMemoryAndSemaphores
+DEBUG:  invoking IpcMemoryCreate(size=1671168)
+DEBUG:  Postmaster: CreateSharedMemoryAndSemaphores - for TelegraphCQ
+DEBUG:  reset_shared: Done calling CreateSharedMemoryAndSemaphores
+DEBUG:  FindExec: found "/home/shenlu/applications/TelegraphCQ2/./bin/postmaster" using argv[0]
+LOG:  database system was shut down at 2018-07-18 19:49:35 EDT
+LOG:  checkpoint record is at 0/8A32A8
+LOG:  redo record is at 0/8A32A8; undo record is at 0/0; shutdown TRUE
+LOG:  next transaction id: 506; next oid: 25177
+LOG:  database system is ready
+DEBUG:  shmem_exit(0)  proctype=4
+DEBUG:  exit(0) (proctype=4)
+DEBUG:  reaping dead processes
+DEBUG:  TelegraphCQ: InitializeTCQPlumbing()
+DEBUG:  TelegraphCQ: Created 64 slots for result queues in the shared memory context
+DEBUG:  TelegraphCQ: Created 64 slots for ingres queuesin the shared memory context
+DEBUG:  result q of size is  16384
+DEBUG:  BackendStartup: started TelegraphCQ backend: forked pid=31279
+DEBUG:  BackendStartup: started WrapperCH process: forked pid=31280
+DEBUG:  waiting for the TelegraphCQ backend and wrapperclearinghouse to startup
+DEBUG:  For some microseconds ... 
+LOG:  TelegraphCQ backend process id: 31279
+DEBUG:  ./bin/postmaster child[31279]: starting with (
+DEBUG:  	postgres
+DEBUG:  	-d5
+DEBUG:  	-p
+DEBUG:  	teststream
+DEBUG:  )
+LOG:  Find your gprof files starting with (null) at data 
+DEBUG:  Entering PostgresMain in the context of TelegraphCQ Backend
+LOG:  TelegraphCQ wrapper clearinghouse process id: 31280
+DEBUG:  InitPostgres
+DEBUG:  ./bin/postmaster child[31280]: starting with (
+DEBUG:  	postgres
+DEBUG:  	-d5
+DEBUG:  	-p
+DEBUG:  	teststream
+DEBUG:  )
+LOG:  Wrapper clearinghouse will listen on port 5533
+LOG:  Wrapper clearinghouse using delay constraint 00:00:10
+DEBUG:  WrapCH: Calling postgress main
+DEBUG:  InitPostgres
+DEBUG:  WrapCH: Done postgress main
+DEBUG:  FSched: listening on port: 5534
+LOG:  TCQ:dyncat: Could not find oid for (public.tcq_queries)
+LOG:  TCQ:dyncat: Could not find oid for (public.tcq_operators)
+LOG:  TCQ:dyncat: Could not find oid for (public.tcq_queues)
+LOG:  Starting CQEddy ... 
+LOG:  Wrapper Clearinghouse running in process 31280.
+LOG:  Calling the CQEddy
+LOG:  Check: maxqueries is 128
+LOG:  MaxTuplesScannedBeforeQuit is -1
+LOG:  Eddy listening for connections on port 5544
+NOTICE:  TelegraphCQ processes successfully started!
+DEBUG:  BackendStartup: started TelegraphCQ frontend: forked pid=31285 socket=9
+LOG:  TelegraphCQ frontend process id: 31285
+DEBUG:  ./bin/postmaster child[31285]: starting with (
+DEBUG:  	postgres
+DEBUG:  	-d5
+DEBUG:  	-v131072
+DEBUG:  	-p
+DEBUG:  	teststream
+DEBUG:  )
+DEBUG:  InitPostgres
+DEBUG:  Executing query : begin; select getdatabaseencoding(); commit
+DEBUG:  pg_exec_query_string(): Query is 'begin; select getdatabaseencoding(); commit'
+DEBUG:  StartTransactionCommand
+DEBUG:  In parse_query_in_parse_context...
+DEBUG:  query_string: begin; select getdatabaseencoding(); commit
+
+DEBUG:  Switched to parse_context...
+LOG:  query: begin; select getdatabaseencoding(); commit
+DEBUG:  Created parsetree_list...
+DEBUG:  Switched back to oldcontext...
+LOG:  parse tree:
+{ QUERY :command 5 :source 0 :utility ? :resultRelation 0 :into <> :isPortal
+false :isBinary false :hasAggs false :hasSubLinks false :rtable <> :jointree
+<> :rowMarks () :targetList <> :groupClause <> :havingQual <> :distinctClause
+<> :sortClause <> :limitOffset <> :limitCount <> :setOperations <>
+:resultRelations ()}
+
+LOG:  rewritten parse tree:
+({ QUERY :command 5 :source 0 :utility ? :resultRelation 0 :into <> :isPortal
+false :isBinary false :hasAggs false :hasSubLinks false :rtable <> :jointree
+<> :rowMarks () :targetList <> :groupClause <> :havingQual <> :distinctClause
+<> :sortClause <> :limitOffset <> :limitCount <> :setOperations <>
+:resultRelations ()})
+
+DEBUG:  ProcessUtility
+DEBUG:  CommitTransactionCommand
+DEBUG:  StartTransactionCommand
+LOG:  parse tree:
+{ QUERY :command 1 :source 0 :utility <> :resultRelation 0 :into <> :isPortal
+false :isBinary false :hasAggs false :hasSubLinks false :rtable <> :jointree {
+FROMEXPR :fromlist <> :quals <>} :rowMarks () :targetList ({ TARGETENTRY
+:resdom { RESDOM :resno 1 :restype 19 :restypmod -1 :resname
+getdatabaseencoding :reskey 0 :reskeyop 0 :ressortgroupref 0 :resjunk false }
+:expr { EXPR :typeOid 19  :opType func :oper { FUNC :funcid 1039
+:funcresulttype 19 :funcretset false :funcformat 0 } :args <>}}) :groupClause
+<> :havingQual <> :distinctClause <> :sortClause <> :limitOffset <>
+:limitCount <> :setOperations <> :resultRelations ()}
+
+LOG:  rewritten parse tree:
+({ QUERY :command 1 :source 0 :utility <> :resultRelation 0 :into <> :isPortal
+false :isBinary false :hasAggs false :hasSubLinks false :rtable <> :jointree {
+FROMEXPR :fromlist <> :quals <>} :rowMarks () :targetList ({ TARGETENTRY
+:resdom { RESDOM :resno 1 :restype 19 :restypmod -1 :resname
+getdatabaseencoding :reskey 0 :reskeyop 0 :ressortgroupref 0 :resjunk false }
+:expr { EXPR :typeOid 19  :opType func :oper { FUNC :funcid 1039
+:funcresulttype 19 :funcretset false :funcformat 0 } :args <>}}) :groupClause
+<> :havingQual <> :distinctClause <> :sortClause <> :limitOffset <>
+:limitCount <> :setOperations <> :resultRelations ()})
+
+LOG:  plan:
+{ RESULT :startup_cost 0.00 :total_cost 0.01 :rows 1 :width 0 :qptargetlist ({
+TARGETENTRY :resdom { RESDOM :resno 1 :restype 19 :restypmod -1 :resname
+getdatabaseencoding :reskey 0 :reskeyop 0 :ressortgroupref 0 :resjunk false }
+:expr { EXPR :typeOid 19  :opType func :oper { FUNC :funcid 1039
+:funcresulttype 19 :funcretset false :funcformat 0 } :args <>}}) :qpqual <>
+:lefttree <> :righttree <> :extprm () :locprm () :initplan <> :nprm 0 
+:resconstantqual <>}
+
+DEBUG:  The system has been started in TelegraphCQ mode, and the databases specified for the TCQ frontend process and TCQ backend tcqbackenddb=teststream, tcqfrontenddb=teststream
+DEBUG:  Converting seqscans to streamscans
+DEBUG:  frontend is converting the plan to an eddy
+DEBUG:  ProcessQuery
+LOG:  parse tree:
+{ QUERY :command 5 :source 0 :utility ? :resultRelation 0 :into <> :isPortal
+false :isBinary false :hasAggs false :hasSubLinks false :rtable <> :jointree
+<> :rowMarks () :targetList <> :groupClause <> :havingQual <> :distinctClause
+<> :sortClause <> :limitOffset <> :limitCount <> :setOperations <>
+:resultRelations ()}
+
+LOG:  rewritten parse tree:
+({ QUERY :command 5 :source 0 :utility ? :resultRelation 0 :into <> :isPortal
+false :isBinary false :hasAggs false :hasSubLinks false :rtable <> :jointree
+<> :rowMarks () :targetList <> :groupClause <> :havingQual <> :distinctClause
+<> :sortClause <> :limitOffset <> :limitCount <> :setOperations <>
+:resultRelations ()})
+
+DEBUG:  ProcessUtility
+DEBUG:  CommitTransactionCommand
+DEBUG:  Executing query : BEGIN
+DEBUG:  pg_exec_query_string(): Query is 'BEGIN'
+DEBUG:  StartTransactionCommand
+DEBUG:  In parse_query_in_parse_context...
+DEBUG:  query_string: BEGIN
+
+DEBUG:  Switched to parse_context...
+LOG:  query: BEGIN
+DEBUG:  Created parsetree_list...
+DEBUG:  Switched back to oldcontext...
+LOG:  parse tree:
+{ QUERY :command 5 :source 0 :utility ? :resultRelation 0 :into <> :isPortal
+false :isBinary false :hasAggs false :hasSubLinks false :rtable <> :jointree
+<> :rowMarks () :targetList <> :groupClause <> :havingQual <> :distinctClause
+<> :sortClause <> :limitOffset <> :limitCount <> :setOperations <>
+:resultRelations ()}
+
+LOG:  rewritten parse tree:
+({ QUERY :command 5 :source 0 :utility ? :resultRelation 0 :into <> :isPortal
+false :isBinary false :hasAggs false :hasSubLinks false :rtable <> :jointree
+<> :rowMarks () :targetList <> :groupClause <> :havingQual <> :distinctClause
+<> :sortClause <> :limitOffset <> :limitCount <> :setOperations <>
+:resultRelations ()})
+
+DEBUG:  ProcessUtility
+DEBUG:  CommitTransactionCommand
+DEBUG:  Executing query : declare cqcursor cursor for SELECT dst, COUNT(*), wtime(*) AS c FROM network.tcpdump AS st [RANGE BY '5 seconds' SLIDE BY '1 second' START AT '2003-06-06 18:50:20']  GROUP BY dst;
+DEBUG:  pg_exec_query_string(): Query is 'declare cqcursor cursor for SELECT dst, COUNT(*), wtime(*) AS c FROM network.tcpdump AS st [RANGE BY '5 seconds' SLIDE BY '1 second' START AT '2003-06-06 18:50:20']  GROUP BY dst;'
+DEBUG:  StartTransactionCommand
+DEBUG:  In parse_query_in_parse_context...
+DEBUG:  query_string: declare cqcursor cursor for SELECT dst, COUNT(*), wtime(*) AS c FROM network.tcpdump AS st [RANGE BY '5 seconds' SLIDE BY '1 second' START AT '2003-06-06 18:50:20']  GROUP BY dst;
+
+DEBUG:  Switched to parse_context...
+LOG:  query: declare cqcursor cursor for SELECT dst, COUNT(*), wtime(*) AS c FROM network.tcpdump AS st [RANGE BY '5 seconds' SLIDE BY '1 second' START AT '2003-06-06 18:50:20']  GROUP BY dst;
+DEBUG:  Created parsetree_list...
+DEBUG:  Switched back to oldcontext...
+LOG:  parse tree:
+{ QUERY :command 1 :source 0 :utility <> :resultRelation 0 :into { RANGEVAR
+:relation <> . cqcursor :inhopt 0 :istemp false :alias <>} :isPortal true
+:isBinary false :hasAggs true :hasSubLinks false :rtable ({ RTE :alias { ALIAS
+:aliasname st :colnames <>} :eref { ALIAS :aliasname st :colnames ( "src"  
+"sport"   "dst"   "dport"   "flags"   "tcqtime" )} :rtekind 0 :relid 16988
+:inh true :inFromCl true :checkForRead true :checkForWrite false :checkAsUser
+0}) :jointree { FROMEXPR :fromlist ({ RANGETBLREF 1 }) :quals <>} :rowMarks ()
+:targetList ({ TARGETENTRY :resdom { RESDOM :resno 1 :restype 650 :restypmod
+-1 :resname dst :reskey 0 :reskeyop 0 :ressortgroupref 1 :resjunk false }
+:expr { VAR :varno 1 :varattno 3 :vartype 650 :vartypmod -1  :varlevelsup 0
+:varnoold 1 :varoattno 3}} { TARGETENTRY :resdom { RESDOM :resno 2 :restype 20
+:restypmod -1 :resname count :reskey 0 :reskeyop 0 :ressortgroupref 0 :resjunk
+false } :expr { AGGREG :aggfnoid 2147 :aggtype 20 :target { CONST :consttype
+23 :constlen 4 :constbyval true :constisnull false :constvalue  4 [ 1 0 0 0 0
+0 0 0 ] } :aggstar true :aggdistinct false }} { TARGETENTRY :resdom { RESDOM
+:resno 3 :restype 1114 :restypmod -1 :resname c :reskey 0 :reskeyop 0
+:ressortgroupref 0 :resjunk false } :expr { AGGREG :aggfnoid 9703 :aggtype
+1114 :target { CONST :consttype 23 :constlen 4 :constbyval true :constisnull
+false :constvalue  4 [ 1 0 0 0 0 0 0 0 ] } :aggstar true :aggdistinct false
+}}) :groupClause ({ GROUPCLAUSE :tleSortGroupRef 1 :sortop 822 }) :havingQual
+<> :distinctClause <> :sortClause <> :limitOffset <> :limitCount <>
+:setOperations <> :resultRelations ()}
+
+LOG:  rewritten parse tree:
+({ QUERY :command 1 :source 0 :utility <> :resultRelation 0 :into { RANGEVAR
+:relation <> . cqcursor :inhopt 0 :istemp false :alias <>} :isPortal true
+:isBinary false :hasAggs true :hasSubLinks false :rtable ({ RTE :alias { ALIAS
+:aliasname st :colnames <>} :eref { ALIAS :aliasname st :colnames ( "src"  
+"sport"   "dst"   "dport"   "flags"   "tcqtime" )} :rtekind 0 :relid 16988
+:inh true :inFromCl true :checkForRead true :checkForWrite false :checkAsUser
+0}) :jointree { FROMEXPR :fromlist ({ RANGETBLREF 1 }) :quals <>} :rowMarks ()
+:targetList ({ TARGETENTRY :resdom { RESDOM :resno 1 :restype 650 :restypmod
+-1 :resname dst :reskey 0 :reskeyop 0 :ressortgroupref 1 :resjunk false }
+:expr { VAR :varno 1 :varattno 3 :vartype 650 :vartypmod -1  :varlevelsup 0
+:varnoold 1 :varoattno 3}} { TARGETENTRY :resdom { RESDOM :resno 2 :restype 20
+:restypmod -1 :resname count :reskey 0 :reskeyop 0 :ressortgroupref 0 :resjunk
+false } :expr { AGGREG :aggfnoid 2147 :aggtype 20 :target { CONST :consttype
+23 :constlen 4 :constbyval true :constisnull false :constvalue  4 [ 1 0 0 0 0
+0 0 0 ] } :aggstar true :aggdistinct false }} { TARGETENTRY :resdom { RESDOM
+:resno 3 :restype 1114 :restypmod -1 :resname c :reskey 0 :reskeyop 0
+:ressortgroupref 0 :resjunk false } :expr { AGGREG :aggfnoid 9703 :aggtype
+1114 :target { CONST :consttype 23 :constlen 4 :constbyval true :constisnull
+false :constvalue  4 [ 1 0 0 0 0 0 0 0 ] } :aggstar true :aggdistinct false
+}}) :groupClause ({ GROUPCLAUSE :tleSortGroupRef 1 :sortop 822 }) :havingQual
+<> :distinctClause <> :sortClause <> :limitOffset <> :limitCount <>
+:setOperations <> :resultRelations ()})
+
+LOG:  plan:
+{ AGG :startup_cost 0.01 :total_cost 0.02 :rows 1 :width 40 :qptargetlist ({
+TARGETENTRY :resdom { RESDOM :resno 1 :restype 650 :restypmod -1 :resname dst
+:reskey 0 :reskeyop 0 :ressortgroupref 1 :resjunk false } :expr { VAR :varno 0
+:varattno 1 :vartype 650 :vartypmod -1  :varlevelsup 0 :varnoold 1 :varoattno
+3}} { TARGETENTRY :resdom { RESDOM :resno 2 :restype 20 :restypmod -1 :resname
+count :reskey 0 :reskeyop 0 :ressortgroupref 0 :resjunk false } :expr { AGGREG
+:aggfnoid 2147 :aggtype 20 :target { CONST :consttype 23 :constlen 4
+:constbyval true :constisnull false :constvalue  4 [ 1 0 0 0 0 0 0 0 ] }
+:aggstar true :aggdistinct false }} { TARGETENTRY :resdom { RESDOM :resno 3
+:restype 1114 :restypmod -1 :resname c :reskey 0 :reskeyop 0 :ressortgroupref
+0 :resjunk false } :expr { AGGREG :aggfnoid 9703 :aggtype 1114 :target { CONST
+:consttype 23 :constlen 4 :constbyval true :constisnull false :constvalue  4 [
+1 0 0 0 0 0 0 0 ] } :aggstar true :aggdistinct false }}) :qpqual <> :lefttree
+{ GRP :startup_cost 0.01 :total_cost 0.02 :rows 1 :width 40 :qptargetlist ({
+TARGETENTRY :resdom { RESDOM :resno 1 :restype 650 :restypmod -1 :resname <>
+:reskey 0 :reskeyop 0 :ressortgroupref 0 :resjunk false } :expr { VAR :varno 0
+:varattno 1 :vartype 650 :vartypmod -1  :varlevelsup 0 :varnoold 1 :varoattno
+3}} { TARGETENTRY :resdom { RESDOM :resno 2 :restype 1114 :restypmod -1
+:resname <> :reskey 0 :reskeyop 0 :ressortgroupref 0 :resjunk false } :expr {
+VAR :varno 0 :varattno 2 :vartype 1114 :vartypmod -1  :varlevelsup 0 :varnoold
+1 :varoattno 6}}) :qpqual <> :lefttree { SORT :startup_cost 0.01 :total_cost
+0.02 :rows 1 :width 40 :qptargetlist ({ TARGETENTRY :resdom { RESDOM :resno 1
+:restype 650 :restypmod -1 :resname <> :reskey 1 :reskeyop 822
+:ressortgroupref 0 :resjunk false } :expr { VAR :varno 1 :varattno 3 :vartype
+650 :vartypmod -1  :varlevelsup 0 :varnoold 1 :varoattno 3}} { TARGETENTRY
+:resdom { RESDOM :resno 2 :restype 1114 :restypmod -1 :resname <> :reskey 0
+:reskeyop 0 :ressortgroupref 0 :resjunk false } :expr { VAR :varno 1 :varattno
+6 :vartype 1114 :vartypmod -1  :varlevelsup 0 :varnoold 1 :varoattno 6}})
+:qpqual <> :lefttree { SEQSCAN :startup_cost 0.00 :total_cost 0.00 :rows 1
+:width 40 :qptargetlist ({ TARGETENTRY :resdom { RESDOM :resno 1 :restype 650
+:restypmod -1 :resname <> :reskey 0 :reskeyop 0 :ressortgroupref 0 :resjunk
+false } :expr { VAR :varno 1 :varattno 3 :vartype 650 :vartypmod -1 
+:varlevelsup 0 :varnoold 1 :varoattno 3}} { TARGETENTRY :resdom { RESDOM
+:resno 2 :restype 1114 :restypmod -1 :resname <> :reskey 0 :reskeyop 0
+:ressortgroupref 0 :resjunk false } :expr { VAR :varno 1 :varattno 6 :vartype
+1114 :vartypmod -1  :varlevelsup 0 :varnoold 1 :varoattno 6}}) :qpqual <>
+:lefttree <> :righttree <> :extprm () :locprm () :initplan <> :nprm 0 
+:scanrelid 1 } :righttree <> :extprm () :locprm () :initplan <> :nprm 0 
+:keycount 1 } :righttree <> :extprm () :locprm () :initplan <> :nprm 0 
+:numCols 1 :tuplePerGroup true } :righttree <> :extprm () :locprm () :initplan
+<> :nprm 0 }
+
+DEBUG:  The system has been started in TelegraphCQ mode, and the databases specified for the TCQ frontend process and TCQ backend tcqbackenddb=teststream, tcqfrontenddb=teststream
+DEBUG:  Converting seqscans to streamscans
+DEBUG:  Converted scan over tcpdump to stream
+DEBUG:  frontend is converting the plan to an eddy
+DEBUG:  Munging source. UseCQEddy is true
+DEBUG:  reaping dead processes
+DEBUG:  child process (pid 31285) was terminated by signal 11
+DEBUG:  dead child process type: 0
+LOG:  server process (pid 31285) was terminated by signal 11
+LOG:  terminating any other active server processes
+DEBUG:  CleanupProc: sending SIGQUIT to process 31280
+DEBUG:  CleanupProc: sending SIGQUIT to process 31279
+WARNING:  Message from PostgreSQL backend:
+	The Postmaster has informed me that some other backend
+	died abnormally and possibly corrupted shared memory.
+	I have rolled back the current transaction and am
+	going to terminate your database system connection and exit.
+	Please reconnect to the database system and repeat your query.
+WARNING:  Message from PostgreSQL backend:
+	The Postmaster has informed me that some other backend
+	died abnormally and possibly corrupted shared memory.
+	I have rolled back the current transaction and am
+	going to terminate your database system connection and exit.
+	Please reconnect to the database system and repeat your query.
+DEBUG:  reaping dead processes
+DEBUG:  child process (pid 31279) exited with exit code 1
+DEBUG:  dead child process type: 1
+DEBUG:  reaping dead processes
+DEBUG:  child process (pid 31280) exited with exit code 1
+DEBUG:  dead child process type: 2
+DEBUG:  all server processes terminated; reinitializing shared memory and semaphores
+NOTICE:  TelegraphCQ shutting down because a fatal error occured in some process
+DEBUG:  running CleanupTCQPlumbing
+DEBUG:  shmem_exit(1)  proctype=4
+LOG:  Calling proc_exit with error code 1; dumping stack.
+LOG:  Printing stack trace, with 9 frames:
+LOG:  ./bin/postmaster(TraceDump+0x2d) [0x5bd90d]
+LOG:  ./bin/postmaster(proc_exit+0xb7) [0x55b117]
+LOG:  ./bin/postmaster() [0x545233]
+LOG:  /lib/x86_64-linux-gnu/libpthread.so.0(+0x11390) [0x7fc6add2c390]
+LOG:  /lib/x86_64-linux-gnu/libc.so.6(__select+0x13) [0x7fc6ad33c5b3]
+LOG:  ./bin/postmaster(PostmasterMain+0xadd) [0x5469ed]
+LOG:  ./bin/postmaster(main+0x1f3) [0x440953]
+LOG:  /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xf0) [0x7fc6ad25f830]
+LOG:  ./bin/postmaster(_start+0x29) [0x440aa9]
+LOG:  Done with stack trace.
+DEBUG:  exit(1) (proctype=4)

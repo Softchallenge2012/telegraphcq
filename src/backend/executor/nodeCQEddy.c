@@ -829,7 +829,7 @@ processOutputQ(Eddy * node, DR_resultqdest * resultqdest)
 /* 		debugitup_debug(iht); */
 /* 		elog(DEBUG1,"**********************************************************************"); */
 
-		elog(DEBUG1, "GOT ONE: finished proc. a tuple... sending to output");
+		elog(DEBUG1, "nodeCQEddy==GOT ONE: finished proc. a tuple... sending to output");
 /* #ifdef AMOLDEBUGON */
 		debugitup_debug(iht);
 /* #endif */

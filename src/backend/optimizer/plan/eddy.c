@@ -2081,6 +2081,7 @@ add_planitem_to_eddy(Eddy * cur, Plan *newplan, EddyItem item)
 	switch (item)
 	{
 		case EDDY_SOURCE:
+			elog(DEBUG1, "add plan to Eddy is 2084");
 			parray = &(cur->sources);
 			for (idx = 0; idx < cur->numSources; idx++)
 			{
@@ -2101,6 +2102,7 @@ add_planitem_to_eddy(Eddy * cur, Plan *newplan, EddyItem item)
 			break;
 
 		case EDDY_MODULE:
+			elog(DEBUG1, "add plan to Eddy is 2105");
 			parray = &(cur->modules);
 			for (idx = 0; idx < cur->numModules; idx++)
 			{
@@ -2140,16 +2142,20 @@ add_planitem_to_eddy(Eddy * cur, Plan *newplan, EddyItem item)
 	/*
 	 * Free the old plan array
 	 */
+	 elog(DEBUG1, "add plan to Eddy is 2145");
 	if (oldarray)
 	{
 		pfree(oldarray);		/* pfree doesn't like NULL */
 	}
 
+	 elog(DEBUG1, "add plan to Eddy is 2151");
 	if (IsA_Fjord(newplan) && 
 	    (MyProcessType == PROC_TCQ_BACKEND))   /* tcqoc: bugfix */
 	{
 		ProcessInitNode(newplan, cur->plan.state, (Plan *) cur);		/* Init module */
 	}
+	
+	 elog(DEBUG1, "add plan to Eddy is 2158");
 }
 
 /*

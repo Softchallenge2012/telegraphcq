@@ -336,10 +336,12 @@ ExecEvalVar(Var *variable, ExprContext *econtext, bool *isNull)
 	switch (variable->varno)
 	{
 		case INNER:				/* get the tuple from the inner node */
+			elog(WARNING, "execQual====ExecEvalVar======INNER");
 			slot = econtext->ecxt_innertuple;
 			break;
 
 		case OUTER:				/* get the tuple from the outer node */
+			elog(WARNING, "execQual====ExecEvalVar======OUTER");
 			slot = econtext->ecxt_outertuple;
 			break;
 
@@ -429,6 +431,8 @@ ExecEvalVarBranch(AttrNumber attnum, Oid vartype, HeapTuple heapTuple, TupleDesc
 										 * attribute */
 						  tuple_type,	/* tuple descriptor of tuple */
 						  isNull);		/* return: is attribute null? */
+						  
+			elog(WARNING, "execQual====ExecEvalVarBranch======result");
 
 	return result;
 }	/* @EdstemsAD */

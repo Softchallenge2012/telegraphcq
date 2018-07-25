@@ -212,6 +212,9 @@ ExecHashJoin(HashJoin *node)
 		/*
 		 * OK, scan the selected hash bucket for matches
 		 */
+		 
+		 
+		elog(WARNING, "nodeHashjoin======adding outer nodes to the hashtable");
 		for (;;)
 		{
 			curtuple = ExecScanHashBucket(hjstate,

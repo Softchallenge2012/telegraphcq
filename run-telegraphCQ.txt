@@ -18,18 +18,19 @@
 	
 	
 	
-	\d+ tablename  ##show table structure
-	
-	
+	\d+ tablename  ##show table structure	
    
-   SELECT dst, COUNT(*), wtime(*) AS c FROM network.tcpdump AS st [RANGE BY '5 seconds' SLIDE BY '1 second' START AT '2003-06-06 18:50:20']  GROUP BY dst;
+   SELECT dst, COUNT(*), wtime(*) AS c FROM network.tcpdump AS st [RANGE BY '5 seconds' SLIDE BY '1 second' START AT '2003-06-06 18:50:20']  GROUP BY dst;   
+   
+   SELECT qrynum, COUNT(*), wtime(*) AS c FROM tcq_queries AS st [RANGE BY '5 seconds' SLIDE BY '1 second' START AT '2003-06-06 18:50:20']  GROUP BY qrynum;
+   
+   
+   ###################join query##############################
+   SELECT network.tcpdump.dst, network.tcpdump1.dst , count(*)   FROM   network.tcpdump   [RANGE BY '5 seconds' SLIDE BY '1 second' START AT '2003-06-06 18:50:20'],   network.tcpdump1   [RANGE BY '5 seconds' SLIDE BY '1 second' START AT '2003-06-06 18:50:20']   WHERE network.tcpdump.dst =network.tcpdump1.dst   GROUP BY network.tcpdump.dst, network.tcpdump1.dst;
 
-   
-   
-    SELECT qrynum, COUNT(*), wtime(*) AS c FROM tcq_queries AS st [RANGE BY '5 seconds' SLIDE BY '1 second' START AT '2003-06-06 18:50:20']  GROUP BY qrynum;
-   
-   
-   
+    cat tcpdump.log | ./source.old.pl localhost 5533 csvwrapper,network.tcpdump
+	cat tcpdump.log | ./source.old.pl localhost 5533 csvwrapper,network.tcpdump1
+
    
    
    
